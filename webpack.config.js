@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  mode: 'development',
   entry: './src/js/main.js',
   output: {
     filename: 'bundle.js',
@@ -29,5 +30,8 @@ module.exports = {
     static: './dist',
     open: true,
     hot: true,
+  },
+  performance: {
+    hints: false,
   },
 };

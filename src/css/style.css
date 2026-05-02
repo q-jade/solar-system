@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+#solar-system-container {
+  width: 100vw;
+  height: 100vh;
+}

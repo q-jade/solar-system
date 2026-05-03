@@ -2,9 +2,58 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>3D 太阳系</title>
 </head>
 <body>
   <div id="solar-system-container"></div>
+
+  <!-- ── Help text (top-right) ──────────────── -->
+  <div id="help-text">左键拖拽旋转 · 滚轮缩放 · 双击重置</div>
+
+  <!-- ── Control panel overlay ──────────────── -->
+  <div id="controls-panel">
+    <!-- Row: scale -->
+    <div class="ctrl-row">
+      <div class="ctrl-label">
+        <span class="ctrl-icon">🔍</span>
+        <span>星体缩放</span>
+      </div>
+      <div class="ctrl-slider-row">
+        <input type="range" id="scale-slider" min="0" max="100" value="0">
+        <span id="scale-value" class="ctrl-value">x1</span>
+      </div>
+    </div>
+
+    <!-- Row: speed -->
+    <div class="ctrl-row">
+      <div class="ctrl-label">
+        <span class="ctrl-icon">⏱</span>
+        <span>时间流速</span>
+      </div>
+      <div class="ctrl-slider-row">
+        <input type="range" id="speed-slider" min="0" max="100" value="0">
+        <span id="speed-value" class="ctrl-value">1×</span>
+      </div>
+    </div>
+
+    <!-- Row: toggles -->
+    <div class="ctrl-row ctrl-toggles">
+      <label class="toggle-label">
+        <input type="checkbox" id="labels-toggle" checked>
+        <span class="toggle-track">
+          <span class="toggle-thumb"></span>
+        </span>
+        显示名称
+      </label>
+      <label class="toggle-label">
+        <input type="checkbox" id="orbits-toggle" checked>
+        <span class="toggle-track">
+          <span class="toggle-thumb"></span>
+        </span>
+        显示轨道
+      </label>
+    </div>
+  </div>
 </body>
 </html>

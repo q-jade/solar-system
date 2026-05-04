@@ -69,7 +69,6 @@ const MOON = { name: '月球', color: 0xcccccc, radius: 1737.4, orbitKm: 384400,
 const ASTEROID_COUNT = 5000;
 const ASTEROID_A_MIN = 2.2;
 const ASTEROID_A_MAX = 3.2;
-
 // ── Kepler solver (Newton's method) ────────────────────────────────────
 function solveKepler(M, e) {
     let E = M;
@@ -125,10 +124,34 @@ export function initSolarSystem() {
     scene.add(new THREE.Points(starGeo, starMat));
 
     // ── Sun ─────────────────────────────────────────────────────────
+    // Glow texture
+    const glowCanvas = document.createElement('canvas');
+    glowCanvas.width = 256;
+    glowCanvas.height = 256;
+    const gctx = glowCanvas.getContext('2d');
+    const grad = gctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+    grad.addColorStop(0, 'rgba(255,200,80,1)');
+    grad.addColorStop(0.15, 'rgba(255,160,30,0.7)');
+    grad.addColorStop(0.4, 'rgba(255,100,10,0.25)');
+    grad.addColorStop(1, 'rgba(255,100,10,0)');
+    gctx.fillStyle = grad;
+    gctx.fillRect(0, 0, 256, 256);
+    const glowTexture = new THREE.CanvasTexture(glowCanvas);
+
     const sunGeo = new THREE.SphereGeometry(SUN_RADIUS, 48, 48);
-    const sunMat = new THREE.MeshBasicMaterial({ color: 0xffaa33 });
+    const sunMat = new THREE.MeshBasicMaterial({ color: 0xffcc44 });
     const sun = new THREE.Mesh(sunGeo, sunMat);
     scene.add(sun);
+
+    const glowMat = new THREE.SpriteMaterial({
+        map: glowTexture,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+    });
+    const sunGlow = new THREE.Sprite(glowMat);
+    sunGlow.scale.set(SUN_RADIUS * 4, SUN_RADIUS * 4, 1);
+    scene.add(sunGlow);
 
     const sunLight = new THREE.PointLight(0xffcc66, 2, 600);
     scene.add(sunLight);
@@ -173,6 +196,21 @@ export function initSolarSystem() {
         const outerGroup = new THREE.Group();
         outerGroup.rotation.y = OmegaRad;
         scene.add(outerGroup);
+
+        // ── Node line (dashed line along ascending-node direction) ──
+        const nodeLen = orbitA * 1.6;
+        const nodeLine = new THREE.Line(
+            new THREE.BufferGeometry().setFromPoints([
+                new THREE.Vector3(-nodeLen, 0, 0),
+                new THREE.Vector3(nodeLen, 0, 0),
+            ]),
+            new THREE.LineDashedMaterial({
+                color: 0x67b8ff, transparent: true, opacity: 0.35,
+                dashSize: 1.2, gapSize: 0.8,
+            })
+        );
+        nodeLine.computeLineDistances();
+        outerGroup.add(nodeLine);
 
         const inclGroup = new THREE.Group();
         inclGroup.rotation.x = inclRad;
@@ -241,6 +279,7 @@ export function initSolarSystem() {
             inclRad,
             omegaRad,
             OmegaRad,
+            nodeLine,
             meanAnomaly: d.m0,
             angularSpeed: 2 * Math.PI / d.period, // rad / Earth day
         });

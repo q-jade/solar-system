@@ -103,6 +103,10 @@ export function initControls(sys, camera, renderer) {
         if (sys.moon && sys.moon.orbitLine) {
             sys.moon.orbitLine.visible = orbitToggle.checked;
         }
+        // Also toggle node lines (dashed ascending-node indicators)
+        sys.planets.forEach((p) => {
+            if (p.nodeLine) p.nodeLine.visible = orbitToggle.checked;
+        });
     });
 
     // ── Window resize ──────────────────────────────────────────────

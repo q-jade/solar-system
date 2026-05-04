@@ -180,6 +180,53 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* ── Responsive ──────────────────────────────── */
+/* ── Distance info panel (bottom-left) ────────── */
+#distance-panel {
+  position: fixed;
+  left: 20px;
+  bottom: 28px;
+  min-width: 210px;
+  padding: 10px 14px;
+  background: rgba(10, 10, 30, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(100, 120, 200, 0.25);
+  border-radius: 10px;
+  user-select: none;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.dp-title {
+  font-size: 11px;
+  color: #889;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+#distance-list {
+  font-size: 11px;
+  line-height: 1.6;
+  color: #bbc;
+}
+
+.dp-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.dp-row .dp-name {
+  min-width: 3em;
+  opacity: 0.9;
+}
+
+.dp-row .dp-dist {
+  color: #8cf;
+  font-variant-numeric: tabular-nums;
+}
+
 @media (max-width: 600px) {
   #controls-panel {
     bottom: 16px;
@@ -190,4 +237,8 @@ input[type="range"]::-moz-range-thumb {
   }
   .ctrl-label { font-size: 12px; min-width: 60px; }
   .ctrl-value { font-size: 12px; min-width: 40px; }
+
+  #distance-panel {
+    display: none;
+  }
 }

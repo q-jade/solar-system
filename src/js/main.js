@@ -6,25 +6,35 @@ const sys = initSolarSystem();
 const { scene, camera, renderer, labelRenderer } = sys;
 const controls = initControls(sys, camera, renderer);
 
+// ── Distance info panel ───────────────────────────
+const distList = document.getElementById('distance-list');
+distList.innerHTML = sys.planets.map(p => {
+    const peri = (p.data.orbitA * (1 - p.data.e)).toFixed(3);
+    const aph = (p.data.orbitA * (1 + p.data.e)).toFixed(3);
+    return `<div class="dp-row"><span class="dp-name">${p.data.name}</span><span class="dp-dist">${peri}–${aph} AU</span></div>`;
+}).join('');
+
 let lastTime = performance.now();
+
+// Pause simulation while tab is hidden to avoid dt spikes
+// that cause trail gaps and orbital position jumps.
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        lastTime = performance.now();
+    }
+});
 
 function animate() {
     requestAnimationFrame(animate);
 
     const now = performance.now();
-    const dt = (now - lastTime) / 1000; // seconds (real)
+    const dt = Math.min((now - lastTime) / 1000, 0.5); // seconds (real), cap at 0.5s
     lastTime = now;
 
-    // At speed=1, 1 real second = 1 Earth day
-    // We don't multiply by speed here because setSpeed already adjusted
-    // the per-planet angularSpeed; we advance by dt (real seconds converted
-    // to "simulated days" at base speed, then angularSpeed (which is
-    // radians per simulated Earth day) handles the rest.
-    //
-    // With angularSpeed = 2π / period * speedMul,
-    // and update(days) adds angularSpeed * days to meanAnomaly,
-    // we need days = dt (since speedMul=1 means dt seconds = dt days).
-    // Since angularSpeed already includes speedMul, days = dt is correct.
+    // Sun pulsating effect (±2%)
+    const pulse = 1 + Math.sin(now * 0.0025) * 0.02;
+    sys.sun.scale.setScalar(pulse);
+
     sys.update(dt);
 
     controls.update();

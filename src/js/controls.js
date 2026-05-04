@@ -99,6 +99,10 @@ export function initControls(sys, camera, renderer) {
                 if (child.isLine) child.visible = orbitToggle.checked;
             });
         });
+        // Also toggle Moon orbit line (nested inside earth's orbit group)
+        if (sys.moon && sys.moon.orbitLine) {
+            sys.moon.orbitLine.visible = orbitToggle.checked;
+        }
     });
 
     // ── Window resize ──────────────────────────────────────────────

@@ -8,50 +8,59 @@ const KM_PER_U = 149597870.7 / AU;  // km per scene unit
 const SUN_RADIUS = 8;               // fixed sun size
 const MAX_SCALE = 3000;             // max planet size multiplier
 
-// ── Real planetary data (approximate) ──────────────────────────────────
-// radius: km | orbitA: AU | eccentricity: unitless | inclination: °
+// ── Real planetary data (JPL HORIZONS, epoch J2000) ────────────────────
+// radius: km | orbitA: AU | e: eccentricity | incl: ° |
+// argPeri (ω): ° | node (Ω): ° | m0 (M at J2000): rad |
 // period: Earth days | rotPeriod: Earth days
 const PLANET_DATA = [
     {
         name: '水星', color: 0xaaaaaa,
-        radius: 2439.7, orbitA: 0.387, e: 0.2056, incl: 7.0,
-        period: 87.97, rotPeriod: 58.646,
+        radius: 2439.7, orbitA: 0.3871, e: 0.2056, incl: 7.0,
+        argPeri: 29.1, node: 48.3, m0: 3.2,
+        period: 87.969, rotPeriod: 58.646,
     },
     {
         name: '金星', color: 0xe6b800,
-        radius: 6051.8, orbitA: 0.723, e: 0.0068, incl: 3.4,
-        period: 224.7, rotPeriod: -243.025,
+        radius: 6051.8, orbitA: 0.7233, e: 0.0068, incl: 3.39,
+        argPeri: 54.9, node: 76.7, m0: 2.1,
+        period: 224.701, rotPeriod: -243.025,
     },
     {
         name: '地球', color: 0x2266cc,
         radius: 6371.0, orbitA: 1.0, e: 0.0167, incl: 0.0,
-        period: 365.25, rotPeriod: 1.0,
+        argPeri: 102.9, node: 348.7, m0: 1.0,
+        period: 365.256, rotPeriod: 1.0,
     },
     {
         name: '火星', color: 0xcc4422,
-        radius: 3389.5, orbitA: 1.524, e: 0.0934, incl: 1.85,
-        period: 687.0, rotPeriod: 1.025,
+        radius: 3389.5, orbitA: 1.5237, e: 0.0934, incl: 1.85,
+        argPeri: 286.5, node: 49.6, m0: 5.4,
+        period: 686.98, rotPeriod: 1.025,
     },
     {
         name: '木星', color: 0xddbb99,
-        radius: 69911, orbitA: 5.203, e: 0.0484, incl: 1.3,
-        period: 4332.6, rotPeriod: 0.4135,
+        radius: 69911, orbitA: 5.2028, e: 0.0484, incl: 1.30,
+        argPeri: 273.9, node: 100.5, m0: 0.7,
+        period: 4332.59, rotPeriod: 0.4135,
     },
     {
         name: '土星', color: 0xeeddbb,
-        radius: 58232, orbitA: 9.537, e: 0.0539, incl: 2.49,
-        period: 10759.2, rotPeriod: 0.444,
+        radius: 58232, orbitA: 9.5388, e: 0.0541, incl: 2.49,
+        argPeri: 339.4, node: 113.7, m0: 4.1,
+        period: 10759.22, rotPeriod: 0.444,
         rings: true,
     },
     {
         name: '天王星', color: 0x88ccdd,
-        radius: 25362, orbitA: 19.191, e: 0.0473, incl: 0.77,
-        period: 30688.5, rotPeriod: -0.718,
+        radius: 25362, orbitA: 19.1914, e: 0.0472, incl: 0.77,
+        argPeri: 96.7, node: 74.0, m0: 2.8,
+        period: 30685.4, rotPeriod: -0.718,
     },
     {
         name: '海王星', color: 0x4466ff,
-        radius: 24622, orbitA: 30.069, e: 0.0086, incl: 1.77,
-        period: 60182.3, rotPeriod: 0.671,
+        radius: 24622, orbitA: 30.0611, e: 0.0086, incl: 1.77,
+        argPeri: 273.2, node: 131.8, m0: 5.6,
+        period: 60189.0, rotPeriod: 0.671,
     },
 ];
 
@@ -156,11 +165,22 @@ export function initSolarSystem() {
         const orbitA = d.orbitA * AU;
         const pRadius = d.radius / KM_PER_U;   // real size in scene units
         const inclRad = d.incl * Math.PI / 180;
+        const omegaRad = d.argPeri * Math.PI / 180;
+        const OmegaRad = d.node * Math.PI / 180;
 
-        // Orbital-plane group (tilted by inclination)
+        // Group hierarchy for full Euler rotation R_y(Ω)·R_x(i)·R_y(ω):
+        //   outerGroup (Y-rot Ω) ── inclGroup (X-rot i) ── orbitGroup (Y-rot ω)
+        const outerGroup = new THREE.Group();
+        outerGroup.rotation.y = OmegaRad;
+        scene.add(outerGroup);
+
+        const inclGroup = new THREE.Group();
+        inclGroup.rotation.x = inclRad;
+        outerGroup.add(inclGroup);
+
         const orbitGroup = new THREE.Group();
-        orbitGroup.rotation.x = inclRad;
-        scene.add(orbitGroup);
+        orbitGroup.rotation.y = omegaRad;
+        inclGroup.add(orbitGroup);
 
         // ── Elliptical orbit line ──
         const segs = 128;
@@ -219,7 +239,9 @@ export function initSolarSystem() {
             orbitA,
             e: d.e,
             inclRad,
-            meanAnomaly: Math.random() * Math.PI * 2,
+            omegaRad,
+            OmegaRad,
+            meanAnomaly: d.m0,
             angularSpeed: 2 * Math.PI / d.period, // rad / Earth day
         });
     }

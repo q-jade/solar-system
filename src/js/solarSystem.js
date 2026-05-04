@@ -274,10 +274,14 @@ export function initSolarSystem() {
         const a = ASTEROID_A_MIN + Math.random() * (ASTEROID_A_MAX - ASTEROID_A_MIN);
         const e = Math.random() * 0.15;
         const incl = (Math.random() - 0.5) * 10 * Math.PI / 180;
+        const omega = Math.random() * Math.PI * 2;
+        const Omega = Math.random() * Math.PI * 2;
         astParams.push({
             a: a * AU,
             e,
             incl,
+            omega,
+            Omega,
             M: Math.random() * Math.PI * 2,
             speed: 2 * Math.PI / (365.25 * Math.pow(a, 1.5)),
             r: 0,
@@ -351,19 +355,31 @@ export function initSolarSystem() {
             moonObj.baseDist * Math.cos(ang), 0, moonObj.baseDist * Math.sin(ang)
         );
 
-        // Asteroid belt
+        // Asteroid belt — full 3D orbital geometry
         const pos = astGeo.attributes.position.array;
         for (let i = 0; i < ASTEROID_COUNT; i++) {
             const a = astParams[i];
             a.M += a.speed * days;
             const E = solveKepler(a.M, a.e);
-            const x = a.a * (Math.cos(E) - a.e);
-            const z = a.a * Math.sqrt(1 - a.e * a.e) * Math.sin(E);
-            const cosI = Math.cos(a.incl);
-            const sinI = Math.sin(a.incl);
-            pos[i * 3]     = x;
-            pos[i * 3 + 1] = z * sinI;
-            pos[i * 3 + 2] = z * cosI;
+            const x0 = a.a * (Math.cos(E) - a.e);
+            const z0 = a.a * Math.sqrt(1 - a.e * a.e) * Math.sin(E);
+            const ci = Math.cos(a.incl);
+            const si = Math.sin(a.incl);
+            const cw = Math.cos(a.omega);
+            const sw = Math.sin(a.omega);
+            const cO = Math.cos(a.Omega);
+            const sO = Math.sin(a.Omega);
+            // 1) Rotate by ω around Three.js Y (orbital plane rotation)
+            const x1 = x0 * cw + z0 * sw;
+            const z1 = -x0 * sw + z0 * cw;
+            // 2) Rotate by i around X (inclination tilt)
+            const x2 = x1;
+            const y2 = -z1 * si;
+            const z2 = z1 * ci;
+            // 3) Rotate by Ω around Y (orient ascending node)
+            pos[i * 3]     = x2 * cO + z2 * sO;
+            pos[i * 3 + 1] = y2;
+            pos[i * 3 + 2] = -x2 * sO + z2 * cO;
         }
         astGeo.attributes.position.needsUpdate = true;
     }

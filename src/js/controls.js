@@ -3,6 +3,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const DEFAULT_SCALE = 1200;
 const DEFAULT_SPEED = 20; // days/sec
+const DEFAULT_ECC = 1;    // 1x = real eccentricity
+const ECC_MAX = 4;       // max eccentricity multiplier
 
 /** Create the UI panel and connect it to the solar-system API. */
 export function initControls(sys, camera, renderer) {
@@ -21,10 +23,9 @@ export function initControls(sys, camera, renderer) {
     const scaleVal = $('#scale-value');
     const speedSlider = $('#speed-slider');
     const speedVal = $('#speed-value');
+    const eccSlider = $('#ecc-slider');
+    const eccVal = $('#ecc-value');
     const MAX = sys.MAX_SCALE;
-
-    // ── Help text in top-right ─────────────────────────────────────
-    const helpText = $('#help-text');
 
     // ── Scale slider ───────────────────────────────────────────────
     function sliderToScale(v) {
@@ -68,12 +69,35 @@ export function initControls(sys, camera, renderer) {
     }
     speedSlider.addEventListener('input', updateSpeed);
 
+    // ── Eccentricity slider (linear 0x..4x) ─────────────────────────
+    function sliderToEcc(v) {
+        return v / 100 * ECC_MAX;
+    }
+
+    function eccToSlider(m) {
+        return m / ECC_MAX * 100;
+    }
+
+    function updateEcc() {
+        const v = parseFloat(eccSlider.value);
+        const m = sliderToEcc(v);
+        sys.setEccentricityMultiplier(m);
+        if (m === 1) {
+            eccVal.textContent = '×1.0 (真实)';
+        } else {
+            eccVal.textContent = '×' + m.toFixed(1) + ' (示意)';
+        }
+    }
+    eccSlider.addEventListener('input', updateEcc);
+
     // ── Set defaults ───────────────────────────────────────────────
     function setDefaults() {
         scaleSlider.value = String(Math.round(scaleToSlider(DEFAULT_SCALE)));
         speedSlider.value = String(Math.round(speedToSlider(DEFAULT_SPEED)));
+        eccSlider.value = String(Math.round(eccToSlider(DEFAULT_ECC)));
         updateScale();
         updateSpeed();
+        updateEcc();
         // Reset camera
         camera.position.set(0, 120, 200);
         camera.lookAt(0, 0, 0);
@@ -84,30 +108,86 @@ export function initControls(sys, camera, renderer) {
     // ── Double-click to reset ──────────────────────────────────────
     renderer.domElement.addEventListener('dblclick', setDefaults);
 
-    // ── Labels toggle ──────────────────────────────────────────────
+    // ── Toggles ────────────────────────────────────────────────────
     const labelToggle = $('#labels-toggle');
     labelToggle.addEventListener('change', () => {
         sys.setLabelsVisible(labelToggle.checked);
     });
 
-    // ── Orbit path toggle (bonus control) ──────────────────────────
     const orbitToggle = $('#orbits-toggle');
     orbitToggle.addEventListener('change', () => {
         sys.planets.forEach((p) => {
-            const orbitGroup = p.posGroup.parent;
-            orbitGroup.children.forEach((child) => {
+            const og = p.orbitGroup;
+            og.children.forEach((child) => {
                 if (child.isLine) child.visible = orbitToggle.checked;
             });
         });
-        // Also toggle Moon orbit line (nested inside earth's orbit group)
+        // Also toggle Moon orbit line
         if (sys.moon && sys.moon.orbitLine) {
             sys.moon.orbitLine.visible = orbitToggle.checked;
         }
-        // Also toggle node lines (dashed ascending-node indicators)
+        // Also toggle node lines
         sys.planets.forEach((p) => {
             if (p.nodeLine) p.nodeLine.visible = orbitToggle.checked;
         });
     });
+
+    const distToggle = $('#distance-toggle');
+    distToggle.addEventListener('change', () => {
+        document.getElementById('distance-panel').style.display =
+            distToggle.checked ? '' : 'none';
+    });
+
+    const sizeToggle = $('#size-toggle');
+    sizeToggle.addEventListener('change', () => {
+        document.getElementById('size-panel').style.display =
+            sizeToggle.checked ? '' : 'none';
+    });
+
+    // ── Build size comparison panel (radius circles) ────────────────
+    function buildSizePanel() {
+        const list = document.getElementById('size-list');
+        const items = [
+            { name: '太阳', color: '#ffcc44', radius: 695508 },
+            ...sys.planets.map(p => ({
+                name: p.data.name,
+                color: '#' + p.data.color.toString(16).padStart(6, '0'),
+                radius: p.data.radius,
+            })),
+        ];
+        // Sort by radius descending
+        items.sort((a, b) => b.radius - a.radius);
+
+        // Jupiter = max circle size
+        const maxPlanetR = items[1].radius; // Jupiter
+        const MAX_DIAM = 100;
+        const MIN_DIAM = 3;
+
+        let html = '';
+        for (let i = 0; i < items.length; i++) {
+            const d = items[i];
+            if (i === 0) {
+                // Sun — special oversized circle + ratio note
+                const earth = items.find(it => it.name === '地球');
+                const ratio = earth ? Math.round(d.radius / earth.radius) : 109;
+                html += '<div class="sp-row">'
+                    + '<span class="sp-circle-frame"><span class="sp-circle sp-circle-sun" style="width:130px;height:130px;background:' + d.color + '"></span></span>'
+                    + '<span class="sp-name">' + d.name + '</span>'
+                    + '<span class="sp-rad">' + d.radius.toLocaleString() + ' km</span>'
+                    + '</div>'
+                    + '<div class="sp-note">≈' + ratio + ' × 地球</div>';
+            } else {
+                const diam = Math.max(MIN_DIAM, Math.round(d.radius / maxPlanetR * MAX_DIAM));
+                html += '<div class="sp-row">'
+                    + '<span class="sp-circle-frame"><span class="sp-circle" style="width:' + diam + 'px;height:' + diam + 'px;background:' + d.color + '"></span></span>'
+                    + '<span class="sp-name">' + d.name + '</span>'
+                    + '<span class="sp-rad">' + d.radius.toLocaleString() + ' km</span>'
+                    + '</div>';
+            }
+        }
+        list.innerHTML = html;
+    }
+    buildSizePanel();
 
     // ── Window resize ──────────────────────────────────────────────
     window.addEventListener('resize', () => {

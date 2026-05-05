@@ -69,13 +69,18 @@ const MOON = { name: '月球', color: 0xcccccc, radius: 1737.4, orbitKm: 384400,
 const ASTEROID_COUNT = 5000;
 const ASTEROID_A_MIN = 2.2;
 const ASTEROID_A_MAX = 3.2;
+
 // ── Kepler solver (Newton's method) ────────────────────────────────────
 function solveKepler(M, e) {
-    let E = M;
-    for (let i = 0; i < 8; i++) {
+    // Normalise M to [0, 2π)
+    M = M - Math.PI * 2 * Math.floor(M / (Math.PI * 2));
+    // Better initial guess for high eccentricity
+    let E = e > 0.8 ? M + 0.85 * e * Math.sin(M) : M;
+    const maxIter = e > 0.9 ? 32 : (e > 0.8 ? 16 : 8);
+    for (let i = 0; i < maxIter; i++) {
         const dE = (M + e * Math.sin(E) - E) / (1 - e * Math.cos(E));
         E += dE;
-        if (Math.abs(dE) < 1e-10) break;
+        if (Math.abs(dE) < 1e-12) break;
     }
     return E;
 }
@@ -163,6 +168,7 @@ export function initSolarSystem() {
 
     // ── State ───────────────────────────────────────────────────────
     let currentScale = 1;
+    let eMultiplier = 1;
     const allLabels = [];   // CSS2DObject references
 
     // ── Helper: create a label div ──────────────────────────────────
@@ -272,10 +278,12 @@ export function initSolarSystem() {
             data: d,
             posGroup,
             scaleWrapper,
+            orbitGroup,
+            orbitLine,
             mesh,
             pRadius,
             orbitA,
-            e: d.e,
+            originalE: d.e,
             inclRad,
             omegaRad,
             OmegaRad,
@@ -393,14 +401,43 @@ export function initSolarSystem() {
         for (const lbl of allLabels) lbl.visible = v;
     }
 
+    /** @param {number} mult - eccentricity multiplier, ≧0 (1 = real) */
+    function setEccentricityMultiplier(mult) {
+        eMultiplier = Math.max(0, mult);
+        for (const p of planets) {
+            const effE = Math.min(p.originalE * mult, 0.99);
+            // Rebuild orbit line geometry
+            p.orbitGroup.remove(p.orbitLine);
+            const segs = 128;
+            const pts = [];
+            for (let i = 0; i <= segs; i++) {
+                const a = (i / segs) * Math.PI * 2;
+                const r = p.orbitA * (1 - effE * effE) / (1 + effE * Math.cos(a));
+                pts.push(new THREE.Vector3(r * Math.cos(a), 0, r * Math.sin(a)));
+            }
+            const newLine = new THREE.Line(
+                new THREE.BufferGeometry().setFromPoints(pts),
+                new THREE.LineBasicMaterial({
+                    color: 0x8cb8ce, transparent: true, opacity: 0.4,
+                })
+            );
+            // Preserve orbit visibility state
+            const orbitToggle = document.getElementById('orbits-toggle');
+            if (orbitToggle && !orbitToggle.checked) newLine.visible = false;
+            p.orbitGroup.add(newLine);
+            p.orbitLine = newLine;
+        }
+    }
+
     /** Advance the simulation by `days` (Earth days). */
     function updateOrbits(days) {
         // Planets
         for (const p of planets) {
+            const effE = Math.min(p.originalE * eMultiplier, 0.99);
             p.meanAnomaly += p.angularSpeed * days;
-            const E = solveKepler(p.meanAnomaly, p.e);
-            const x = p.orbitA * (Math.cos(E) - p.e);
-            const z = p.orbitA * Math.sqrt(1 - p.e * p.e) * Math.sin(E);
+            const E = solveKepler(p.meanAnomaly, effE);
+            const x = p.orbitA * (Math.cos(E) - effE);
+            const z = p.orbitA * Math.sqrt(1 - effE * effE) * Math.sin(E);
             p.posGroup.position.set(x, 0, z);
 
             // Self-rotation (radians per Earth-day, signed for retrograde)
@@ -452,7 +489,7 @@ export function initSolarSystem() {
     return {
         scene, camera, renderer, labelRenderer,
         planets, moon: moonObj, sun, asteroidBelt,
-        setScale, setSpeed, setLabelsVisible,
+        setScale, setSpeed, setLabelsVisible, setEccentricityMultiplier,
         update: updateOrbits,
         SUN_RADIUS, MAX_SCALE,
     };

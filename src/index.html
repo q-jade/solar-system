@@ -37,29 +37,54 @@
       </div>
     </div>
 
-    <!-- Row: toggles -->
+    <!-- Row: eccentricity -->
+    <div class="ctrl-row">
+      <div class="ctrl-label">
+        <span class="ctrl-icon">📐</span>
+        <span>偏心率</span>
+      </div>
+      <div class="ctrl-slider-row">
+        <input type="range" id="ecc-slider" min="0" max="100" value="50">
+        <span id="ecc-value" class="ctrl-value">×1</span>
+      </div>
+    </div>
+
+    <!-- Divider + toggles -->
+    <div class="ctrl-divider"></div>
     <div class="ctrl-row ctrl-toggles">
       <label class="toggle-label">
         <input type="checkbox" id="labels-toggle" checked>
-        <span class="toggle-track">
-          <span class="toggle-thumb"></span>
-        </span>
-        显示名称
+        <span class="toggle-track"></span>
+        名称
       </label>
       <label class="toggle-label">
         <input type="checkbox" id="orbits-toggle" checked>
-        <span class="toggle-track">
-          <span class="toggle-thumb"></span>
-        </span>
-        显示轨道
+        <span class="toggle-track"></span>
+        轨道
+      </label>
+      <label class="toggle-label">
+        <input type="checkbox" id="distance-toggle" checked>
+        <span class="toggle-track"></span>
+        距离
+      </label>
+      <label class="toggle-label">
+        <input type="checkbox" id="size-toggle" checked>
+        <span class="toggle-track"></span>
+        半径
       </label>
     </div>
   </div>
 
-  <!-- ── Distance info panel (bottom-left) ──────── -->
+  <!-- ── Distance info panel (bottom-left) ──── -->
   <div id="distance-panel">
     <div class="dp-title">轨道数据</div>
     <div id="distance-list"></div>
+  </div>
+
+  <!-- ── Size comparison panel (bottom-right) ── -->
+  <div id="size-panel">
+    <div class="sp-title">半径对比</div>
+    <div id="size-list"></div>
   </div>
 </body>
 </html>

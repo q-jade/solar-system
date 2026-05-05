@@ -33,7 +33,7 @@ body {
   letter-spacing: 0.3px;
 }
 
-/* ── Control panel ──────────────────────────── */
+/* ── Control panel ────────────────────────── */
 #controls-panel {
   position: absolute;
   bottom: 28px;
@@ -51,6 +51,7 @@ body {
   min-width: 340px;
   max-width: 520px;
   user-select: none;
+  z-index: 3;
 }
 
 /* ── Row ──────────────────────────────────── */
@@ -81,7 +82,7 @@ body {
   gap: 10px;
 }
 
-/* ── Slider ────────────────────────────────── */
+/* ── Slider ───────────────────────────────── */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -127,18 +128,26 @@ input[type="range"]::-moz-range-thumb {
   font-variant-numeric: tabular-nums;
 }
 
-/* ── Toggle switches ────────────────────────── */
+/* ── Divider ──────────────────────────────── */
+.ctrl-divider {
+  height: 1px;
+  background: rgba(100, 120, 200, 0.18);
+  margin: 2px 0;
+}
+
+/* ── Toggle switches ──────────────────────── */
 .ctrl-toggles {
   display: flex;
-  gap: 18px;
+  gap: 14px;
   padding-top: 2px;
+  justify-content: center;
 }
 
 .toggle-label {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
+  gap: 6px;
+  font-size: 12px;
   cursor: pointer;
   color: #bbc;
 }
@@ -149,10 +158,10 @@ input[type="range"]::-moz-range-thumb {
 
 .toggle-track {
   position: relative;
-  width: 36px;
-  height: 20px;
+  width: 32px;
+  height: 18px;
   background: #334;
-  border-radius: 10px;
+  border-radius: 9px;
   transition: background 0.2s;
   flex-shrink: 0;
 }
@@ -162,8 +171,8 @@ input[type="range"]::-moz-range-thumb {
   position: absolute;
   top: 3px;
   left: 3px;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: #889;
   transition: all 0.2s;
@@ -174,13 +183,12 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .toggle-label input:checked + .toggle-track::after {
-  left: 19px;
+  left: 17px;
   background: #8cf;
   box-shadow: 0 0 6px rgba(100, 180, 255, 0.4);
 }
 
-/* ── Responsive ──────────────────────────────── */
-/* ── Distance info panel (bottom-left) ────────── */
+/* ── Distance info panel (bottom-left) ────── */
 #distance-panel {
   position: fixed;
   left: 20px;
@@ -227,6 +235,89 @@ input[type="range"]::-moz-range-thumb {
   font-variant-numeric: tabular-nums;
 }
 
+/* ── Size comparison panel (bottom-right) ──── */
+#size-panel {
+  position: fixed;
+  right: 20px;
+  bottom: 28px;
+  min-width: 200px;
+  max-width: 320px;
+  padding: 10px 14px;
+  background: rgba(10, 10, 30, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(100, 120, 200, 0.25);
+  border-radius: 10px;
+  user-select: none;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.sp-title {
+  font-size: 11px;
+  color: #889;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+#size-list {
+  font-size: 11px;
+  line-height: 1.6;
+  color: #bbc;
+}
+
+.sp-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  margin-bottom: 2px;
+}
+
+/* Fixed-width frame: all circle centers share the same X */
+.sp-circle-frame {
+  width: 130px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sp-circle {
+  display: inline-block;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sp-circle-sun {
+  box-shadow: 0 0 10px rgba(255, 200, 50, 0.6);
+}
+
+.sp-name {
+  min-width: 2.6em;
+  text-align: left;
+  opacity: 0.9;
+  font-size: 11px;
+}
+
+.sp-rad {
+  min-width: 5.8em;
+  text-align: right;
+  color: #8cf;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.sp-note {
+  font-size: 10px;
+  color: #776;
+  text-align: right;
+  margin: -2px 0 4px 0;
+  letter-spacing: 0.3px;
+  padding-right: 2px;
+}
+
+/* ── Responsive ────────────────────────────── */
 @media (max-width: 600px) {
   #controls-panel {
     bottom: 16px;
@@ -238,7 +329,8 @@ input[type="range"]::-moz-range-thumb {
   .ctrl-label { font-size: 12px; min-width: 60px; }
   .ctrl-value { font-size: 12px; min-width: 40px; }
 
-  #distance-panel {
+  #distance-panel,
+  #size-panel {
     display: none;
   }
 }

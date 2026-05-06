@@ -64,7 +64,11 @@ const PLANET_DATA = [
     },
 ];
 
-const MOON = { name: '月球', color: 0xcccccc, radius: 1737.4, orbitKm: 384400, period: 27.3 };
+const MOON = {
+    name: '月球', color: 0xcccccc,
+    radius: 1737.4, orbitKm: 384400, period: 27.322,
+    e: 0.0549, incl: 5.145, node: 125.08, argPeri: 0, m0: 0,
+};
 
 const ASTEROID_COUNT = 5000;
 const ASTEROID_A_MIN = 2.2;
@@ -296,29 +300,48 @@ export function initSolarSystem() {
     // ── Moon (orbits Earth, scaled with planet size) ───────────────
     const earth = planets[2];
     const moonRadius = MOON.radius / KM_PER_U;
-    // Base orbit distance (without scale) = 1.1 Earth radii + 1 Moon radius
+    // Semi-major axis (dynamic, keeps moon close at all scales)
     const moonBaseDist = earth.pRadius * 1.1 + moonRadius;
+    const moonE = MOON.e;
+    const moonInclRad = MOON.incl * Math.PI / 180;
+    const moonOmegaRad = MOON.argPeri * Math.PI / 180;
+    const moonOmegaNodeRad = MOON.node * Math.PI / 180;
 
     const moonSystem = new THREE.Group();  // scaled by currentScale
     earth.posGroup.add(moonSystem);
 
-    // Moon orbit line (at base distance; scaled visually by moonSystem)
+    // Orbital element group hierarchy for the Moon:
+    //   moonSystem ── outerGroup (Ω) ── inclGroup (i) ── orbitGroup (ω)
+    const moonOuterGroup = new THREE.Group();
+    moonOuterGroup.rotation.y = moonOmegaNodeRad;
+    moonSystem.add(moonOuterGroup);
+
+    const moonInclGroup = new THREE.Group();
+    moonInclGroup.rotation.x = moonInclRad;
+    moonOuterGroup.add(moonInclGroup);
+
+    const moonOrbitGroup = new THREE.Group();
+    moonOrbitGroup.rotation.y = moonOmegaRad;
+    moonInclGroup.add(moonOrbitGroup);
+
+    // Moon orbit line (elliptical, at base distance; scaled by moonSystem)
     const moonOrbitPts = [];
     for (let i = 0; i <= 64; i++) {
         const a = (i / 64) * Math.PI * 2;
+        const r = moonBaseDist * (1 - moonE * moonE) / (1 + moonE * Math.cos(a));
         moonOrbitPts.push(
-            new THREE.Vector3(moonBaseDist * Math.cos(a), 0, moonBaseDist * Math.sin(a))
+            new THREE.Vector3(r * Math.cos(a), 0, r * Math.sin(a))
         );
     }
     const moonOrbitLine = new THREE.Line(
         new THREE.BufferGeometry().setFromPoints(moonOrbitPts),
         new THREE.LineBasicMaterial({ color: 0x8cb8ce, transparent: true, opacity: 0.35 })
     );
-    moonSystem.add(moonOrbitLine);
+    moonOrbitGroup.add(moonOrbitLine);
 
-    // Moon position group (moves along orbit within moonSystem)
+    // Moon position group (moves along elliptical orbit)
     const moonPosGroup = new THREE.Group();
-    moonSystem.add(moonPosGroup);
+    moonOrbitGroup.add(moonPosGroup);
 
     const moonMesh = new THREE.Mesh(
         new THREE.SphereGeometry(moonRadius, 16, 16),
@@ -328,13 +351,16 @@ export function initSolarSystem() {
 
     const moonObj = {
         system: moonSystem,
+        orbitGroup: moonOrbitGroup,
         posGroup: moonPosGroup,
         mesh: moonMesh,
         radius: moonRadius,
         baseDist: moonBaseDist,
+        e: moonE,
         orbitLine: moonOrbitLine,
         meanAnomaly: Math.random() * Math.PI * 2,
         angularSpeed: 2 * Math.PI / MOON.period,
+        orbitalE: moonE,
     };
 
     // ── Asteroid belt ──────────────────────────────────────────────
@@ -427,6 +453,26 @@ export function initSolarSystem() {
             p.orbitGroup.add(newLine);
             p.orbitLine = newLine;
         }
+        // Rebuild Moon orbit line
+        if (moonObj) {
+            const effE = Math.min(moonObj.orbitalE * mult, 0.99);
+            moonObj.orbitGroup.remove(moonObj.orbitLine);
+            const segs = 64;
+            const pts = [];
+            for (let i = 0; i <= segs; i++) {
+                const a = (i / segs) * Math.PI * 2;
+                const r = moonObj.baseDist * (1 - effE * effE) / (1 + effE * Math.cos(a));
+                pts.push(new THREE.Vector3(r * Math.cos(a), 0, r * Math.sin(a)));
+            }
+            const newLine = new THREE.Line(
+                new THREE.BufferGeometry().setFromPoints(pts),
+                new THREE.LineBasicMaterial({ color: 0x8cb8ce, transparent: true, opacity: 0.35 })
+            );
+            const orbitToggle = document.getElementById('orbits-toggle');
+            if (orbitToggle && !orbitToggle.checked) newLine.visible = false;
+            moonObj.orbitGroup.add(newLine);
+            moonObj.orbitLine = newLine;
+        }
     }
 
     /** Advance the simulation by `days` (Earth days). */
@@ -446,12 +492,13 @@ export function initSolarSystem() {
                 * 2 * Math.PI / Math.abs(rot) * days;
         }
 
-        // Moon around Earth (orbit distance scales with planet size)
+        // Moon around Earth — elliptical orbit with real orbital elements
         moonObj.meanAnomaly += moonObj.angularSpeed * days;
-        const ang = moonObj.meanAnomaly;
-        moonObj.posGroup.position.set(
-            moonObj.baseDist * Math.cos(ang), 0, moonObj.baseDist * Math.sin(ang)
-        );
+        const effMoonE = Math.min(moonObj.orbitalE * eMultiplier, 0.99);
+        const ME = solveKepler(moonObj.meanAnomaly, effMoonE);
+        const mx = moonObj.baseDist * (Math.cos(ME) - effMoonE);
+        const mz = moonObj.baseDist * Math.sqrt(1 - effMoonE * effMoonE) * Math.sin(ME);
+        moonObj.posGroup.position.set(mx, 0, mz);
 
         // Asteroid belt — full 3D orbital geometry
         const pos = astGeo.attributes.position.array;

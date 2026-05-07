@@ -1,4 +1,5 @@
 import { getRandomQuestion, getQuestions } from './knowledge.js';
+import { recordAnswer } from './storage.js';
 
 let activeQuestions = [];
 let currentIndex = 0;
@@ -81,6 +82,8 @@ function onAnswer(idx) {
     const isCorrect = idx === q.answer;
 
     if (isCorrect) correctCount++;
+
+    recordAnswer(isCorrect);
 
     // Highlight options
     document.querySelectorAll('.qz-opt').forEach((btn, i) => {

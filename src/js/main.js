@@ -5,6 +5,7 @@ import { initControls } from './controls.js';
 import { getPlanet } from './knowledge.js';
 import { selectBody } from './infocard.js';
 import { startQuiz } from './quizEngine.js';
+import { markExplored, getStats, resetData } from './storage.js';
 
 const sys = initSolarSystem();
 const { scene, camera, renderer, labelRenderer } = sys;
@@ -49,6 +50,7 @@ renderer.domElement.addEventListener('pointerup', (e) => {
             const body = getPlanet(entry.bodyId);
             if (body) {
                 selectBody(entry.bodyId);
+                markExplored(entry.bodyId);
             }
         }
     }
@@ -57,6 +59,42 @@ renderer.domElement.addEventListener('pointerup', (e) => {
 // ── Global quiz button ────────────────────────────
 document.getElementById('global-quiz-btn').addEventListener('click', () => {
     startQuiz({ title: '随机知识挑战' });
+});
+
+// ── Stats panel button ────────────────────────────
+const statsBtn = document.getElementById('stats-btn');
+statsBtn.addEventListener('click', showStats);
+
+function showStats() {
+    const overlay = document.getElementById('stats-overlay');
+    const content = document.getElementById('stats-content');
+    const stats = getStats();
+    content.innerHTML = '<div class="sp-header">📊 我的探索档案</div>'
+        + '<div class="sp-body">'
+        + '<div class="sp-row"><span>已探索天体</span><span>' + stats.explored + ' / 9</span></div>'
+        + '<div class="sp-row"><span>答题总数</span><span>' + stats.answered + '</span></div>'
+        + '<div class="sp-row"><span>正确数</span><span>' + stats.correct + '</span></div>'
+        + '<div class="sp-row"><span>正确率</span><span>' + stats.rate + '%</span></div>'
+        + '</div>'
+        + '<div class="sp-actions"><button id="stats-reset-btn" class="sp-reset-btn">🗑️ 重置档案</button></div>';
+    overlay.style.display = '';
+}
+
+document.getElementById('stats-close').addEventListener('click', () => {
+    document.getElementById('stats-overlay').style.display = 'none';
+});
+document.getElementById('stats-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'stats-overlay') e.target.style.display = 'none';
+});
+
+// Delegate reset button click (button is dynamically created)
+document.getElementById('stats-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'stats-reset-btn') {
+        if (confirm('确认重置所有探索和答题记录？此操作不可撤销。')) {
+            resetData();
+            document.getElementById('stats-overlay').style.display = 'none';
+        }
+    }
 });
 
 // ── Distance info panel ───────────────────────────

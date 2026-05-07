@@ -766,3 +766,122 @@ input[type="range"]::-moz-range-thumb {
   border-color: rgba(100, 160, 255, 0.5);
   box-shadow: 0 0 12px rgba(100, 160, 255, 0.2);
 }
+
+/* ── Stats button (top-right) ─────────────── */
+#stats-btn {
+  position: fixed;
+  top: 16px;
+  right: 340px;
+  z-index: 5;
+  padding: 7px 14px;
+  background: rgba(10, 10, 30, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(100, 120, 200, 0.2);
+  border-radius: 8px;
+  color: #acf;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  line-height: 1;
+  white-space: nowrap;
+}
+#stats-btn:hover {
+  background: rgba(30, 40, 80, 0.8);
+  border-color: rgba(100, 160, 255, 0.4);
+}
+
+/* ── Stats panel ─────────────────────────── */
+#stats-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 29;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#stats-panel {
+  width: 300px;
+  padding: 24px;
+  background: rgba(12, 12, 40, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(100, 120, 200, 0.2);
+  border-radius: 14px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.sp-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: #778;
+  font-size: 16px;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  transition: all 0.12s;
+}
+.sp-close:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+#stats-content .sp-header {
+  font-size: 16px;
+  font-weight: 600;
+  color: #cef;
+  margin-bottom: 16px;
+  padding-right: 20px;
+}
+
+#stats-content .sp-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#stats-content .sp-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #bbc;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(100,120,200,0.08);
+}
+#stats-content .sp-row:last-child {
+  border-bottom: none;
+}
+#stats-content .sp-row span:last-child {
+  color: #8cf;
+  font-weight: 600;
+}
+
+.sp-actions {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.sp-reset-btn {
+  padding: 8px 20px;
+  background: rgba(180, 50, 50, 0.2);
+  border: 1px solid rgba(200, 60, 60, 0.3);
+  border-radius: 7px;
+  color: #e88;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.sp-reset-btn:hover {
+  background: rgba(200, 60, 60, 0.3);
+  border-color: rgba(220, 80, 80, 0.5);
+}

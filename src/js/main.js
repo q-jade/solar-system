@@ -3,6 +3,7 @@ import '../css/style.css';
 import { initSolarSystem } from './solarSystem.js';
 import { initControls } from './controls.js';
 import { getPlanet } from './knowledge.js';
+import { selectBody } from './infocard.js';
 
 const sys = initSolarSystem();
 const { scene, camera, renderer, labelRenderer } = sys;
@@ -46,7 +47,7 @@ renderer.domElement.addEventListener('pointerup', (e) => {
         if (entry) {
             const body = getPlanet(entry.bodyId);
             if (body) {
-                console.log('🔵 选中:', body.name, '(' + body.english + ')', body);
+                selectBody(entry.bodyId);
             }
         }
     }

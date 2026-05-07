@@ -1,0 +1,212 @@
+[
+  {
+    "id": "q001",
+    "level": "beginner",
+    "type": "choice",
+    "question": "太阳系中最大的行星是？",
+    "options": ["土星", "木星", "海王星", "天王星"],
+    "answer": 1,
+    "explanation": "木星直径约 139,820 km，是太阳系最大行星，其质量是其他所有行星总和的2.5倍。",
+    "relatedBody": "jupiter"
+  },
+  {
+    "id": "q002",
+    "level": "beginner",
+    "type": "choice",
+    "question": "离太阳最近的行星是？",
+    "options": ["金星", "水星", "地球", "火星"],
+    "answer": 1,
+    "explanation": "水星平均距离太阳 0.387 AU（约5790万公里），是离太阳最近的行星。",
+    "relatedBody": "mercury"
+  },
+  {
+    "id": "q003",
+    "level": "beginner",
+    "type": "choice",
+    "question": "太阳系中最热的行星是？",
+    "options": ["水星", "金星", "火星", "木星"],
+    "answer": 1,
+    "explanation": "金星因浓厚的二氧化碳大气层产生强烈温室效应，表面温度高达462°C，比离太阳更近的水星还热。",
+    "relatedBody": "venus"
+  },
+  {
+    "id": "q004",
+    "level": "beginner",
+    "type": "choice",
+    "question": "地球的天然卫星叫什么？",
+    "options": ["火星", "太阳", "月球", "金星"],
+    "answer": 2,
+    "explanation": "月球是地球唯一的天然卫星，直径约3474 km。",
+    "relatedBody": "earth"
+  },
+  {
+    "id": "q005",
+    "level": "beginner",
+    "type": "choice",
+    "question": "太阳系中拥有最壮观环系统的行星是？",
+    "options": ["木星", "土星", "天王星", "海王星"],
+    "answer": 1,
+    "explanation": "土星的环系统主要由冰粒和岩石碎片组成，宽度约28万公里但厚度仅10~100米。",
+    "relatedBody": "saturn"
+  },
+  {
+    "id": "q006",
+    "level": "intermediate",
+    "type": "choice",
+    "question": "哪颗行星的自转方向是逆向的（从东向西转）？",
+    "options": ["火星", "金星", "木星", "海王星"],
+    "answer": 1,
+    "explanation": "金星是逆向自转（自转周期-243天），此外天王星也几乎是侧躺自转（轴倾角97.8°）。",
+    "relatedBody": "venus"
+  },
+  {
+    "id": "q007",
+    "level": "intermediate",
+    "type": "choice",
+    "question": "火星上最高的火山叫什么？",
+    "options": ["埃特纳火山", "珠穆朗玛峰", "奥林匹斯山", "富士山"],
+    "answer": 2,
+    "explanation": "奥林匹斯山（Olympus Mons）高21.9km，是太阳系已知最高山峰。",
+    "relatedBody": "mars"
+  },
+  {
+    "id": "q008",
+    "level": "intermediate",
+    "type": "choice",
+    "question": "土星的密度约为多少？",
+    "options": ["5.51 g/cm³", "3.93 g/cm³", "0.69 g/cm³", "1.33 g/cm³"],
+    "answer": 2,
+    "explanation": "土星密度仅0.69 g/cm³，比水（1.0 g/cm³）还低，是太阳系密度最小的行星。",
+    "relatedBody": "saturn"
+  },
+  {
+    "id": "q009",
+    "level": "intermediate",
+    "type": "choice",
+    "question": "太阳系中自转轴几乎与公转面平行（「躺着」转）的行星是？",
+    "options": ["海王星", "天王星", "金星", "水星"],
+    "answer": 1,
+    "explanation": "天王星的自转轴倾斜约97.8°，几乎平躺在公转轨道面上。",
+    "relatedBody": "uranus"
+  },
+  {
+    "id": "q010",
+    "level": "intermediate",
+    "type": "choice",
+    "question": "以下哪颗行星不是气态巨行星？",
+    "options": ["木星", "土星", "天王星", "火星"],
+    "answer": 3,
+    "explanation": "火星是类地行星（岩质行星），木星、土星、天王星、海王星均为气态/冰巨行星。",
+    "relatedBody": "mars"
+  },
+  {
+    "id": "q011",
+    "level": "advanced",
+    "type": "choice",
+    "question": "海王星的发现方式有什么独特之处？",
+    "options": [
+      "通过望远镜偶然发现",
+      "通过数学计算预测其存在后观测确认",
+      "由旅行者号探测器发现",
+      "通过彗星轨道推算出来"
+    ],
+    "answer": 1,
+    "explanation": "海王星是唯一先通过数学计算预测轨道、再通过望远镜观测确认的行星（1846年，勒维耶 & 亚当斯）。",
+    "relatedBody": "neptune"
+  },
+  {
+    "id": "q012",
+    "level": "advanced",
+    "type": "choice",
+    "question": "太阳系中最大的卫星（比水星还大）是？",
+    "options": ["月球", "木卫三（盖尼米得）", "土卫六（提坦）", "海卫一（特里同）"],
+    "answer": 1,
+    "explanation": "木卫三（盖尼米得）直径约5268 km，比水星（4879 km）还大，是太阳系最大的卫星。",
+    "relatedBody": "jupiter"
+  },
+  {
+    "id": "q013",
+    "level": "advanced",
+    "type": "choice",
+    "question": "水星的轨道偏心率约为多少？",
+    "options": ["0.0068", "0.0167", "0.2056", "0.0934"],
+    "answer": 2,
+    "explanation": "水星偏心率约0.2056，是八大行星中轨道最椭圆的。近日点约0.307 AU，远日点约0.467 AU。",
+    "relatedBody": "mercury"
+  },
+  {
+    "id": "q014",
+    "level": "advanced",
+    "type": "choice",
+    "question": "金星上的一天（自转周期）相当于多少个地球日？",
+    "options": ["约 1 天", "约 58 天", "约 243 天", "约 365 天"],
+    "answer": 2,
+    "explanation": "金星自转周期约243地球日，比其公转周期（225天）还长——意味着金星上一天比一年还长。",
+    "relatedBody": "venus"
+  },
+  {
+    "id": "q015",
+    "level": "advanced",
+    "type": "choice",
+    "question": "以下哪项关于木星大红斑的描述是正确的？",
+    "options": [
+      "它是一个已存在至少400年的巨型反气旋风暴",
+      "它是一颗与木星碰撞的天体留下的撞击坑",
+      "它是木星上的一座巨型火山",
+      "它是木卫一投射的影子"
+    ],
+    "answer": 0,
+    "explanation": "大红斑是一个比地球还大的巨型风暴（反气旋），自17世纪起被持续观测至今。",
+    "relatedBody": "jupiter"
+  },
+  {
+    "id": "q016",
+    "level": "beginner",
+    "type": "choice",
+    "question": "太阳系中质量最大的天体是？",
+    "options": ["木星", "太阳", "土星", "地球"],
+    "answer": 1,
+    "explanation": "太阳的质量占整个太阳系的99.86%，约是木星质量的1000倍。",
+    "relatedBody": "sun"
+  },
+  {
+    "id": "q017",
+    "level": "beginner",
+    "type": "choice",
+    "question": "太阳的能量来自什么反应？",
+    "options": ["化学燃烧", "核裂变", "核聚变", "摩擦生热"],
+    "answer": 2,
+    "explanation": "太阳核心在1500万°C高温下将氢聚变为氦，每秒钟消耗约6亿吨氢。",
+    "relatedBody": "sun"
+  },
+  {
+    "id": "q018",
+    "level": "intermediate",
+    "type": "choice",
+    "question": "太阳的表面温度约为多少？",
+    "options": ["1500°C", "5500°C", "10000°C", "1500万°C"],
+    "answer": 1,
+    "explanation": "太阳表面（光球层）温度约5500°C，而核心温度高达1500万°C。",
+    "relatedBody": "sun"
+  },
+  {
+    "id": "q019",
+    "level": "intermediate",
+    "type": "choice",
+    "question": "太阳的恒星类型是什么？",
+    "options": ["红矮星", "黄矮星", "白矮星", "蓝巨星"],
+    "answer": 1,
+    "explanation": "太阳属于G2V型黄矮星，寿命约100亿年，目前约46亿岁。",
+    "relatedBody": "sun"
+  },
+  {
+    "id": "q020",
+    "level": "advanced",
+    "type": "choice",
+    "question": "太阳的磁场活动周期大约是多少年？",
+    "options": ["5.5年", "11年", "22年", "100年"],
+    "answer": 1,
+    "explanation": "太阳活动周期约11年，表现为太阳黑子数量的增减。每22年为一个完整的磁周期（磁场极性反转）。",
+    "relatedBody": "sun"
+  }
+]

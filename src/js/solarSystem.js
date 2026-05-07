@@ -14,50 +14,50 @@ const MAX_SCALE = 3000;             // max planet size multiplier
 // period: Earth days | rotPeriod: Earth days
 const PLANET_DATA = [
     {
-        name: '水星', color: 0xaaaaaa,
+        name: '水星', english: 'Mercury', color: 0xaaaaaa,
         radius: 2439.7, orbitA: 0.3871, e: 0.2056, incl: 7.0,
         argPeri: 29.1, node: 48.3, m0: 3.2,
         period: 87.969, rotPeriod: 58.646,
     },
     {
-        name: '金星', color: 0xe6b800,
+        name: '金星', english: 'Venus', color: 0xe6b800,
         radius: 6051.8, orbitA: 0.7233, e: 0.0068, incl: 3.39,
         argPeri: 54.9, node: 76.7, m0: 2.1,
         period: 224.701, rotPeriod: -243.025,
     },
     {
-        name: '地球', color: 0x2266cc,
+        name: '地球', english: 'Earth', color: 0x2266cc,
         radius: 6371.0, orbitA: 1.0, e: 0.0167, incl: 0.0,
         argPeri: 102.9, node: 348.7, m0: 1.0,
         period: 365.256, rotPeriod: 1.0,
     },
     {
-        name: '火星', color: 0xcc4422,
+        name: '火星', english: 'Mars', color: 0xcc4422,
         radius: 3389.5, orbitA: 1.5237, e: 0.0934, incl: 1.85,
         argPeri: 286.5, node: 49.6, m0: 5.4,
         period: 686.98, rotPeriod: 1.025,
     },
     {
-        name: '木星', color: 0xddbb99,
+        name: '木星', english: 'Jupiter', color: 0xddbb99,
         radius: 69911, orbitA: 5.2028, e: 0.0484, incl: 1.30,
         argPeri: 273.9, node: 100.5, m0: 0.7,
         period: 4332.59, rotPeriod: 0.4135,
     },
     {
-        name: '土星', color: 0xeeddbb,
+        name: '土星', english: 'Saturn', color: 0xeeddbb,
         radius: 58232, orbitA: 9.5388, e: 0.0541, incl: 2.49,
         argPeri: 339.4, node: 113.7, m0: 4.1,
         period: 10759.22, rotPeriod: 0.444,
         rings: true,
     },
     {
-        name: '天王星', color: 0x88ccdd,
+        name: '天王星', english: 'Uranus', color: 0x88ccdd,
         radius: 25362, orbitA: 19.1914, e: 0.0472, incl: 0.77,
         argPeri: 96.7, node: 74.0, m0: 2.8,
         period: 30685.4, rotPeriod: -0.718,
     },
     {
-        name: '海王星', color: 0x4466ff,
+        name: '海王星', english: 'Neptune', color: 0x4466ff,
         radius: 24622, orbitA: 30.0611, e: 0.0086, incl: 1.77,
         argPeri: 273.2, node: 131.8, m0: 5.6,
         period: 60189.0, rotPeriod: 0.671,

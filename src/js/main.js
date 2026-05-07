@@ -1,10 +1,56 @@
+import * as THREE from 'three';
 import '../css/style.css';
 import { initSolarSystem } from './solarSystem.js';
 import { initControls } from './controls.js';
+import { getPlanet } from './knowledge.js';
 
 const sys = initSolarSystem();
 const { scene, camera, renderer, labelRenderer } = sys;
 const controls = initControls(sys, camera, renderer);
+
+// ── Clickable body meshes ─────────────────────────
+const clickables = [
+    { mesh: sys.sun, bodyId: 'sun' },
+    ...sys.planets.map(p => ({
+        mesh: p.mesh,
+        bodyId: (p.data.english || '').toLowerCase(),
+    })),
+];
+
+// ── Raycaster click detection ────────────────────────
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+let mouseDownPos = { x: 0, y: 0 };
+
+renderer.domElement.addEventListener('pointerdown', (e) => {
+    mouseDownPos.x = e.clientX;
+    mouseDownPos.y = e.clientY;
+});
+
+renderer.domElement.addEventListener('pointerup', (e) => {
+    const dx = e.clientX - mouseDownPos.x;
+    const dy = e.clientY - mouseDownPos.y;
+    // Ignore drags (user was rotating/panning)
+    if (Math.sqrt(dx * dx + dy * dy) > 5) return;
+
+    pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+    pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(pointer, camera);
+    const meshes = clickables.map(c => c.mesh);
+    const hits = raycaster.intersectObjects(meshes, false);
+
+    if (hits.length > 0) {
+        const hitMesh = hits[0].object;
+        const entry = clickables.find(c => c.mesh === hitMesh);
+        if (entry) {
+            const body = getPlanet(entry.bodyId);
+            if (body) {
+                console.log('🔵 选中:', body.name, '(' + body.english + ')', body);
+            }
+        }
+    }
+});
 
 // ── Distance info panel ───────────────────────────
 const distList = document.getElementById('distance-list');

@@ -1,5 +1,5 @@
-import { getPlanet } from './knowledge.js';
-import { getQuestions } from './knowledge.js';
+import { getPlanet, getQuestions } from './knowledge.js';
+import { startQuiz } from './quizEngine.js';
 
 // ── HTML template ──────────────────────────────────────────────────────
 const PANEL_HTML = `
@@ -106,8 +106,8 @@ function ensurePanel() {
     // Quiz button
     document.getElementById('ic-quiz-btn').addEventListener('click', () => {
         if (activeBodyId) {
-            // Will be wired to quiz engine in a later step
-            console.log('📝 知识挑战:', activeBodyId);
+            startQuiz({ bodyId: activeBodyId,
+                title: document.getElementById('ic-name')?.textContent || '知识挑战' });
         }
     });
 }

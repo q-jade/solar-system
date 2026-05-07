@@ -4,6 +4,7 @@ import { initSolarSystem } from './solarSystem.js';
 import { initControls } from './controls.js';
 import { getPlanet } from './knowledge.js';
 import { selectBody } from './infocard.js';
+import { startQuiz } from './quizEngine.js';
 
 const sys = initSolarSystem();
 const { scene, camera, renderer, labelRenderer } = sys;
@@ -51,6 +52,11 @@ renderer.domElement.addEventListener('pointerup', (e) => {
             }
         }
     }
+});
+
+// ── Global quiz button ────────────────────────────
+document.getElementById('global-quiz-btn').addEventListener('click', () => {
+    startQuiz({ title: '随机知识挑战' });
 });
 
 // ── Distance info panel ───────────────────────────

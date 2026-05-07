@@ -71,11 +71,11 @@ export function initControls(sys, camera, renderer) {
 
     // ── Eccentricity slider (linear 0x..4x) ─────────────────────────
     function sliderToEcc(v) {
-        return v / 100 * ECC_MAX;
+        return v / 40 * ECC_MAX;
     }
 
     function eccToSlider(m) {
-        return m / ECC_MAX * 100;
+        return m / ECC_MAX * 40;
     }
 
     function updateEcc() {

@@ -116,6 +116,21 @@ export function initSolarSystem() {
     labelRenderer.domElement.style.pointerEvents = 'none';
     document.getElementById('solar-system-container').appendChild(labelRenderer.domElement);
 
+    // ── Reference ecliptic plane disc (visual aid for inclination) ──
+    const eclipticDisc = new THREE.Mesh(
+        new THREE.RingGeometry(6, 160, 64),
+        new THREE.MeshBasicMaterial({
+            color: 0x778833,
+            transparent: true,
+            opacity: 0.5,
+            side: THREE.DoubleSide,
+            depthWrite: false,
+        })
+    );
+    eclipticDisc.rotation.x = -Math.PI / 2;
+    eclipticDisc.visible = false;
+    scene.add(eclipticDisc);
+
     // ── Stars ───────────────────────────────────────────────────────
     const starCount = 1800;
     const starPos = new Float32Array(starCount * 3);
@@ -535,7 +550,7 @@ export function initSolarSystem() {
 
     return {
         scene, camera, renderer, labelRenderer,
-        planets, moon: moonObj, sun, asteroidBelt,
+        planets, moon: moonObj, sun, asteroidBelt, eclipticDisc,
         setScale, setSpeed, setLabelsVisible, setEccentricityMultiplier,
         update: updateOrbits,
         SUN_RADIUS, MAX_SCALE,

@@ -144,6 +144,11 @@ export function initControls(sys, camera, renderer) {
             sizeToggle.checked ? '' : 'none';
     });
 
+    const eclipticToggle = $('#ecliptic-toggle');
+    eclipticToggle.addEventListener('change', () => {
+        sys.eclipticDisc.visible = eclipticToggle.checked;
+    });
+
     // ── Build size comparison panel (radius circles) ────────────────
     function buildSizePanel() {
         const list = document.getElementById('size-list');

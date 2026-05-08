@@ -85,6 +85,14 @@ function onAnswer(idx) {
 
     recordAnswer(isCorrect);
 
+    // Phase 2: trigger quest/achievement events
+    if (window.__questEngine) {
+        window.__questEngine.trigger('quiz_answer', { correct: isCorrect, streak: correctCount });
+    }
+    if (window.__achievement) {
+        window.__achievement.evaluate();
+    }
+
     // Highlight options
     document.querySelectorAll('.qz-opt').forEach((btn, i) => {
         btn.disabled = true;

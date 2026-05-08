@@ -1,15 +1,28 @@
 import * as THREE from 'three';
 import '../css/style.css';
+import '../css/questPanel.css';
 import { initSolarSystem } from './solarSystem.js';
 import { initControls } from './controls.js';
 import { getPlanet } from './knowledge.js';
 import { selectBody } from './infocard.js';
 import { startQuiz } from './quizEngine.js';
-import { markExplored, getStats, resetData } from './storage.js';
+import { markExplored, getStats, resetData, addXp } from './storage.js';
+import { createQuestEngine } from './questEngine.js';
+import { createAchievement } from './achievement.js';
 
 const sys = initSolarSystem();
 const { scene, camera, renderer, labelRenderer } = sys;
 const controls = initControls(sys, camera, renderer);
+
+// ── Phase 2: Quest & Achievement engine ────────
+const quest = createQuestEngine();
+const ach = createAchievement();
+quest.ensurePanelDOM();
+ach.ensurePanelDOM();
+
+// Expose for controls.js and quizEngine.js to use
+window.__questEngine = quest;
+window.__achievement = ach;
 
 // ── Clickable body meshes ─────────────────────────
 const clickables = [
@@ -47,10 +60,24 @@ renderer.domElement.addEventListener('pointerup', (e) => {
         const hitMesh = hits[0].object;
         const entry = clickables.find(c => c.mesh === hitMesh);
         if (entry) {
+            if (entry.bodyId === '__asteroid_belt__') {
+                quest.trigger('click_asteroid_belt', {});
+                ach.evaluate();
+                return;
+            }
             const body = getPlanet(entry.bodyId);
             if (body) {
                 selectBody(entry.bodyId);
-                markExplored(entry.bodyId);
+                const wasExplored = markExplored(entry.bodyId);
+                // Phase 2: XP for first-time exploration + quest/achievement
+                if (wasExplored) {
+                    const mult = entry.bodyId === 'sun' ? 1.5 : (
+                        ['earth', 'jupiter', 'saturn'].includes(entry.bodyId) ? 1.2 : 1
+                    );
+                    addXp(Math.round(20 * mult));
+                }
+                quest.trigger('click_body', { bodyId: entry.bodyId });
+                ach.evaluate();
             }
         }
     }
@@ -60,6 +87,39 @@ renderer.domElement.addEventListener('pointerup', (e) => {
 document.getElementById('global-quiz-btn').addEventListener('click', () => {
     startQuiz({ title: '随机知识挑战' });
 });
+
+// ── Quest & Achievement buttons ─────────────────
+document.getElementById('quest-btn').addEventListener('click', () => {
+    quest.togglePanel();
+    ach.closePanel();
+});
+document.getElementById('ach-btn').addEventListener('click', () => {
+    ach.togglePanel();
+    quest.closePanel();
+});
+
+// ── Asteroid belt click detection ─────────────────
+// Expose a clickable area near the asteroid belt region
+let asteroidBeltMesh = null;
+function createAsteroidBeltClickArea() {
+    const geo = new THREE.RingGeometry(2.1, 3.3, 64);
+    const mat = new THREE.MeshBasicMaterial({
+        color: 0x446688,
+        transparent: true,
+        opacity: 0.15,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.rotation.x = -Math.PI / 2;
+    mesh.userData.isAsteroidBelt = true;
+    scene.add(mesh);
+    asteroidBeltMesh = mesh;
+}
+createAsteroidBeltClickArea();
+
+// Extend clickable meshes to include asteroid belt
+clickables.push({ mesh: asteroidBeltMesh, bodyId: '__asteroid_belt__' });
 
 // ── Stats panel button ────────────────────────────
 const statsBtn = document.getElementById('stats-btn');
@@ -115,6 +175,52 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
+// ── Proximity detection for quests (every 15 frames) ─
+let proxFrame = 0;
+function checkProximity() {
+    // Check distance to each planet
+    for (const p of sys.planets) {
+        const dist = camera.position.distanceTo(p.posGroup.position);
+        quest.trigger('body_proximity', {
+            bodyId: (p.data.english || '').toLowerCase(),
+            distance: dist,
+        });
+    }
+    // Check distance to moon
+    if (sys.moon) {
+        const moonDist = camera.position.distanceTo(sys.moon.posGroup.position);
+        quest.trigger('body_proximity', {
+            bodyId: 'moon',
+            distance: moonDist,
+        });
+    }
+    // Hidden achievement: scale at max + eccentricity at max
+    (function checkHiddenAch() {
+        const scaleSlider = document.getElementById('scale-slider');
+        const eccSlider = document.getElementById('ecc-slider');
+        const speedSlider = document.getElementById('speed-slider');
+        if (!scaleSlider || !eccSlider || !speedSlider) return;
+        const scaleAtMax = parseFloat(scaleSlider.value) >= 99;
+        const eccAtMax = parseFloat(eccSlider.value) >= 39;
+        const speedHigh = parseFloat(speedSlider.value) >= 70; // ~×100
+
+        // ach_hidden_tiny: scale at max
+        if (scaleAtMax) {
+            window._scaleMaxAccum = (window._scaleMaxAccum || 0) + 1/30;
+            if (window._scaleMaxAccum >= 3) {
+                ach._setCustomFlag('_achTinyUnlocked');
+            }
+        } else {
+            window._scaleMaxAccum = 0;
+        }
+
+        // ach_hidden_orbit: ecc at max + speed high
+        if (eccAtMax && speedHigh) {
+            ach._setCustomFlag('_achOrbitUnlocked');
+        }
+    })();
+}
+
 function animate() {
     requestAnimationFrame(animate);
 
@@ -127,6 +233,14 @@ function animate() {
     sys.sun.scale.setScalar(pulse);
 
     sys.update(dt);
+
+    // Proximity check every 15 frames (~4 times/sec at 60fps)
+    proxFrame++;
+    if (proxFrame >= 15) {
+        proxFrame = 0;
+        checkProximity();
+        ach.evaluate();
+    }
 
     controls.update();
     renderer.render(scene, camera);

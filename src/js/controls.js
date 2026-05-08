@@ -48,7 +48,15 @@ export function initControls(sys, camera, renderer) {
             scaleVal.textContent = 'x' + Math.round(s);
         }
     }
-    scaleSlider.addEventListener('input', updateScale);
+    scaleSlider.addEventListener('input', () => {
+        updateScale();
+        const s = sliderToScale(parseFloat(scaleSlider.value));
+        // Phase 2: trigger quest event
+        const q = document.querySelector('#qt-toast-container') ? null : null;
+        if (window.__questEngine) {
+            window.__questEngine.trigger('scale_change', { value: s });
+        }
+    });
 
     // ── Speed slider ───────────────────────────────────────────────
     function sliderToSpeed(v) {
@@ -67,7 +75,16 @@ export function initControls(sys, camera, renderer) {
             ? speed.toFixed(1) + ' 天/秒'
             : Math.round(speed) + ' 天/秒';
     }
-    speedSlider.addEventListener('input', updateSpeed);
+    speedSlider.addEventListener('input', () => {
+        updateSpeed();
+        const speed = sliderToSpeed(parseFloat(speedSlider.value));
+        if (window.__questEngine) {
+            window.__questEngine.trigger('time_speed', { value: speed });
+        }
+        if (window.__achievement) {
+            window.__achievement.evaluate();
+        }
+    });
 
     // ── Eccentricity slider (linear 0x..4x) ─────────────────────────
     function sliderToEcc(v) {
@@ -88,7 +105,16 @@ export function initControls(sys, camera, renderer) {
             eccVal.textContent = '×' + m.toFixed(1) + ' (示意)';
         }
     }
-    eccSlider.addEventListener('input', updateEcc);
+    eccSlider.addEventListener('input', () => {
+        updateEcc();
+        const m = sliderToEcc(parseFloat(eccSlider.value));
+        if (window.__questEngine) {
+            window.__questEngine.trigger('eccentric_change', { value: m });
+        }
+        if (window.__achievement) {
+            window.__achievement.evaluate();
+        }
+    });
 
     // ── Set defaults ───────────────────────────────────────────────
     function setDefaults() {

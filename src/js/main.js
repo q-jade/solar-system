@@ -9,6 +9,7 @@ import { startQuiz } from './quizEngine.js';
 import { markExplored, getStats, resetData, addXp } from './storage.js';
 import { createQuestEngine } from './questEngine.js';
 import { createAchievement } from './achievement.js';
+import { openSortPanel } from './sortPanel.js';
 
 const sys = initSolarSystem();
 const { scene, camera, renderer, labelRenderer } = sys;
@@ -23,6 +24,9 @@ ach.ensurePanelDOM();
 // Expose for controls.js and quizEngine.js to use
 window.__questEngine = quest;
 window.__achievement = ach;
+
+// Initial sort button state
+setTimeout(updateSortBtnState, 100);
 
 // ── Clickable body meshes ─────────────────────────
 const clickables = [
@@ -87,6 +91,35 @@ renderer.domElement.addEventListener('pointerup', (e) => {
 document.getElementById('global-quiz-btn').addEventListener('click', () => {
     startQuiz({ title: '随机知识挑战' });
 });
+
+// ── Sort size-comparison button ────────────────
+const sortBtn = document.getElementById('sort-btn');
+sortBtn.addEventListener('click', () => {
+    quest.closePanel();
+    ach.closePanel();
+    const qState = quest.getState('quest_size_sort');
+    if (!qState || qState.status === 'locked') {
+        quest.showNotification('🔒 先完成「🌟 初识太阳系」任务');
+        quest.openPanel();
+        return;
+    }
+    openSortPanel();
+});
+
+// Update sort button disabled state on every quest panel open
+function updateSortBtnState() {
+    const qState = quest.getState('quest_size_sort');
+    const locked = !qState || qState.status === 'locked';
+    sortBtn.style.opacity = locked ? '0.35' : '1';
+    sortBtn.title = locked ? '先完成「初识太阳系」任务' : '谁最大？按半径排序';
+}
+
+// Hook into quest panel open to refresh button state
+const origQuestOpen = quest.openPanel.bind(quest);
+quest.openPanel = function() {
+    updateSortBtnState();
+    origQuestOpen();
+};
 
 // ── Quest & Achievement buttons ─────────────────
 document.getElementById('quest-btn').addEventListener('click', () => {

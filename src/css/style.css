@@ -18,19 +18,19 @@ body {
   position: relative;
 }
 
-/* ── Help text (top-right) ────────────────── */
+/* ── Help text (bottom-left) ──────────────── */
 #help-text {
   position: fixed;
-  top: 18px;
-  right: 20px;
-  font-size: 12px;
-  color: rgba(180, 190, 210, 0.55);
-  line-height: 1.5;
-  text-align: right;
+  bottom: 8px;
+  left: 20px;
+  font-size: 11px;
+  color: rgba(180, 190, 210, 0.35);
+  line-height: 1;
+  text-align: left;
   user-select: none;
   pointer-events: none;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.3px;
+  white-space: nowrap;
+  z-index: 1;
 }
 
 /* ── Control panel ────────────────────────── */
@@ -560,7 +560,7 @@ input[type="range"]::-moz-range-thumb {
 #global-quiz-btn {
   position: fixed;
   top: 16px;
-  right: 240px;
+  right: 130px;
   z-index: 5;
   padding: 7px 16px;
   background: rgba(10, 10, 30, 0.7);
@@ -581,7 +581,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* ── Quiz overlay ────────────────────────── */
-#qz-overlay {
+#qz-overlay, #sort-overlay {
   position: fixed;
   inset: 0;
   z-index: 19;
@@ -590,12 +590,12 @@ input[type="range"]::-moz-range-thumb {
   pointer-events: none;
   transition: opacity 0.25s;
 }
-#qz-overlay.visible {
+#qz-overlay.visible, #sort-overlay.visible {
   opacity: 1;
   pointer-events: auto;
 }
 
-#qz-card {
+#qz-card, #sort-card {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -618,7 +618,7 @@ input[type="range"]::-moz-range-thumb {
   color: #dde;
   user-select: none;
 }
-#qz-card.visible {
+#qz-card.visible, #sort-card.visible {
   opacity: 1;
   pointer-events: auto;
   transform: translate(-50%, -50%) scale(1);
@@ -771,7 +771,7 @@ input[type="range"]::-moz-range-thumb {
 #stats-btn {
   position: fixed;
   top: 16px;
-  right: 340px;
+  right: 230px;
   z-index: 5;
   padding: 7px 14px;
   background: rgba(10, 10, 30, 0.7);

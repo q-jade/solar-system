@@ -135,7 +135,7 @@ document.getElementById('ach-btn').addEventListener('click', () => {
 // Expose a clickable area near the asteroid belt region
 let asteroidBeltMesh = null;
 function createAsteroidBeltClickArea() {
-    const geo = new THREE.RingGeometry(2.1, 3.3, 64);
+    const geo = new THREE.RingGeometry(88, 128, 64); // 2.1~3.2 * AU
     const mat = new THREE.MeshBasicMaterial({
         color: 0x446688,
         transparent: true,
@@ -211,9 +211,11 @@ document.addEventListener('visibilitychange', () => {
 // ── Proximity detection for quests (every 15 frames) ─
 let proxFrame = 0;
 function checkProximity() {
+    const tmpVec = new THREE.Vector3();
     // Check distance to each planet
     for (const p of sys.planets) {
-        const dist = camera.position.distanceTo(p.posGroup.position);
+        p.posGroup.getWorldPosition(tmpVec);
+        const dist = camera.position.distanceTo(tmpVec);
         quest.trigger('body_proximity', {
             bodyId: (p.data.english || '').toLowerCase(),
             distance: dist,
@@ -221,7 +223,8 @@ function checkProximity() {
     }
     // Check distance to moon
     if (sys.moon) {
-        const moonDist = camera.position.distanceTo(sys.moon.posGroup.position);
+        sys.moon.posGroup.getWorldPosition(tmpVec);
+        const moonDist = camera.position.distanceTo(tmpVec);
         quest.trigger('body_proximity', {
             bodyId: 'moon',
             distance: moonDist,
@@ -267,11 +270,12 @@ function animate() {
 
     sys.update(dt);
 
-    // Proximity check every 15 frames (~4 times/sec at 60fps)
+    // Proximity check + quest poll every 15 frames (~4 times/sec at 60fps)
     proxFrame++;
     if (proxFrame >= 15) {
         proxFrame = 0;
         checkProximity();
+        quest.poll(0.25); // ~250ms per poll interval
         ach.evaluate();
     }
 

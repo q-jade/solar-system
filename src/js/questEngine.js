@@ -64,6 +64,7 @@ const QUESTS = [
         order: 3,
         xp: 80,
         trigger: 'eccentric_change',
+        continuous: true,
         check(payload, state) {
             const t = state.progress?.holdTime || 0;
             const newT = payload.value >= 4 ? t + payload.dt : 0;
@@ -106,6 +107,7 @@ const QUESTS = [
         order: 5,
         xp: 80,
         trigger: 'scale_change',
+        continuous: true,
         check(payload, state) {
             const t = state.progress?.holdTime || 0;
             const newT = payload.value <= 1 ? t + payload.dt : 0;
@@ -119,15 +121,17 @@ const QUESTS = [
     {
         id: 'quest_saturn',
         name: '🪐 土星之环',
-        desc: '拉近观察土星，让它停留在画面中心 3 秒',
+        desc: '旋转视角对准土星并拉近，观察土星环 3 秒',
         branch: 'main',
         order: 6,
         xp: 100,
         trigger: 'body_proximity',
         check(payload, state) {
+            // Only update progress when bodyId matches our target
+            if (payload.bodyId !== 'saturn') return { progress: undefined, complete: false };
             const t = state.progress?.holdTime || 0;
-            const newT = payload.bodyId === 'saturn' && payload.distance < 80
-                ? t + payload.dt : 0;
+            const distOk = payload.distance < 300;
+            const newT = distOk ? t + payload.dt : 0;
             return {
                 progress: { holdTime: +newT.toFixed(1), target: 3 },
                 complete: newT >= 3,
@@ -159,6 +163,7 @@ const QUESTS = [
         order: 8,
         xp: 120,
         trigger: 'time_speed',
+        continuous: true,
         check(payload, state) {
             const t = state.progress?.holdTime || 0;
             const newT = payload.value >= 200 ? t + payload.dt : 0;
@@ -216,6 +221,7 @@ const QUESTS = [
         unlockMain: 3, // unlock after quest_eccentric (main #3)
         xp: 60,
         trigger: 'time_speed',
+        continuous: true,
         check(payload, state) {
             const t = state.progress?.holdTime || 0;
             const newT = payload.value >= 100 ? t + payload.dt : 0;
@@ -229,17 +235,18 @@ const QUESTS = [
     {
         id: 'quest_moon',
         name: '🌙 月球漫步',
-        desc: '靠近月球，让它进入视野',
+        desc: '拉近观察地球，月球就在它旁边',
         branch: 'side',
         order: 'C',
         unlockMain: 1, // unlock after quest_init
         xp: 60,
         trigger: 'body_proximity',
         check(payload, state) {
+            if (payload.bodyId !== 'moon') return { progress: undefined, complete: false };
+            const close = payload.distance < 40;
             return {
-                progress: payload.bodyId === 'moon' && payload.distance < 30
-                    ? { close: 1, total: 1 } : undefined,
-                complete: payload.bodyId === 'moon' && payload.distance < 30,
+                progress: close ? { close: 1, total: 1 } : undefined,
+                complete: close,
             };
         },
         completeMsg: '月球是地球唯一的天然卫星，直径 3,474 km，平均距离约 38.4 万公里。这个距离足以容纳下太阳系所有行星排成一列。',
@@ -247,17 +254,18 @@ const QUESTS = [
     {
         id: 'quest_neptune',
         name: '🌌 天涯海角',
-        desc: '移动到海王星附近',
+        desc: '旋转视角找到并靠近海王星',
         branch: 'side',
         order: 'D',
         unlockMain: 4, // unlock after quest_retrograde
         xp: 80,
         trigger: 'body_proximity',
         check(payload, state) {
+            if (payload.bodyId !== 'neptune') return { progress: undefined, complete: false };
+            const close = payload.distance < 300;
             return {
-                progress: payload.bodyId === 'neptune' && payload.distance < 100
-                    ? { close: 1, total: 1 } : undefined,
-                complete: payload.bodyId === 'neptune' && payload.distance < 100,
+                progress: close ? { close: 1, total: 1 } : undefined,
+                complete: close,
             };
         },
         completeMsg: '海王星是太阳系最远的行星，平均距离太阳 30.1 AU。它发蓝色的光芒，风速可达 2,100 km/h，是太阳系中风速最快的行星。',
@@ -300,7 +308,10 @@ export function createQuestEngine() {
     let panelOpen = false;
     let notificationQueue = [];
     let isNotifying = false;
-    let lastTick = {}; // per-quest tick accumulator for dt-based checks
+    let lastTick = {};
+
+    /** Which quests need continuous polling (hold-type tasks) */
+    const CONTINUOUS_QUESTS = QUESTS.filter(q => q.continuous).map(q => q.id);
 
     // ── Internal helpers ────────────────────────────────────────────
 
@@ -553,10 +564,13 @@ export function createQuestEngine() {
         trigger(event, payload) {
             // Ensure dt field for time-based progress
             const now = Date.now();
-            const key = event;
-            const last = lastTick[key] || now;
+            // Use bodyId as sub-key for proximity events so each body
+            // gets its own dt tracking (avoiding same-frame dt=0 for all planets)
+            const subKey = event === 'body_proximity' && payload.bodyId
+                ? event + '_' + payload.bodyId : event;
+            const last = lastTick[subKey] || now;
             const dt = Math.min((now - last) / 1000, 1);
-            lastTick[key] = now;
+            lastTick[subKey] = now;
             const enrichedPayload = { ...payload, dt };
 
             for (const q of QUESTS) {
@@ -565,6 +579,48 @@ export function createQuestEngine() {
                 }
             }
         },
+
+        /**
+         * Continuous poll for hold-type quests.
+         * Reads current DOM slider values and triggers the appropriate events.
+         * Must be called periodically from the animation loop.
+         */
+        poll(realDt) {
+            for (const qId of CONTINUOUS_QUESTS) {
+                const state = questState[qId];
+                if (!state || state.status !== STATUS.ACTIVE) continue;
+
+                const def = getQuestDef(qId);
+                if (!def || !def.continuous) continue;
+
+                let value = null;
+                if (def.trigger === 'eccentric_change') {
+                    const el = document.getElementById('ecc-slider');
+                    if (el) value = parseFloat(el.value) / 40 * 4;
+                } else if (def.trigger === 'scale_change') {
+                    const el = document.getElementById('scale-slider');
+                    if (el) {
+                        const v = parseFloat(el.value);
+                        value = 1 + 2999 * (v / 100);
+                    }
+                } else if (def.trigger === 'time_speed') {
+                    const el = document.getElementById('speed-slider');
+                    if (el) {
+                        const v = parseFloat(el.value);
+                        value = Math.pow(365, v / 100);
+                    }
+                } else if (def.trigger === 'body_proximity') {
+                    // handled separately in main.js animate loop
+                    continue;
+                }
+
+                if (value !== null) {
+                    // Replay this quest's check with current value + real dt
+                    checkQuest(def, { value, dt: realDt });
+                }
+            }
+        },
+
 
         /** Open/close quest panel */
         openPanel() {

@@ -732,9 +732,16 @@ export function createQuestEngine() {
             showNotification(text);
         },
 
-        /** Force check all active quests (used after loading) */
-        evaluateAll() {
-            // No-op: quests only progress via trigger()
+        /** Reset all quest state (used after data reset) */
+        resetQuests() {
+            const data = getRaw();
+            data.quests = createInitialState(QUESTS);
+            data._questSchema = 2;
+            saveRaw(data);
+            questState = data.quests;
+            lastTick = {};
+            notificationQueue = [];
+            isNotifying = false;
         },
     };
 

@@ -152,6 +152,12 @@ export function initControls(sys, camera, renderer) {
         if (sys.moon && sys.moon.orbitLine) {
             sys.moon.orbitLine.visible = orbitToggle.checked;
         }
+        // Also toggle comet orbit lines (keep trails visible — they're a visual effect)
+        if (sys.comets) {
+            sys.comets.forEach((c) => {
+                if (c.orbitLine) c.orbitLine.visible = orbitToggle.checked;
+            });
+        }
         // Also toggle node lines
         sys.planets.forEach((p) => {
             if (p.nodeLine) p.nodeLine.visible = orbitToggle.checked;

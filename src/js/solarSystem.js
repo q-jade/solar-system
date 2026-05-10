@@ -70,6 +70,22 @@ const MOON = {
     e: 0.0549, incl: 5.145, node: 125.08, argPeri: 0, m0: 0,
 };
 
+// ── Comet data (JPL HORIZONS orbital elements) ──────────────────────
+const COMET_DATA = [
+    {
+        name: '哈雷彗星', english: 'Halley', color: 0x88ccff,
+        a: 17.834, e: 0.967, i: 162.3,
+        Omega: 58.42, omega: 111.33, M0: 0.6699,
+        period: 75.3 * 365.25, // days
+    },
+    {
+        name: '海尔波普', english: 'HaleBopp', color: 0xffcc88,
+        a: 186, e: 0.995, i: 89.4,
+        Omega: 282.5, omega: 130.6, M0: 0.015,
+        period: 2533 * 365.25, // days
+    },
+];
+
 const ASTEROID_COUNT = 5000;
 const ASTEROID_A_MIN = 2.2;
 const ASTEROID_A_MAX = 3.2;
@@ -378,6 +394,122 @@ export function initSolarSystem() {
         orbitalE: moonE,
     };
 
+    // ── Comets ─────────────────────────────────────────────────────
+    const comets = [];
+    const cometLabels = [];
+    for (const cd of COMET_DATA) {
+        const orbitA = cd.a * AU;
+        const inclRad = cd.i * Math.PI / 180;
+        const omegaRad = cd.omega * Math.PI / 180;
+        const OmegaRad = cd.Omega * Math.PI / 180;
+
+        const outerGroup = new THREE.Group();
+        outerGroup.rotation.y = OmegaRad;
+        scene.add(outerGroup);
+
+        const inclGroup = new THREE.Group();
+        inclGroup.rotation.x = inclRad;
+        outerGroup.add(inclGroup);
+
+        const orbitGroup = new THREE.Group();
+        orbitGroup.rotation.y = omegaRad;
+        inclGroup.add(orbitGroup);
+
+        // Comet orbit line
+        const segs = 256;
+        const pts = [];
+        for (let i = 0; i <= segs; i++) {
+            const a = (i / segs) * Math.PI * 2;
+            const r = orbitA * (1 - cd.e * cd.e) / (1 + cd.e * Math.cos(a));
+            pts.push(new THREE.Vector3(r * Math.cos(a), 0, r * Math.sin(a)));
+        }
+        const orbitLine = new THREE.Line(
+            new THREE.BufferGeometry().setFromPoints(pts),
+            new THREE.LineBasicMaterial({
+                color: cd.color, transparent: true, opacity: 0.25,
+            })
+        );
+        orbitGroup.add(orbitLine);
+
+        // Comet position group
+        const posGroup = new THREE.Group();
+        orbitGroup.add(posGroup);
+
+        // Comet mesh (small glowing sphere)
+        const cometRadius = 0.5; // fixed visual size
+        const mesh = new THREE.Mesh(
+            new THREE.SphereGeometry(cometRadius, 12, 12),
+            new THREE.MeshBasicMaterial({ color: cd.color })
+        );
+        posGroup.add(mesh);
+
+        // Comet tail (single cone with per-vertex alpha for smooth fading)
+        const tailH = 10;
+        const tailR = 0.8;
+        const tailGeo = new THREE.ConeGeometry(tailR, tailH, 16);
+        // Orient: apex (+Y) → -Z, base (-Y) → +Z. Then apex at origin.
+        tailGeo.rotateX(-Math.PI / 2);
+        tailGeo.translate(0, 0, tailH / 2);
+
+        // Per-vertex alpha: fade radially (center→edge) AND axially (apex→base)
+        const pos = tailGeo.attributes.position;
+        const alpha = new Float32Array(pos.count);
+        for (let i = 0; i < pos.count; i++) {
+            const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+            const radialDist = Math.sqrt(x * x + y * y);
+            const axialFrac = z / tailH; // 0 at apex, 1 at base
+            // Radial fade: 1 (center) → 0 (edge)
+            const radialFade = Math.max(0, 0.5 - radialDist / tailR);
+            // Axial fade: 1 (apex) → 0 (base)
+            const axialFade = Math.max(0, 1 - axialFrac * 0.97);
+            alpha[i] = radialFade * axialFade;
+        }
+        tailGeo.setAttribute('alpha', new THREE.BufferAttribute(alpha, 1));
+
+        const tailMesh = new THREE.Mesh(tailGeo, new THREE.ShaderMaterial({
+            uniforms: { uColor: { value: new THREE.Color(cd.color) } },
+            vertexShader: `
+                attribute float alpha;
+                varying float vAlpha;
+                void main() {
+                    vAlpha = alpha;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform vec3 uColor;
+                varying float vAlpha;
+                void main() {
+                    gl_FragColor = vec4(uColor, vAlpha);
+                }
+            `,
+            transparent: true,
+            side: THREE.DoubleSide,
+            depthWrite: false,
+        }));
+        scene.add(tailMesh);
+
+        // Comet label
+        const label = makeLabel(cd.name, 12);
+        label.position.set(0, 4, 0);
+        posGroup.add(label);
+        cometLabels.push(label);
+        allLabels.push(label); // controlled by label toggle
+
+        comets.push({
+            data: cd,
+            orbitA,
+            originalE: cd.e,
+            posGroup,
+            mesh,
+            tailMesh,
+            orbitLine,
+            meanAnomaly: cd.M0,
+            angularSpeed: 2 * Math.PI / cd.period,
+            label,
+        });
+    }
+
     // ── Asteroid belt ──────────────────────────────────────────────
     const astParams = [];
     for (let i = 0; i < ASTEROID_COUNT; i++) {
@@ -431,6 +563,11 @@ export function initSolarSystem() {
             p.angularSpeed = 2 * Math.PI / p.data.period * speedMul;
         }
         moonObj.angularSpeed = 2 * Math.PI / MOON.period * speedMul;
+        if (comets) {
+            for (const c of comets) {
+                c.angularSpeed = 2 * Math.PI / c.data.period * speedMul;
+            }
+        }
         for (const a of astParams) {
             const period = 365.25 * Math.pow(a.a / AU, 1.5);
             a.speed = 2 * Math.PI / period * speedMul;
@@ -515,6 +652,25 @@ export function initSolarSystem() {
         const mz = moonObj.baseDist * Math.sqrt(1 - effMoonE * effMoonE) * Math.sin(ME);
         moonObj.posGroup.position.set(mx, 0, mz);
 
+        // Comets — Kepler orbit with trail
+        for (const c of comets) {
+            c.meanAnomaly += c.angularSpeed * days;
+            const E = solveKepler(c.meanAnomaly, c.originalE);
+            const x = c.orbitA * (Math.cos(E) - c.originalE);
+            const z = c.orbitA * Math.sqrt(1 - c.originalE * c.originalE) * Math.sin(E);
+            c.posGroup.position.set(x, 0, z);
+
+            // Comet world position
+            const worldPos = new THREE.Vector3();
+            c.posGroup.getWorldPosition(worldPos);
+
+            // Tail: cone pointing away from sun
+            const sunDir = new THREE.Vector3().copy(worldPos).normalize();
+            // Orient tail cone: apex at comet, base extends away from sun
+            c.tailMesh.position.copy(worldPos);
+            c.tailMesh.lookAt(worldPos.clone().add(sunDir));
+        }
+
         // Asteroid belt — full 3D orbital geometry
         const pos = astGeo.attributes.position.array;
         for (let i = 0; i < ASTEROID_COUNT; i++) {
@@ -550,7 +706,7 @@ export function initSolarSystem() {
 
     return {
         scene, camera, renderer, labelRenderer,
-        planets, moon: moonObj, sun, asteroidBelt, eclipticDisc,
+        planets, moon: moonObj, comets, sun, asteroidBelt, eclipticDisc,
         setScale, setSpeed, setLabelsVisible, setEccentricityMultiplier,
         update: updateOrbits,
         SUN_RADIUS, MAX_SCALE,

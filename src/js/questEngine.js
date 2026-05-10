@@ -158,7 +158,7 @@ const QUESTS = [
     {
         id: 'quest_comet',
         name: '☄️ 彗星猎人',
-        desc: '将时间流速拉到 ×200 以上，观察天体尾迹 5 秒',
+        desc: '将时间流速拉到 ×200 以上，观察哈雷彗星尾迹 5 秒',
         branch: 'main',
         order: 8,
         xp: 120,

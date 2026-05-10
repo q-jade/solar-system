@@ -139,7 +139,7 @@ function createAsteroidBeltClickArea() {
     const mat = new THREE.MeshBasicMaterial({
         color: 0x446688,
         transparent: true,
-        opacity: 0.15,
+        opacity: 0,
         side: THREE.DoubleSide,
         depthWrite: false,
     });

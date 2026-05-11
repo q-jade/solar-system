@@ -15,7 +15,7 @@ export function initControls(sys, camera, renderer) {
     orbit.dampingFactor = 0.05;
     orbit.screenSpacePanning = false;
     orbit.minDistance = 5;
-    orbit.maxDistance = 3500;
+    orbit.maxDistance = 18000;
     orbit.target.set(0, 0, 0);
 
     // ── DOM helpers ────────────────────────────────────────────────

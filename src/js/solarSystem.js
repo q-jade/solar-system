@@ -92,14 +92,17 @@ const ASTEROID_A_MAX = 3.2;
 
 // ── Kepler solver (Newton's method) ────────────────────────────────────
 function solveKepler(M, e) {
-    // Normalise M to [0, 2π)
     M = M - Math.PI * 2 * Math.floor(M / (Math.PI * 2));
     // Better initial guess for high eccentricity
-    let E = e > 0.8 ? M + 0.85 * e * Math.sin(M) : M;
-    const maxIter = e > 0.9 ? 32 : (e > 0.8 ? 16 : 8);
-    for (let i = 0; i < maxIter; i++) {
-        const dE = (M + e * Math.sin(E) - E) / (1 - e * Math.cos(E));
-        E += dE;
+    let E = e > 0.9 ? M + Math.sign(Math.sin(M)) * e * 0.8 : M;
+    if (Math.abs(Math.sin(M)) < 1e-10) E = M + e;
+    for (let i = 0; i < 50; i++) {
+        const s = E - e * Math.sin(E) - M;
+        const c = 1 - e * Math.cos(E);
+        let dE = s / c;
+        // Clamp step to prevent overshoot
+        dE = Math.max(-0.6, Math.min(0.6, dE));
+        E -= dE;
         if (Math.abs(dE) < 1e-12) break;
     }
     return E;
@@ -114,13 +117,16 @@ export function initSolarSystem(textures) {
 
     // ── Camera ──────────────────────────────────────────────────────
     const camera = new THREE.PerspectiveCamera(
-        60, window.innerWidth / window.innerHeight, 0.1, 5000
+        60, window.innerWidth / window.innerHeight, 0.1, 20000
     );
     camera.position.set(0, 120, 200);
     camera.lookAt(0, 0, 0);
 
     // ── WebGL renderer ──────────────────────────────────────────────
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        logarithmicDepthBuffer: true,
+    });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
@@ -154,7 +160,7 @@ export function initSolarSystem(textures) {
     const starCount = 1800;
     const starPos = new Float32Array(starCount * 3);
     for (let i = 0; i < starCount; i++) {
-        const r = 1500 + Math.random() * 900;
+        const r = 12000 + Math.random() * 1800;
         const theta = Math.random() * Math.PI * 2;
         const phi = Math.acos(2 * Math.random() - 1);
         starPos[i * 3 + 0] = r * Math.sin(phi) * Math.cos(theta);

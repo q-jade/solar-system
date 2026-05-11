@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const DEFAULT_SCALE = 1200;
+const MIN_SPEED = 1 / 24;  // 1 hour/sec
 const DEFAULT_SPEED = 20; // days/sec
 const DEFAULT_ECC = 1;    // 1x = real eccentricity
 const ECC_MAX = 4;       // max eccentricity multiplier
@@ -60,20 +61,29 @@ export function initControls(sys, camera, renderer) {
 
     // ── Speed slider ───────────────────────────────────────────────
     function sliderToSpeed(v) {
-        return Math.pow(365, v / 100);
+        const maxRatio = 365 / MIN_SPEED; // 365 / (1/24) = 8760
+        return MIN_SPEED * Math.pow(maxRatio, v / 100);
     }
 
     function speedToSlider(s) {
-        return Math.log(s) / Math.log(365) * 100;
+        const maxRatio = 365 / MIN_SPEED;
+        return Math.log(s / MIN_SPEED) / Math.log(maxRatio) * 100;
     }
 
     function updateSpeed() {
         const v = parseFloat(speedSlider.value);
         const speed = sliderToSpeed(v);
         sys.setSpeed(speed);
-        speedVal.textContent = speed < 10
-            ? speed.toFixed(1) + ' 天/秒'
-            : Math.round(speed) + ' 天/秒';
+        if (speed < 1) {
+            const hours = speed * 24;
+            speedVal.textContent = hours < 10
+                ? hours.toFixed(1) + ' 小时/秒'
+                : Math.round(hours) + ' 小时/秒';
+        } else {
+            speedVal.textContent = speed < 10
+                ? speed.toFixed(1) + ' 天/秒'
+                : Math.round(speed) + ' 天/秒';
+        }
     }
     speedSlider.addEventListener('input', () => {
         updateSpeed();

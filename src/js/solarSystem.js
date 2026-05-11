@@ -307,12 +307,20 @@ export function initSolarSystem(textures) {
         // ── Saturn rings ──
         let ringMesh = null;
         if (d.rings) {
+            const ringTex = bodyId === 'saturn' ? tex.saturnRing : null;
             ringMesh = new THREE.Mesh(
                 new THREE.RingGeometry(pRadius * 1.3, pRadius * 2.2, 48),
-                new THREE.MeshLambertMaterial({
-                    color: 0xbba87f, side: THREE.DoubleSide,
-                    transparent: true, opacity: 0.6,
-                })
+                ringTex
+                    ? new THREE.MeshStandardMaterial({
+                        map: ringTex,
+                        side: THREE.DoubleSide,
+                        transparent: true,
+                        opacity: 0.85,
+                    })
+                    : new THREE.MeshLambertMaterial({
+                        color: 0xbba87f, side: THREE.DoubleSide,
+                        transparent: true, opacity: 0.6,
+                    })
             );
             ringMesh.rotation.x = Math.PI / 3;
             scaleWrapper.add(ringMesh);

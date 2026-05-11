@@ -308,14 +308,51 @@ export function initSolarSystem(textures) {
         let ringMesh = null;
         if (d.rings) {
             const ringTex = bodyId === 'saturn' ? tex.saturnRing : null;
+            let innerR;
+            let outerR;
+            if (ringTex) {
+                // 纹理有透明通道，环的内径从 ×1.3 缩到 ×1.1、外径从 ×2.2 扩到 ×2.3
+                innerR = pRadius * 1.1;
+                outerR = pRadius * 2.3;
+            } else {
+                innerR = pRadius * 1.3;
+                outerR = pRadius * 2.2;
+            }
+            const ringGeo = new THREE.RingGeometry(innerR, outerR, 128, 96);
+
+            if (ringTex) {
+                const pos = ringGeo.attributes.position;
+                const ruv = ringGeo.attributes.uv;
+                const v3 = new THREE.Vector3();
+
+                for (let i = 0; i < pos.count; i++) {
+                    v3.fromBufferAttribute(pos, i);
+
+                    // 半径 -> 纹理水平方向（环带）
+                    const radius = v3.length();
+                    const u = (radius - innerR) / (outerR - innerR);
+
+                    // 角度 -> 纹理垂直方向（环绕一周）
+                    // atan2 范围是 -PI ~ PI，映射到 0 ~ 1
+                    const angle = Math.atan2(v3.y, v3.x);
+                    const v = (angle + Math.PI) / (2 * Math.PI);
+
+                    ruv.setXY(i, u, v);
+                }
+                ruv.needsUpdate = true;
+
+                // 关键：角度方向（v）是循环的，必须设为 Repeat，否则接缝处会断裂
+                ringTex.wrapT = THREE.RepeatWrapping;
+                ringTex.wrapS = THREE.ClampToEdgeWrapping; // 径向方向不需要重复
+            }
             ringMesh = new THREE.Mesh(
-                new THREE.RingGeometry(pRadius * 1.3, pRadius * 2.2, 48),
+                ringGeo,
                 ringTex
-                    ? new THREE.MeshStandardMaterial({
+                    ? new THREE.MeshBasicMaterial({
                         map: ringTex,
                         side: THREE.DoubleSide,
                         transparent: true,
-                        opacity: 0.85,
+                        opacity: 0.9,
                     })
                     : new THREE.MeshLambertMaterial({
                         color: 0xbba87f, side: THREE.DoubleSide,

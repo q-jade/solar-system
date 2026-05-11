@@ -106,7 +106,10 @@ function solveKepler(M, e) {
 }
 
 // ── Entry point ────────────────────────────────────────────────────────
-export function initSolarSystem() {
+export function initSolarSystem(textures) {
+    // textures: optional { key: THREE.Texture } map from textureLoader
+    const tex = textures || {};
+
     const scene = new THREE.Scene();
 
     // ── Camera ──────────────────────────────────────────────────────
@@ -179,7 +182,9 @@ export function initSolarSystem() {
     const glowTexture = new THREE.CanvasTexture(glowCanvas);
 
     const sunGeo = new THREE.SphereGeometry(SUN_RADIUS, 48, 48);
-    const sunMat = new THREE.MeshBasicMaterial({ color: 0xffcc44 });
+    const sunMat = tex.sun
+        ? new THREE.MeshBasicMaterial({ map: tex.sun })
+        : new THREE.MeshBasicMaterial({ color: 0xffcc44 });
     const sun = new THREE.Mesh(sunGeo, sunMat);
     scene.add(sun);
 
@@ -283,9 +288,13 @@ export function initSolarSystem() {
         const scaleWrapper = new THREE.Group();
         posGroup.add(scaleWrapper);
 
+        const bodyId = (d.english || '').toLowerCase();
+        const planetTex = tex[bodyId];
         const mesh = new THREE.Mesh(
-            new THREE.SphereGeometry(pRadius, 32, 32),
-            new THREE.MeshLambertMaterial({ color: d.color })
+            new THREE.SphereGeometry(pRadius, planetTex ? 48 : 32, planetTex ? 48 : 32),
+            planetTex
+                ? new THREE.MeshStandardMaterial({ map: planetTex, roughness: 0.7 })
+                : new THREE.MeshLambertMaterial({ color: d.color })
         );
         scaleWrapper.add(mesh);
 
@@ -303,6 +312,38 @@ export function initSolarSystem() {
             scaleWrapper.add(ringMesh);
         }
 
+        // ── Earth special layers (clouds + night lights) ──
+        let cloudMesh = null;
+        if (bodyId === 'earth' && tex.earthClouds) {
+            const cloudR = pRadius * 1.015;
+            cloudMesh = new THREE.Mesh(
+                new THREE.SphereGeometry(cloudR, 48, 48),
+                new THREE.MeshPhongMaterial({
+                    map: tex.earthClouds,
+                    transparent: true,
+                    opacity: 0.35,
+                    blending: THREE.AdditiveBlending,
+                    side: THREE.DoubleSide,
+                    depthWrite: false,
+                })
+            );
+            scaleWrapper.add(cloudMesh);
+        }
+        let nightMesh = null;
+        if (bodyId === 'earth' && tex.earthNight) {
+            nightMesh = new THREE.Mesh(
+                new THREE.SphereGeometry(pRadius * 1.002, 48, 48),
+                new THREE.MeshBasicMaterial({
+                    map: tex.earthNight,
+                    blending: THREE.AdditiveBlending,
+                    transparent: true,
+                    opacity: 0.6,
+                    depthWrite: false,
+                })
+            );
+            scaleWrapper.add(nightMesh);
+        }
+
         // ── Label (sibling of scale-wrapper, above planet) ──
         const label = makeLabel(d.name, d.name.length <= 2 ? 15 : 13);
         label.position.set(0, pRadius * 2 + 3, 0);
@@ -316,6 +357,8 @@ export function initSolarSystem() {
             orbitGroup,
             orbitLine,
             mesh,
+            cloudMesh,
+            nightMesh,
             pRadius,
             orbitA,
             originalE: d.e,
@@ -642,6 +685,15 @@ export function initSolarSystem() {
             const rot = p.data.rotPeriod;
             p.mesh.rotation.y += (rot > 0 ? 1 : -1)
                 * 2 * Math.PI / Math.abs(rot) * days;
+
+            // Earth clouds (faster) and night lights (same as surface)
+            if (p.cloudMesh) {
+                p.cloudMesh.rotation.y += 2 * Math.PI / (rot * 0.8) * days;
+            }
+            if (p.nightMesh) {
+                p.nightMesh.rotation.y += (rot > 0 ? 1 : -1)
+                    * 2 * Math.PI / Math.abs(rot) * days;
+            }
         }
 
         // Moon around Earth — elliptical orbit with real orbital elements

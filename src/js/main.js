@@ -10,8 +10,11 @@ import { markExplored, getStats, resetData, addXp } from './storage.js';
 import { createQuestEngine } from './questEngine.js';
 import { createAchievement } from './achievement.js';
 import { openSortPanel } from './sortPanel.js';
+import { loadTextures } from './textureLoader.js';
 
-const sys = initSolarSystem();
+(async () => {
+const textures = await loadTextures();
+const sys = initSolarSystem(textures);
 const { scene, camera, renderer, labelRenderer } = sys;
 const controls = initControls(sys, camera, renderer);
 
@@ -286,3 +289,4 @@ function animate() {
 }
 
 animate();
+})();

@@ -584,6 +584,8 @@ export function initSolarSystem(textures) {
 
     const asteroidBelt = { points: astPoints, params: astParams, geometry: astGeo };
 
+    let currentSpeedMul = 1;
+
     // ── Set initial positions ──────────────────────────────────────
     updateOrbits(0);
 
@@ -602,6 +604,7 @@ export function initSolarSystem(textures) {
 
     /** @param {number} speedMul - multiplier (1 = 1 scene-second = 1 day) */
     function setSpeed(speedMul) {
+        currentSpeedMul = speedMul;
         for (const p of planets) {
             p.angularSpeed = 2 * Math.PI / p.data.period * speedMul;
         }
@@ -683,16 +686,16 @@ export function initSolarSystem(textures) {
 
             // Self-rotation (radians per Earth-day, signed for retrograde)
             const rot = p.data.rotPeriod;
-            p.mesh.rotation.y += (rot > 0 ? 1 : -1)
-                * 2 * Math.PI / Math.abs(rot) * days;
+            const rotDir = rot > 0 ? 1 : -1;
+            const rotRate = 2 * Math.PI / Math.abs(rot) * days * currentSpeedMul;
+            p.mesh.rotation.y += rotDir * rotRate;
 
             // Earth clouds (faster) and night lights (same as surface)
             if (p.cloudMesh) {
-                p.cloudMesh.rotation.y += 2 * Math.PI / (rot * 0.8) * days;
+                p.cloudMesh.rotation.y += rotDir * rotRate * 1.2;
             }
             if (p.nightMesh) {
-                p.nightMesh.rotation.y += (rot > 0 ? 1 : -1)
-                    * 2 * Math.PI / Math.abs(rot) * days;
+                p.nightMesh.rotation.y += rotDir * rotRate;
             }
         }
 

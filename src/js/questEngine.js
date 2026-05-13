@@ -771,7 +771,7 @@ function renderQuestItem(q, state) {
     let progressHtml = '';
     if (p && (p.total || p.target)) {
         const done = p.found || p.holdTime || p.done || p.streak || p.total || 0;
-        const total = p.total || p.target || 1;
+        const total = p.target || p.total || 1;
         const pct = Math.min(100, Math.round(done / total * 100));
         progressHtml = `
             <div class="qt-progress-bar">

@@ -332,6 +332,7 @@ export function initSolarSystem(textures) {
                 outerR = pRadius * 2.2;
             }
             const ringGeo = new THREE.RingGeometry(innerR, outerR, 128, 96);
+            ringGeo.rotateX(-Math.PI / 2);
 
             if (ringTex) {
                 const pos = ringGeo.attributes.position;
@@ -372,7 +373,6 @@ export function initSolarSystem(textures) {
                         transparent: true, opacity: 0.6,
                     })
             );
-            ringMesh.rotation.x = Math.PI / 3;
             tiltGroup.add(ringMesh);
         }
 

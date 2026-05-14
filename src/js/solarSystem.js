@@ -64,6 +64,13 @@ const PLANET_DATA = [
     },
 ];
 
+// ── Axial tilts (degrees from orbital plane normal) ─────────────────
+const AXIAL_TILTS = {
+    earth: 23.44, mars: 25.19, jupiter: 3.13,
+    saturn: 26.73, uranus: 97.77, neptune: 28.32,
+    venus: 177.4,  mercury: 0.034,
+};
+
 const MOON = {
     name: '月球', color: 0xcccccc,
     radius: 1737.4, orbitKm: 384400, period: 27.322,
@@ -294,7 +301,12 @@ export function initSolarSystem(textures) {
         const scaleWrapper = new THREE.Group();
         posGroup.add(scaleWrapper);
 
+        // ── Axial tilt group (inside scaleWrapper) ──
         const bodyId = (d.english || '').toLowerCase();
+        const tiltDeg = AXIAL_TILTS[bodyId] || 0;
+        const tiltGroup = new THREE.Group();
+        if (tiltDeg) tiltGroup.rotation.x = tiltDeg * Math.PI / 180;
+        scaleWrapper.add(tiltGroup);
         const planetTex = tex[bodyId];
         const mesh = new THREE.Mesh(
             new THREE.SphereGeometry(pRadius, planetTex ? 48 : 32, planetTex ? 48 : 32),
@@ -302,7 +314,7 @@ export function initSolarSystem(textures) {
                 ? new THREE.MeshStandardMaterial({ map: planetTex, roughness: 0.7 })
                 : new THREE.MeshLambertMaterial({ color: d.color })
         );
-        scaleWrapper.add(mesh);
+        tiltGroup.add(mesh);
 
         // ── Saturn rings ──
         let ringMesh = null;
@@ -360,7 +372,7 @@ export function initSolarSystem(textures) {
                     })
             );
             ringMesh.rotation.x = Math.PI / 3;
-            scaleWrapper.add(ringMesh);
+            tiltGroup.add(ringMesh);
         }
 
         // ── Atmospheric glow (planet-specific colors) ──
@@ -409,7 +421,7 @@ export function initSolarSystem(textures) {
                     depthWrite: false,
                 })
             );
-            scaleWrapper.add(atmoMesh);
+            tiltGroup.add(atmoMesh);
         }
 
         // ── Earth special layers (clouds + night lights) ──
@@ -427,7 +439,7 @@ export function initSolarSystem(textures) {
                     depthWrite: false,
                 })
             );
-            scaleWrapper.add(cloudMesh);
+            tiltGroup.add(cloudMesh);
         }
         let nightMesh = null;
         if (bodyId === 'earth' && tex.earthNight) {
@@ -441,7 +453,7 @@ export function initSolarSystem(textures) {
                     depthWrite: false,
                 })
             );
-            scaleWrapper.add(nightMesh);
+            tiltGroup.add(nightMesh);
         }
 
         // ── Label (sibling of scale-wrapper, above planet) ──

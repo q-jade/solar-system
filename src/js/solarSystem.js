@@ -363,6 +363,55 @@ export function initSolarSystem(textures) {
             scaleWrapper.add(ringMesh);
         }
 
+        // ── Atmospheric glow (planet-specific colors) ──
+        let atmoMesh = null;
+        const ATMO_CONFIG = {
+            earth:  { color: [0.3, 0.6, 1.0], scale: 1.025, power: 3.0, intensity: 0.55 },
+            venus:  { color: [0.9, 0.7, 0.3], scale: 1.02,  power: 4.0, intensity: 0.25 },
+            mars:   { color: [0.8, 0.3, 0.2], scale: 1.015, power: 4.0, intensity: 0.2 },
+        };
+        const ac = ATMO_CONFIG[bodyId];
+        if (ac) {
+            const [r, g, b] = ac.color;
+            atmoMesh = new THREE.Mesh(
+                new THREE.SphereGeometry(pRadius * ac.scale, 36, 36),
+                new THREE.ShaderMaterial({
+                    vertexShader: `
+                        varying vec3 vNormal;
+                        varying vec3 vPosition;
+                        void main() {
+                            vNormal = normalize(normalMatrix * normal);
+                            vPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
+                            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                        }
+                    `,
+                    fragmentShader: `
+                        uniform vec3 uColor;
+                        uniform float uPower;
+                        uniform float uIntensity;
+                        varying vec3 vNormal;
+                        varying vec3 vPosition;
+                        void main() {
+                            vec3 viewDir = normalize(-vPosition);
+                            float rim = 1.0 - max(0.0, dot(viewDir, vNormal));
+                            float alpha = pow(rim, uPower) * uIntensity;
+                            gl_FragColor = vec4(uColor, alpha);
+                        }
+                    `,
+                    uniforms: {
+                        uColor: { value: new THREE.Color(r, g, b) },
+                        uPower: { value: ac.power },
+                        uIntensity: { value: ac.intensity },
+                    },
+                    transparent: true,
+                    side: THREE.FrontSide,
+                    blending: THREE.AdditiveBlending,
+                    depthWrite: false,
+                })
+            );
+            scaleWrapper.add(atmoMesh);
+        }
+
         // ── Earth special layers (clouds + night lights) ──
         let cloudMesh = null;
         if (bodyId === 'earth' && tex.earthClouds) {
@@ -408,6 +457,7 @@ export function initSolarSystem(textures) {
             orbitGroup,
             orbitLine,
             mesh,
+            atmoMesh,
             cloudMesh,
             nightMesh,
             pRadius,

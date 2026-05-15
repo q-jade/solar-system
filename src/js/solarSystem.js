@@ -395,7 +395,7 @@ export function initSolarSystem(textures) {
                 innerR = pRadius * 1.3;
                 outerR = pRadius * 2.2;
             }
-            const ringGeo = new THREE.RingGeometry(innerR, outerR, 128, 96);
+            const ringGeo = new THREE.RingGeometry(innerR, outerR, 64, 48);
             ringGeo.rotateX(-Math.PI / 2);
 
             if (ringTex) {

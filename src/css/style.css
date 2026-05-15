@@ -18,6 +18,65 @@ body {
   position: relative;
 }
 
+/* ── Loading screen ──────────────────────────── */
+#loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  transition: opacity 0.5s;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(100, 160, 255, 0.15);
+  border-top-color: #6af;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+#loading-text {
+  font-size: 14px;
+  color: #889;
+}
+
+.loading-bar-bg {
+  width: 240px;
+  height: 4px;
+  background: rgba(100, 120, 200, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.loading-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #4af, #8cf);
+  border-radius: 2px;
+  transition: width 0.2s;
+}
+
+#loading-percent {
+  font-size: 12px;
+  color: #667;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ── Help text (bottom-left) ──────────────── */
 #help-text {
   position: fixed;

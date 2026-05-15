@@ -10,10 +10,27 @@ import { markExplored, getStats, resetData, addXp } from './storage.js';
 import { createQuestEngine } from './questEngine.js';
 import { createAchievement } from './achievement.js';
 import { openSortPanel } from './sortPanel.js';
-import { loadTextures } from './textureLoader.js';
+import { loadTextures, setOnProgress } from './textureLoader.js';
 
 (async () => {
+// ── Loading screen ────────────────────────────────
+const loadingEL = document.getElementById('loading-overlay');
+const fillEL = document.getElementById('loading-bar-fill');
+const pctEL = document.getElementById('loading-percent');
+const txtEL = document.getElementById('loading-text');
+setOnProgress((ratio) => {
+    const pct = Math.round(ratio * 100);
+    fillEL.style.width = pct + '%';
+    pctEL.textContent = pct + '%';
+});
 const textures = await loadTextures();
+fillEL.style.width = '100%';
+pctEL.textContent = '100%';
+txtEL.textContent = '准备就绪';
+// Brief delay so user sees 100%
+await new Promise(r => setTimeout(r, 400));
+loadingEL.style.opacity = '0';
+setTimeout(() => loadingEL.style.display = 'none', 500);
 const sys = initSolarSystem(textures);
 const { scene, camera, renderer, labelRenderer } = sys;
 const controls = initControls(sys, camera, renderer);

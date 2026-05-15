@@ -164,20 +164,84 @@ export function initSolarSystem(textures) {
     scene.add(eclipticDisc);
 
     // ── Stars ───────────────────────────────────────────────────────
-    const starCount = 1800;
-    const starPos = new Float32Array(starCount * 3);
-    for (let i = 0; i < starCount; i++) {
-        const r = 12000 + Math.random() * 1800;
+    // Background sphere stars (8000) with color & size variation
+    const bgStarCount = 8000;
+    const bgPos = new Float32Array(bgStarCount * 3);
+    const bgColors = new Float32Array(bgStarCount * 3);
+    const bgSizes = new Float32Array(bgStarCount);
+    // Approx spectral type distribution: 76% red/orange, 12% yellow, 8% white, 4% blue
+    const starTypes = [
+        { weight: 0.04, r: 0.75, g: 0.85, b: 1.0, sizeBase: 0.6, sizeRange: 0.3 }, // O/B hot blue
+        { weight: 0.08, r: 0.9,  g: 0.95, b: 1.0, sizeBase: 0.5, sizeRange: 0.3 }, // A/F white-blue
+        { weight: 0.12, r: 1.0,  g: 1.0,  b: 0.8, sizeBase: 0.4, sizeRange: 0.3 }, // G yellow
+        { weight: 0.40, r: 1.0,  g: 0.85, b: 0.6, sizeBase: 0.35, sizeRange: 0.25 }, // K orange
+        { weight: 0.36, r: 1.0,  g: 0.7,  b: 0.5, sizeBase: 0.3, sizeRange: 0.2 }, // M red
+    ];
+    for (let i = 0; i < bgStarCount; i++) {
+        const r = 10000 + Math.random() * 3000;
         const theta = Math.random() * Math.PI * 2;
         const phi = Math.acos(2 * Math.random() - 1);
-        starPos[i * 3 + 0] = r * Math.sin(phi) * Math.cos(theta);
-        starPos[i * 3 + 1] = r * Math.cos(phi);
-        starPos[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
+        bgPos[i * 3 + 0] = r * Math.sin(phi) * Math.cos(theta);
+        bgPos[i * 3 + 1] = r * Math.cos(phi);
+        bgPos[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
+        // Pick spectral type
+        const roll = Math.random();
+        let cum = 0;
+        let st = starTypes[0];
+        for (const t of starTypes) {
+            cum += t.weight;
+            if (roll < cum) { st = t; break; }
+        }
+        const brightness = 0.6 + Math.random() * 0.4;
+        bgColors[i * 3 + 0] = st.r * brightness;
+        bgColors[i * 3 + 1] = st.g * brightness;
+        bgColors[i * 3 + 2] = st.b * brightness;
+        bgSizes[i] = st.sizeBase + Math.random() * st.sizeRange;
     }
-    const starGeo = new THREE.BufferGeometry();
-    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-    const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.4 });
-    scene.add(new THREE.Points(starGeo, starMat));
+    const bgGeo = new THREE.BufferGeometry();
+    bgGeo.setAttribute('position', new THREE.BufferAttribute(bgPos, 3));
+    bgGeo.setAttribute('color', new THREE.BufferAttribute(bgColors, 3));
+    bgGeo.setAttribute('size', new THREE.BufferAttribute(bgSizes, 1));
+    const bgMat = new THREE.PointsMaterial({
+        size: 0.5, vertexColors: true, sizeAttenuation: true,
+    });
+    scene.add(new THREE.Points(bgGeo, bgMat));
+
+    // Milky Way band — extra stars concentrated on galactic plane
+    const mwCount = 2000;
+    const mwPos = new Float32Array(mwCount * 3);
+    const mwColors = new Float32Array(mwCount * 3);
+    const mwSizes = new Float32Array(mwCount);
+    for (let i = 0; i < mwCount; i++) {
+        const dist = 9000 + Math.random() * 4000;     // distance range
+        const angle = Math.random() * Math.PI * 2;       // around galaxy center
+        // Gaussian spread above/below galactic plane (tight band)
+        const spread = 800 + Math.random() * 500;
+        const up = (Math.random() - 0.5) * spread;
+        // Tilt galactic plane ~60° relative to ecliptic (visual approximation)
+        const tilt = 60 * Math.PI / 180;
+        const flatX = dist * Math.cos(angle);
+        const flatZ = dist * Math.sin(angle);
+        mwPos[i * 3 + 0] = flatX * Math.cos(tilt);
+        mwPos[i * 3 + 1] = flatX * Math.sin(tilt) + up;
+        mwPos[i * 3 + 2] = flatZ;
+        // Milky Way stars: more blue-white, dust-reddened toward center
+        const reddish = 0.5 + 0.5 * ((dist - 9000) / 4000);
+        const br = 0.5 + Math.random() * 0.5;
+        mwColors[i * 3 + 0] = 1.0 * br;
+        mwColors[i * 3 + 1] = (0.8 + 0.2 * (1 - reddish)) * br;
+        mwColors[i * 3 + 2] = (0.6 + 0.4 * (1 - reddish)) * br;
+        mwSizes[i] = 0.15 + Math.random() * 0.3;
+    }
+    const mwGeo = new THREE.BufferGeometry();
+    mwGeo.setAttribute('position', new THREE.BufferAttribute(mwPos, 3));
+    mwGeo.setAttribute('color', new THREE.BufferAttribute(mwColors, 3));
+    mwGeo.setAttribute('size', new THREE.BufferAttribute(mwSizes, 1));
+    const mwMat = new THREE.PointsMaterial({
+        size: 0.35, vertexColors: true, sizeAttenuation: true,
+        transparent: true, opacity: 0.8,
+    });
+    scene.add(new THREE.Points(mwGeo, mwMat));
 
     // ── Sun ─────────────────────────────────────────────────────────
     // Glow texture

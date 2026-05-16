@@ -369,6 +369,7 @@ export function initSolarSystem(textures) {
         // ── Axial tilt group (inside scaleWrapper) ──
         const bodyId = (d.english || '').toLowerCase();
         const tiltDeg = AXIAL_TILTS[bodyId] || 0;
+        const tiltSign = Math.cos(tiltDeg * Math.PI / 180) >= 0 ? 1 : -1;
         const tiltGroup = new THREE.Group();
         if (tiltDeg) tiltGroup.rotation.x = tiltDeg * Math.PI / 180;
         scaleWrapper.add(tiltGroup);
@@ -538,6 +539,7 @@ export function initSolarSystem(textures) {
             cloudMesh,
             nightMesh,
             pRadius,
+            tiltSign,
             orbitA,
             originalE: d.e,
             inclRad,
@@ -863,17 +865,19 @@ export function initSolarSystem(textures) {
             p.posGroup.position.set(x, 0, z);
 
             // Self-rotation (radians per Earth-day, signed for retrograde)
+            // tiltSign: for axial tilts > 90°, local Y is inverted vs world Y,
+            // so rotation direction must be flipped to compensate
             const rot = p.data.rotPeriod;
             const rotDir = rot > 0 ? 1 : -1;
             const rotRate = 2 * Math.PI / Math.abs(rot) * days * currentSpeedMul;
-            p.mesh.rotation.y += rotDir * rotRate;
+            p.mesh.rotation.y += rotDir * p.tiltSign * rotRate;
 
             // Earth clouds (faster) and night lights (same as surface)
             if (p.cloudMesh) {
-                p.cloudMesh.rotation.y += rotDir * rotRate * 1.2;
+                p.cloudMesh.rotation.y += rotDir * p.tiltSign * rotRate * 1.2;
             }
             if (p.nightMesh) {
-                p.nightMesh.rotation.y += rotDir * rotRate;
+                p.nightMesh.rotation.y += rotDir * p.tiltSign * rotRate;
             }
         }
 

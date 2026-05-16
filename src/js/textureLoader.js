@@ -28,6 +28,7 @@ const TEXTURE_LIST = {
     saturnRing: { url: `${CDN_BASE}/2k_saturn_ring_alpha.png`, type: 'png' },
     uranus:  { url: `${CDN_BASE}/2k_uranus.jpg`, type: 'jpeg' },
     neptune: { url: `${CDN_BASE}/2k_neptune.jpg`, type: 'jpeg' },
+    moon:    { url: `${CDN_BASE}/2k_moon.jpg`, type: 'jpeg' },
 
 };
 // Note: milky way texture not available on this CDN; skipped.

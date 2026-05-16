@@ -597,9 +597,12 @@ export function initSolarSystem(textures) {
     const moonPosGroup = new THREE.Group();
     moonOrbitGroup.add(moonPosGroup);
 
+    const moonMat = tex.moon
+        ? new THREE.MeshStandardMaterial({ map: tex.moon, roughness: 0.8 })
+        : new THREE.MeshLambertMaterial({ color: MOON.color });
     const moonMesh = new THREE.Mesh(
-        new THREE.SphereGeometry(moonRadius, 16, 16),
-        new THREE.MeshLambertMaterial({ color: MOON.color })
+        new THREE.SphereGeometry(moonRadius, moonMat ? 32 : 16, moonMat ? 32 : 16),
+        moonMat
     );
     moonPosGroup.add(moonMesh);
 

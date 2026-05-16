@@ -67,6 +67,8 @@ export function loadTextures() {
                     // Configure texture
                     tex.anisotropy = 4;
                     if (type === 'png') tex.premultiplyAlpha = true;
+                    // Uranus texture is extremely subtle; boost contrast
+                    if (key === 'uranus') tex = enhanceContrast(tex, 1.8);
                     result[key] = tex;
                     loaded++;
                     report();
@@ -80,6 +82,51 @@ export function loadTextures() {
                     report();
                 }
             );
+        }
+
+        /** Enhance texture contrast by stretching brightness range */
+        function enhanceContrast(tex, factor) {
+            const img = tex.image;
+            if (!img || !(img instanceof HTMLImageElement)) return tex;
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth || img.width;
+            canvas.height = img.naturalHeight || img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const d = imageData.data;
+            const len = d.length;
+            // Find min/max brightness across all pixels
+            let minV = 255, maxV = 0;
+            for (let i = 0; i < len; i += 4) {
+                const b = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+                if (b < minV) minV = b;
+                if (b > maxV) maxV = b;
+            }
+            const range = maxV - minV;
+            if (range < 1) return tex;
+            // Stretch brightness range
+            const mid = (minV + maxV) / 2;
+            const halfRange = range / 2;
+            const targetHalf = Math.min(halfRange * factor, 127);
+            const scale = targetHalf / halfRange;
+            for (let i = 0; i < len; i += 4) {
+                const b = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+                const delta = (b - mid) * scale;
+                const newB = mid + delta;
+                const adj = newB / (b || 1);
+                d[i]     = Math.max(0, Math.min(255, Math.round(d[i] * adj)));
+                d[i + 1] = Math.max(0, Math.min(255, Math.round(d[i + 1] * adj)));
+                d[i + 2] = Math.max(0, Math.min(255, Math.round(d[i + 2] * adj)));
+            }
+            ctx.putImageData(imageData, 0, 0);
+            const newTex = new THREE.CanvasTexture(canvas);
+            newTex.anisotropy = tex.anisotropy;
+            newTex.wrapS = tex.wrapS;
+            newTex.wrapT = tex.wrapT;
+            newTex.repeat.copy(tex.repeat);
+            newTex.offset.copy(tex.offset);
+            return newTex;
         }
 
         manager.onLoad = () => resolve(result);

@@ -275,14 +275,10 @@ export function initSolarSystem(textures) {
     sunGlow.scale.set(SUN_RADIUS * 4, SUN_RADIUS * 4, 1);
     scene.add(sunGlow);
 
-    const sunLight = new THREE.PointLight(0xffcc66, 3, 0, 2);
+    const sunLight = new THREE.PointLight(0xffcc66, 2, 0, 2);
     sunLight.castShadow = true;
     scene.add(sunLight);
-    scene.add(new THREE.AmbientLight(0x222244, 0.15));
-
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
-    dirLight.position.set(100, 200, 200);
-    scene.add(dirLight);
+    scene.add(new THREE.AmbientLight(0x222244, 0.6));
 
     // ── State ───────────────────────────────────────────────────────
     let currentScale = 1;

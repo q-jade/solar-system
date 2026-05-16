@@ -284,6 +284,12 @@ export function initSolarSystem(textures) {
     let currentScale = 1;
     let eMultiplier = 1;
     const allLabels = [];   // CSS2DObject references
+    const occludePairs = []; // { mesh, label } for occlusion check
+    const _ray = new THREE.Raycaster();
+    const _origin = new THREE.Vector3();
+    const _wp2 = new THREE.Vector3();
+    const _dir = new THREE.Vector3();
+    let occluders = [];
 
     // ── Helper: create a label div ──────────────────────────────────
     function makeLabel(text, fontSize) {
@@ -523,6 +529,7 @@ export function initSolarSystem(textures) {
         label.position.set(0, pRadius * 2 + 3, 0);
         posGroup.add(label);
         allLabels.push(label);
+        occludePairs.push({ mesh, label });
 
         planets.push({
             data: d,
@@ -715,6 +722,7 @@ export function initSolarSystem(textures) {
         posGroup.add(label);
         cometLabels.push(label);
         allLabels.push(label); // controlled by label toggle
+        occludePairs.push({ mesh, label });
 
         comets.push({
             data: cd,
@@ -932,6 +940,33 @@ export function initSolarSystem(textures) {
             pos[i * 3 + 2] = -x2 * sO + z2 * cO;
         }
         astGeo.attributes.position.needsUpdate = true;
+        updateLabelOcclusion();
+    }
+
+    // ── Label occlusion check ───────────────────────────────────────
+    occluders = [
+        sun,
+        ...planets.map(p => p.mesh),
+        ...comets.map(c => c.mesh),
+    ];
+    if (moonObj) occluders.push(moonObj.mesh);
+
+    function updateLabelOcclusion() {
+        _origin.copy(camera.position);
+        for (const { mesh, label } of occludePairs) {
+            label.getWorldPosition(_wp2);
+            _dir.copy(_wp2).sub(_origin).normalize(); // direction from camera to label
+            const dist = _origin.distanceTo(_wp2);
+            _ray.set(_origin, _dir);
+            _ray.far = dist + 0.1; // maximum detection distance of ray
+            const hits = _ray.intersectObjects(occluders, false);
+            let occluded = false;
+            for (const hit of hits) {
+                // 如果撞到的不是标签自己的物体（从下往上看一个行星时，到标签的射线可能会穿透行星自己的球体）
+                if (hit.object !== mesh) { occluded = true; break; }
+            }
+            label.visible = !occluded;
+        }
     }
 
     // Initialise at 1x speed

@@ -18,6 +18,143 @@ export function initControls(sys, camera, renderer) {
     orbit.maxDistance = 18000;
     orbit.target.set(0, 0, 0);
 
+    // ── Planet focus with smooth fly-to ──────────────────────────
+    let focusedBody = null;
+    let focusedId = '';
+    let focusName = '';
+    let flying = false;
+    let flyBackToSun = false;
+    let flyProgress = 0;
+    const FLY_DURATION = 0.8; // seconds
+    const flyStart = new THREE.Vector3();
+    const flyEnd = new THREE.Vector3();
+    const flyTargetStart = new THREE.Vector3();
+    const flyTargetEnd = new THREE.Vector3();
+    const cameraOffset = new THREE.Vector3();
+    const _v = new THREE.Vector3();
+    const _wp = new THREE.Vector3();
+
+    const focusLabel = document.createElement('div');
+    focusLabel.id = 'focus-label';
+    focusLabel.textContent = '';
+    document.body.appendChild(focusLabel);
+
+    function smoothstep(t) {
+        return t * t * (3 - 2 * t);
+    }
+
+    /** Smoothly fly camera to look at a planet */
+    function setFocus(bodyData, name, bodyId) {
+        focusedId = bodyId || '';
+        // Calculate end camera position: approach the planet along current view direction
+        bodyData.getWorldPosition(_wp);
+        // Get actual world radius accounting for scaleWrapper scaling
+        const baseRadius = bodyData.geometry ? bodyData.geometry.parameters.radius : 4;
+        // Hierarchy: mesh -> tiltGroup -> scaleWrapper -> posGroup
+        const scaleNode = bodyData.parent ? bodyData.parent.parent : null;
+        const worldScale = scaleNode ? scaleNode.scale.x : 1;
+        const worldRadius = baseRadius * worldScale;
+        const viewDist = Math.max(worldRadius * 3, 1);
+        // Direction from planet toward camera, or a default offset if too close
+        _v.copy(camera.position).sub(_wp);
+        const dist = _v.length();
+        if (dist < 0.1) {
+            _v.set(0, viewDist * 0.5, viewDist);
+        }
+        _v.normalize().multiplyScalar(viewDist);
+        flyEnd.copy(_wp).add(_v);
+        flyTargetEnd.copy(_wp);
+
+        // Start from current camera
+        flyStart.copy(camera.position);
+        flyTargetStart.copy(orbit.target);
+
+        // Compute target camera offset for tracking
+        cameraOffset.copy(flyEnd).sub(_wp);
+
+        flying = true;
+        flyProgress = 0;
+        focusedBody = bodyData;
+        focusName = name || '';
+        focusLabel.textContent = '🔭 ' + focusName + '（左键双击重置）';
+        focusLabel.style.display = 'block';
+    }
+
+    /** Clear focus and return to sun (instant, for init) */
+    function clearFocus() {
+        flying = false;
+        flyBackToSun = false;
+        focusedBody = null;
+        focusedId = '';
+        focusName = '';
+        focusLabel.style.display = 'none';
+        orbit.target.set(0, 0, 0);
+    }
+
+    /** Smooth fly-back to default sun view */
+    function flyBack() {
+        if (!focusedBody) return;
+        flyStart.copy(camera.position);
+        flyEnd.set(0, 120, 200);
+        flyTargetStart.copy(orbit.target);
+        flyTargetEnd.set(0, 0, 0);
+        flyProgress = 0;
+        flying = true;
+        flyBackToSun = true;
+        focusLabel.style.display = 'none';
+        focusedBody = null;
+    }
+
+    /** Call each frame: flies then tracks planet with camera offset */
+    function updateFocus(planets, dt) {
+        // Fly-back to sun animation
+        if (flying && flyBackToSun) {
+            flyProgress += dt / FLY_DURATION;
+            if (flyProgress >= 1) {
+                flyProgress = 1;
+                flying = false;
+                flyBackToSun = false;
+                clearFocus();
+                return;
+            }
+            const t = smoothstep(flyProgress);
+            camera.position.lerpVectors(flyStart, flyEnd, t);
+            orbit.target.lerpVectors(flyTargetStart, flyTargetEnd, t);
+            return;
+        }
+        // Normal mode: fly to / track planet
+        if (!focusedBody && !flying) return;
+        focusedBody.getWorldPosition(_wp);
+        if (flying) {
+            flyProgress += dt / FLY_DURATION;
+            if (flyProgress >= 1) {
+                flyProgress = 1;
+                flying = false;
+                // Capture final offset after fly completes
+                cameraOffset.copy(camera.position).sub(_wp);
+            }
+            const t = smoothstep(flyProgress);
+            camera.position.lerpVectors(flyStart, flyEnd, t);
+            orbit.target.lerpVectors(flyTargetStart, flyTargetEnd, t);
+            // Update fly end as planet orbits
+            flyTargetEnd.copy(_wp);
+            flyEnd.copy(_wp).add(cameraOffset);
+        }
+        if (focusedBody && !flying) {
+            // Track: keep camera offset relative to planet
+            orbit.target.copy(_wp);
+            camera.position.copy(_wp).add(cameraOffset);
+        }
+    }
+
+    // When user drags during tracking, update the offset
+    orbit.addEventListener('change', () => {
+        if (focusedBody && !flying) {
+            focusedBody.getWorldPosition(_wp);
+            cameraOffset.copy(camera.position).sub(_wp);
+        }
+    });
+
     // ── DOM helpers ────────────────────────────────────────────────
     const $ = (sel) => document.querySelector(sel);
     const scaleSlider = $('#scale-slider');
@@ -134,10 +271,13 @@ export function initControls(sys, camera, renderer) {
         updateScale();
         updateSpeed();
         updateEcc();
-        // Reset camera
-        camera.position.set(0, 120, 200);
-        camera.lookAt(0, 0, 0);
-        orbit.target.set(0, 0, 0);
+        // Smoothly fly back to sun if focused, otherwise snap
+        if (focusedBody) {
+            flyBack();
+        } else {
+            camera.position.set(0, 120, 200);
+            clearFocus();
+        }
     }
     setDefaults(); // initialise with default values
 
@@ -244,5 +384,5 @@ export function initControls(sys, camera, renderer) {
         sys.labelRenderer.setSize(window.innerWidth, window.innerHeight);
     });
 
-    return orbit;
+    return { orbit, setFocus, clearFocus, flyBack, updateFocus, getFocusedId: () => focusedId };
 }

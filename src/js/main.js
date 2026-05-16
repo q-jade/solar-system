@@ -33,7 +33,7 @@ loadingEL.style.opacity = '0';
 setTimeout(() => loadingEL.style.display = 'none', 500);
 const sys = initSolarSystem(textures);
 const { scene, camera, renderer, labelRenderer } = sys;
-const controls = initControls(sys, camera, renderer);
+const { orbit: controls, setFocus, updateFocus, getFocusedId } = initControls(sys, camera, renderer);
 
 // ── Phase 2: Quest & Achievement engine ────────
 const quest = createQuestEngine();
@@ -61,10 +61,14 @@ const clickables = [
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 let mouseDownPos = { x: 0, y: 0 };
+let mouseDownBtn = 0;
+
+renderer.domElement.addEventListener('contextmenu', (e) => e.preventDefault());
 
 renderer.domElement.addEventListener('pointerdown', (e) => {
     mouseDownPos.x = e.clientX;
     mouseDownPos.y = e.clientY;
+    mouseDownBtn = e.button;
 });
 
 renderer.domElement.addEventListener('pointerup', (e) => {
@@ -90,19 +94,33 @@ renderer.domElement.addEventListener('pointerup', (e) => {
                 return;
             }
             const body = getPlanet(entry.bodyId);
-            if (body) {
-                selectBody(entry.bodyId);
-                const wasExplored = markExplored(entry.bodyId);
-                // Phase 2: XP for first-time exploration + quest/achievement
-                if (wasExplored) {
-                    const mult = entry.bodyId === 'sun' ? 1.5 : (
-                        ['earth', 'jupiter', 'saturn'].includes(entry.bodyId) ? 1.2 : 1
+            if (!body) return;
+
+            if (mouseDownBtn === 2) {
+                // Right-click: focus camera on planet or sun
+                if (getFocusedId() === entry.bodyId) return; // already focused
+                if (entry.bodyId === 'sun') {
+                    setFocus(sys.sun, '太阳', 'sun');
+                } else {
+                    const pMatch = sys.planets.find(p =>
+                        (p.data.english || '').toLowerCase() === entry.bodyId
                     );
-                    addXp(Math.round(20 * mult));
+                    if (pMatch) setFocus(pMatch.mesh, pMatch.data.name, entry.bodyId);
                 }
-                quest.trigger('click_body', { bodyId: entry.bodyId });
-                ach.evaluate();
+                return;
             }
+
+            // Left-click: open info card + XP/quest
+            selectBody(entry.bodyId);
+            const wasExplored = markExplored(entry.bodyId);
+            if (wasExplored) {
+                const mult = entry.bodyId === 'sun' ? 1.5 : (
+                    ['earth', 'jupiter', 'saturn'].includes(entry.bodyId) ? 1.2 : 1
+                );
+                addXp(Math.round(20 * mult));
+            }
+            quest.trigger('click_body', { bodyId: entry.bodyId });
+            ach.evaluate();
         }
     }
 });
@@ -300,6 +318,7 @@ function animate() {
         ach.evaluate();
     }
 
+    updateFocus(sys.planets, dt);
     controls.update();
     renderer.render(scene, camera);
     labelRenderer.render(scene, camera);

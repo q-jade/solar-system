@@ -92,6 +92,27 @@ body {
   z-index: 1;
 }
 
+/* ── Focus label ──────────────────────────── */
+#focus-label {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  font-size: 14px;
+  color: #8cf;
+  background: rgba(10, 10, 30, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(100, 160, 255, 0.2);
+  user-select: none;
+  pointer-events: none;
+  white-space: nowrap;
+  display: none;
+}
+
 /* ── Control panel ────────────────────────── */
 #controls-panel {
   position: absolute;

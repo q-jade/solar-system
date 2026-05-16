@@ -669,26 +669,24 @@ export function initSolarSystem(textures) {
         );
         posGroup.add(mesh);
 
-        // Comet tail (single cone with per-vertex alpha for smooth fading)
+        // Comet tail: solid frustum from comet radius to wider tip
         const tailH = 10;
-        const tailR = 0.8;
-        const tailGeo = new THREE.ConeGeometry(tailR, tailH, 16);
-        // Orient: apex (+Y) → -Z, base (-Y) → +Z. Then apex at origin.
+        const tailR = 0.9;
+        // CylinderGeometry(topR, bottomR, height, radialSegs, heightSegs, openEnded)
+        // Capped ends ensure center vertices for the radial gradient on cap faces
+        const tailGeo = new THREE.CylinderGeometry(cometRadius, tailR, tailH, 16, 8, false);
+        // Orient: top (+Y) → -Z, bottom (-Y) → +Z. Then top at z=0, bottom at z=tailH.
         tailGeo.rotateX(-Math.PI / 2);
         tailGeo.translate(0, 0, tailH / 2);
 
-        // Per-vertex alpha: fade radially (center→edge) AND axially (apex→base)
+        // Per-vertex alpha: axial fade only (comet→far), uniform across cross-section
         const pos = tailGeo.attributes.position;
         const alpha = new Float32Array(pos.count);
         for (let i = 0; i < pos.count; i++) {
-            const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
-            const radialDist = Math.sqrt(x * x + y * y);
-            const axialFrac = z / tailH; // 0 at apex, 1 at base
-            // Radial fade: 1 (center) → 0 (edge)
-            const radialFade = Math.max(0, 0.5 - radialDist / tailR);
-            // Axial fade: 1 (apex) → 0 (base)
-            const axialFade = Math.max(0, 1 - axialFrac * 0.97);
-            alpha[i] = radialFade * axialFade;
+            const z = pos.getZ(i);
+            // z: 0 at comet end (top), tailH at far end (bottom)
+            const axialFrac = Math.max(0, Math.min(1, z / tailH));
+            alpha[i] = Math.max(0, (1 - axialFrac * 0.95) * 0.5);
         }
         tailGeo.setAttribute('alpha', new THREE.BufferAttribute(alpha, 1));
 

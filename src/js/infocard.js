@@ -1,4 +1,4 @@
-import { getPlanet, getQuestions } from './knowledge.js';
+import { getPlanet, getAllPlanets, getQuestions } from './knowledge.js';
 import { startQuiz } from './quizEngine.js';
 
 // ── HTML template ──────────────────────────────────────────────────────
@@ -10,10 +10,12 @@ const PANEL_HTML = `
     <div class="ic-tabs">
       <button class="ic-tab active" data-tab="overview">概览</button>
       <button class="ic-tab" data-tab="detail">详情</button>
+      <button class="ic-tab" data-tab="compare" id="ic-tab-compare">比较</button>
     </div>
     <div class="ic-body">
       <div class="ic-tab-content active" id="ic-overview"></div>
       <div class="ic-tab-content" id="ic-detail"></div>
+      <div class="ic-tab-content" id="ic-compare"></div>
     </div>
     <div class="ic-footer">
       <button class="ic-quiz-btn" id="ic-quiz-btn">❓ 知识挑战</button>
@@ -22,6 +24,7 @@ const PANEL_HTML = `
 `;
 
 let activeBodyId = null;
+let compareBodyId = null;
 
 // ── Format helpers ─────────────────────────────────────────────────────
 function fmtMass(m) {
@@ -55,11 +58,49 @@ function fmtMoons(count) {
     return String(count);
 }
 
+function fmtRadius(r) {
+    return r.toLocaleString() + ' km';
+}
+
+// ── Texture path ───────────────────────────────────────────────────────
+const TEXTURE_MAP = {
+    sun: '/textures/2k_sun.jpg',
+    mercury: '/textures/2k_mercury.jpg',
+    venus: '/textures/2k_venus_surface.jpg',
+    earth: '/textures/2k_earth_daymap.jpg',
+    mars: '/textures/2k_mars.jpg',
+    jupiter: '/textures/2k_jupiter.jpg',
+    saturn: '/textures/2k_saturn.jpg',
+    uranus: '/textures/2k_uranus.jpg',
+    neptune: '/textures/2k_neptune.jpg',
+};
+function getTexturePath(bodyId) {
+    return TEXTURE_MAP[bodyId] || '';
+}
+
+// ── Compare row helper ─────────────────────────────────────────────────
+function compareRow(label, valA, valB, unit) {
+    return `<tr>
+      <td class="ic-cmp-label">${label}</td>
+      <td class="ic-cmp-valA">${valA}</td>
+      <td class="ic-cmp-vs">${valA === valB ? '=' : (valA > valB ? '>' : '<')}</td>
+      <td class="ic-cmp-valB">${valB}</td>
+    </tr>`;
+}
+
 // ── Build overview tab content ─────────────────────────────────────────
 function overviewHTML(body) {
+    const colorHex = '#' + body.color.toString(16).padStart(6, '0');
+    let hlHtml = '';
+    if (body.highlights && body.highlights.length) {
+        hlHtml = body.highlights.map(h => `<span class="ic-hl-badge">${h}</span>`).join('');
+        hlHtml = `<div class="ic-highlights">${hlHtml}</div>`;
+    }
+
     return `
+      ${hlHtml}
       <table class="ic-datatable">
-        <tr><td class="ic-label">半径</td><td class="ic-val">${body.radius.toLocaleString()} km</td></tr>
+        <tr><td class="ic-label">半径</td><td class="ic-val">${fmtRadius(body.radius)}</td></tr>
         <tr><td class="ic-label">质量</td><td class="ic-val">${fmtMass(body.mass)}</td></tr>
         <tr><td class="ic-label">密度</td><td class="ic-val">${body.density} g/cm³</td></tr>
         <tr><td class="ic-label">距太阳</td><td class="ic-val">${fmtAU(body.orbitA)}</td></tr>
@@ -76,7 +117,62 @@ function overviewHTML(body) {
 
 // ── Build detail tab content ───────────────────────────────────────────
 function detailHTML(body) {
-    return `<div class="ic-detail-text">${body.detail}</div>`;
+    const paragraphs = body.detail.split('\n\n').filter(Boolean);
+    const html = paragraphs.map(p => `<p>${p}</p>`).join('');
+    return `<div class="ic-detail-text">${html}</div>`;
+}
+
+// ── Build compare tab content ──────────────────────────────────────────
+function compareHTML(bodyA, bodyB) {
+    if (!bodyB) {
+        // 未选择比较对象，显示选择器
+        const allBodies = getAllPlanets().filter(b => b.id !== bodyA.id);
+        const opts = allBodies.map(b =>
+            `<option value="${b.id}">${b.symbol} ${b.name}</option>`
+        ).join('');
+        return `
+          <div class="ic-cmp-empty">
+            <p>选择一个天体与 <strong>${bodyA.symbol} ${bodyA.name}</strong> 比较</p>
+            <select class="ic-cmp-select" id="ic-cmp-select">
+              <option value="">— 选择 —</option>
+              ${opts}
+            </select>
+          </div>
+        `;
+    }
+
+    // 比较表格
+    const colorA = '#' + bodyA.color.toString(16).padStart(6, '0');
+    const colorB = '#' + bodyB.color.toString(16).padStart(6, '0');
+
+    return `
+      <div class="ic-cmp-header">
+        <div class="ic-cmp-col" style="border-color:${colorA}">
+          <span class="ic-cmp-symbol">${bodyA.symbol}</span>
+          <span class="ic-cmp-name">${bodyA.name}</span>
+        </div>
+        <div class="ic-cmp-col" style="border-color:${colorB}">
+          <span class="ic-cmp-symbol">${bodyB.symbol}</span>
+          <span class="ic-cmp-name">${bodyB.name}</span>
+        </div>
+      </div>
+      <table class="ic-cmp-table">
+        ${compareRow('半径', fmtRadius(bodyA.radius), fmtRadius(bodyB.radius))}
+        ${compareRow('质量', fmtMass(bodyA.mass), fmtMass(bodyB.mass))}
+        ${compareRow('密度', bodyA.density + ' g/cm³', bodyB.density + ' g/cm³')}
+        ${compareRow('距太阳', fmtAU(bodyA.orbitA), fmtAU(bodyB.orbitA))}
+        ${compareRow('公转周期', fmtDays(bodyA.period), fmtDays(bodyB.period))}
+        ${compareRow('自转周期', fmtDays(bodyA.rotPeriod), fmtDays(bodyB.rotPeriod))}
+        ${compareRow('表面温度', fmtTemp(bodyA.surfaceTemp), fmtTemp(bodyB.surfaceTemp))}
+        ${compareRow('卫星数量', fmtMoons(bodyA.moons), fmtMoons(bodyB.moons))}
+      </table>
+      <select class="ic-cmp-select" id="ic-cmp-select">
+        <option value="">— 选择其他天体 —</option>
+        ${getAllPlanets().filter(b => b.id !== bodyA.id).map(b =>
+            `<option value="${b.id}" ${b.id === bodyB.id ? 'selected' : ''}>${b.symbol} ${b.name}</option>`
+        ).join('')}
+      </select>
+    `;
 }
 
 // ── Inject panel into DOM ──────────────────────────────────────────────
@@ -100,16 +196,40 @@ function ensurePanel() {
             btn.classList.add('active');
             const tab = btn.dataset.tab;
             document.getElementById('ic-' + tab).classList.add('active');
+            // 切换到比较 tab 时渲染
+            if (tab === 'compare') {
+                renderCompare();
+            }
         });
     });
 
     // Quiz button
     document.getElementById('ic-quiz-btn').addEventListener('click', () => {
         if (activeBodyId) {
-            startQuiz({ bodyId: activeBodyId,
-                title: document.getElementById('ic-name')?.textContent || '知识挑战' });
+            startQuiz({
+                bodyId: activeBodyId,
+                title: document.getElementById('ic-name')?.textContent || '知识挑战'
+            });
         }
     });
+
+    // 比较选择器变更（事件委托）
+    document.addEventListener('change', (e) => {
+        if (e.target.id === 'ic-cmp-select') {
+            compareBodyId = e.target.value;
+            renderCompare();
+        }
+    });
+}
+
+// ── Render compare tab ─────────────────────────────────────────────────
+function renderCompare() {
+    const container = document.getElementById('ic-compare');
+    if (!container) return;
+    const bodyA = getPlanet(activeBodyId);
+    if (!bodyA) return;
+    const bodyB = compareBodyId ? getPlanet(compareBodyId) : null;
+    container.innerHTML = compareHTML(bodyA, bodyB);
 }
 
 // ── Open card for a body ────────────────────────────────────────────────
@@ -118,6 +238,7 @@ export function selectBody(bodyId) {
     if (!body) return;
 
     activeBodyId = bodyId;
+    compareBodyId = null;
     ensurePanel();
 
     const panel = document.getElementById('ic-panel');
@@ -128,13 +249,25 @@ export function selectBody(bodyId) {
     const colorHex = '#' + body.color.toString(16).padStart(6, '0');
     document.getElementById('ic-header').innerHTML = `
       <span class="ic-color-dot" style="background:${colorHex}"></span>
-      <span class="ic-name">${body.symbol} ${body.name}</span>
+      <span class="ic-name" id="ic-name">${body.symbol} ${body.name}</span>
       <span class="ic-english">${body.english}</span>
     `;
 
     // Tab content
     document.getElementById('ic-overview').innerHTML = overviewHTML(body);
     document.getElementById('ic-detail').innerHTML = detailHTML(body);
+
+    // 在详情页顶部插入行星图片
+    const txtEl = document.getElementById('ic-detail');
+    const imgPath = getTexturePath(bodyId);
+    if (imgPath) {
+        const imgHtml = `<div class="ic-planet-img"><img src="${imgPath}" alt="${body.name}" loading="lazy"></div>`;
+        txtEl.innerHTML = imgHtml + txtEl.innerHTML;
+    }
+
+    // 启用比较 tab
+    const cmpTab = document.getElementById('ic-tab-compare');
+    if (cmpTab) cmpTab.style.display = '';
 
     // Reset to Overview tab
     document.querySelectorAll('.ic-tab').forEach(b => b.classList.remove('active'));
@@ -146,6 +279,7 @@ export function selectBody(bodyId) {
 // ── Close card ─────────────────────────────────────────────────────────
 export function closeCard() {
     activeBodyId = null;
+    compareBodyId = null;
     const panel = document.getElementById('ic-panel');
     const overlay = document.getElementById('ic-overlay');
     if (panel) panel.classList.remove('visible');

@@ -150,7 +150,7 @@ export function initSolarSystem(textures) {
 
     // ── Reference ecliptic plane disc (visual aid for inclination) ──
     const eclipticDisc = new THREE.Mesh(
-        new THREE.RingGeometry(6, 160, 64),
+        new THREE.RingGeometry(6, 1230, 64),
         new THREE.MeshBasicMaterial({
             color: 0x778833,
             transparent: true,

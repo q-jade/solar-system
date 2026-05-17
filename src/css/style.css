@@ -640,7 +640,7 @@ input[type="range"]::-moz-range-thumb {
 #global-quiz-btn {
   position: fixed;
   top: 16px;
-  right: 130px;
+  right: 180px;
   z-index: 5;
   padding: 7px 16px;
   background: rgba(10, 10, 30, 0.7);
@@ -851,7 +851,7 @@ input[type="range"]::-moz-range-thumb {
 #stats-btn {
   position: fixed;
   top: 16px;
-  right: 230px;
+  right: 290px;
   z-index: 5;
   padding: 7px 14px;
   background: rgba(10, 10, 30, 0.7);

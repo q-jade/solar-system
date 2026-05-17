@@ -11,6 +11,7 @@
  */
 
 import { getRaw, saveRaw, addXp, calcLevel } from './storage.js';
+import { openSortPanel } from './sortPanel.js';
 
 // ── Quest definitions ──────────────────────────────────────────────────
 
@@ -707,6 +708,20 @@ export function createQuestEngine() {
 
             body.innerHTML = html || '<div style="padding:16px;color:#667;font-size:13px;">暂无可用任务</div>';
 
+            // Click delegation: quest items with data-quest-click
+            body.addEventListener('click', function onQuestItemClick(e) {
+                const item = e.target.closest('[data-quest-click]');
+                if (!item) return;
+                const questId = item.dataset.questClick;
+                if (questId === 'quest_size_sort') {
+                    const s = questState['quest_size_sort'];
+                    if (s && (s.status === STATUS.ACTIVE || s.status === STATUS.COMPLETED)) {
+                        api.closePanel();
+                        openSortPanel();
+                    }
+                }
+            });
+
             // Footer: progress bar
             const mainDone = getMainCompleted();
             const totalMain = mainQuests.length;
@@ -763,7 +778,9 @@ function renderQuestItem(q, state) {
     }
 
     if (status === STATUS.COMPLETED) {
-        return `<div class="qt-item qt-completed">✅ ${q.name}</div>`;
+        const dataAttr = (q.id === 'quest_size_sort') ? ' data-quest-click="quest_size_sort"' : '';
+        const cursorStyle = (q.id === 'quest_size_sort') ? ' style="cursor:pointer"' : '';
+        return `<div class="qt-item qt-completed"${dataAttr}${cursorStyle}>✅ ${q.name}</div>`;
     }
 
     // Active
@@ -797,8 +814,17 @@ function renderQuestItem(q, state) {
         `;
     }
 
+    // Make quest_size_sort clickable to open sort panel
+    const dataAttr = (q.id === 'quest_size_sort')
+        ? ' data-quest-click="quest_size_sort"'
+        : '';
+
+    const cursorStyle = (q.id === 'quest_size_sort' && status === STATUS.ACTIVE)
+        ? ' style="cursor:pointer"'
+        : '';
+
     return `
-        <div class="qt-item qt-active">
+        <div class="qt-item qt-active"${dataAttr}${cursorStyle}>
             <div class="qt-item-header">
                 <span class="qt-item-name">🎯 ${q.name}</span>
             </div>

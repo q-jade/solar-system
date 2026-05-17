@@ -5,7 +5,8 @@
   "main": "src/js/main.js",
   "scripts": {
     "start": "webpack serve --open",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "serve": "npm run build && cd dist && python3 -m http.server 8081"
   },
   "keywords": [
     "three.js",

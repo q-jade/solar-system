@@ -10,7 +10,7 @@ import * as THREE from 'three';
 
 // ── Texture URL definitions ────────────────────────────────────────────
 // Use dev server proxy to avoid CORS + wrong Content-Type issues
-const CDN_BASE = '/textures';
+const CDN_BASE = 'textures';
 
 const TEXTURE_LIST = {
     // Sun

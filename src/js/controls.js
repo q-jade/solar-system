@@ -178,6 +178,8 @@ export function initControls(sys, camera, renderer) {
         const v = parseFloat(scaleSlider.value);
         const s = sliderToScale(v);
         sys.setScale(s);
+        // 动态调整相机最近缩放: 1x→0.5, 1200x及以上→5
+        orbit.minDistance = Math.min(5, 0.5 + (s - 1) * 4.5 / 1199);
         if (s === 1) {
             scaleVal.textContent = 'x1 (真实)';
         } else if (s < 10) {

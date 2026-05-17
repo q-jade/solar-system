@@ -290,6 +290,7 @@ export function initSolarSystem(textures) {
     const _wp2 = new THREE.Vector3();
     const _dir = new THREE.Vector3();
     let occluders = [];
+    let labelsEnabled = true; // controlled by label toggle
 
     // ── Helper: create a label div ──────────────────────────────────
     function makeLabel(text, fontSize) {
@@ -807,6 +808,7 @@ export function initSolarSystem(textures) {
 
     /** @param {boolean} v */
     function setLabelsVisible(v) {
+        labelsEnabled = v;
         for (const lbl of allLabels) lbl.visible = v;
     }
 
@@ -952,6 +954,7 @@ export function initSolarSystem(textures) {
     if (moonObj) occluders.push(moonObj.mesh);
 
     function updateLabelOcclusion() {
+        if (!labelsEnabled) return;
         _origin.copy(camera.position);
         for (const { mesh, label } of occludePairs) {
             label.getWorldPosition(_wp2);

@@ -10,6 +10,8 @@ import { markExplored, getStats, resetData, addXp } from './storage.js';
 import { createQuestEngine } from './questEngine.js';
 import { createAchievement } from './achievement.js';
 import { loadTextures, setOnProgress } from './textureLoader.js';
+import { sfx } from './sfx.js';
+import { ambientMusic } from './ambientMusic.js';
 
 (async () => {
 // ── Loading screen ────────────────────────────────
@@ -43,6 +45,9 @@ ach.ensurePanelDOM();
 // Expose for controls.js and quizEngine.js to use
 window.__questEngine = quest;
 window.__achievement = ach;
+
+// 自动启动背景音乐
+ambientMusic.start();
 
 // ── Clickable body meshes ─────────────────────────
 const clickables = [
@@ -108,6 +113,7 @@ renderer.domElement.addEventListener('pointerup', (e) => {
 
             // Left-click: open info card + XP/quest
             selectBody(entry.bodyId);
+            sfx.focus();
             const wasExplored = markExplored(entry.bodyId);
             if (wasExplored) {
                 const mult = entry.bodyId === 'sun' ? 1.5 : (
@@ -124,16 +130,19 @@ renderer.domElement.addEventListener('pointerup', (e) => {
 // ── Global quiz button ────────────────────────────
 document.getElementById('global-quiz-btn').addEventListener('click', () => {
     startQuiz({ title: '随机知识挑战' });
+    sfx.click();
 });
 
 // ── Quest & Achievement buttons ─────────────────
 document.getElementById('quest-btn').addEventListener('click', () => {
     quest.togglePanel();
     ach.closePanel();
+    sfx.click();
 });
 document.getElementById('ach-btn').addEventListener('click', () => {
     ach.togglePanel();
     quest.closePanel();
+    sfx.click();
 });
 
 // ── Asteroid belt click detection ─────────────────

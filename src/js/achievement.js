@@ -6,6 +6,7 @@
  */
 
 import { getRaw, saveRaw, addXp, calcLevel } from './storage.js';
+import { sfx } from './sfx.js';
 import { createQuestEngine } from './questEngine.js';
 
 // ── Achievement definitions ────────────────────────────────────────────
@@ -250,6 +251,7 @@ export function createAchievement() {
                     const { xp } = addXp(ach.xp);
                     saveRaw(data);
                     anyUnlocked = true;
+                    sfx.achievement();
 
                     // Dispatch unlock animation (async, after current render)
                     setTimeout(() => showUnlockAnimation(ach, ach.xp), 100);

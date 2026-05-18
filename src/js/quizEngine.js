@@ -1,5 +1,6 @@
 import { getRandomQuestion, getQuestions } from './knowledge.js';
 import { recordAnswer } from './storage.js';
+import { sfx } from './sfx.js';
 
 let activeQuestions = [];
 let currentIndex = 0;
@@ -84,6 +85,13 @@ function onAnswer(idx) {
     if (isCorrect) correctCount++;
 
     recordAnswer(isCorrect);
+
+    // SFX
+    if (isCorrect) {
+        sfx.quizCorrect();
+    } else {
+        sfx.quizWrong();
+    }
 
     // Phase 2: trigger quest/achievement events
     if (window.__questEngine) {

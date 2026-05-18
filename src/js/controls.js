@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { ambientMusic } from './ambientMusic.js';
 
 const DEFAULT_SCALE = 1200;
 const MIN_SPEED = 1 / 24;  // 1 hour/sec
@@ -331,6 +332,16 @@ export function initControls(sys, camera, renderer) {
     const eclipticToggle = $('#ecliptic-toggle');
     eclipticToggle.addEventListener('change', () => {
         sys.eclipticDisc.visible = eclipticToggle.checked;
+    });
+
+    // ── Ambient music toggle ───────────────────────────────────────
+    const musicToggle = $('#music-toggle');
+    musicToggle.addEventListener('change', () => {
+        if (musicToggle.checked) {
+            ambientMusic.start();
+        } else {
+            ambientMusic.stop();
+        }
     });
 
     // ── Build size comparison panel (radius circles) ────────────────

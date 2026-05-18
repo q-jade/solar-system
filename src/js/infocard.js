@@ -1,5 +1,6 @@
 import { getPlanet, getAllPlanets, getQuestions } from './knowledge.js';
 import { startQuiz } from './quizEngine.js';
+import { sfx } from './sfx.js';
 
 // ── HTML template ──────────────────────────────────────────────────────
 const PANEL_HTML = `
@@ -244,6 +245,7 @@ export function selectBody(bodyId) {
     const panel = document.getElementById('ic-panel');
     panel.classList.add('visible');
     document.getElementById('ic-overlay').classList.add('visible');
+    sfx.panelOpen();
 
     // Header
     const colorHex = '#' + body.color.toString(16).padStart(6, '0');
@@ -280,6 +282,7 @@ export function selectBody(bodyId) {
 export function closeCard() {
     activeBodyId = null;
     compareBodyId = null;
+    sfx.panelClose();
     const panel = document.getElementById('ic-panel');
     const overlay = document.getElementById('ic-overlay');
     if (panel) panel.classList.remove('visible');

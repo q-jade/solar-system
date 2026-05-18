@@ -12,6 +12,7 @@
 
 import { getRaw, saveRaw, addXp, calcLevel } from './storage.js';
 import { openSortPanel } from './sortPanel.js';
+import { sfx } from './sfx.js';
 
 // ── Quest definitions ──────────────────────────────────────────────────
 
@@ -426,6 +427,7 @@ export function createQuestEngine() {
 
     function showCompletion(q, xp, level) {
         // First show a compact toast
+        sfx.questDone();
         showNotification('✅ ' + q.name + ' 完成！ +' + xp + ' XP', 'complete');
 
         // If there's a completion message, schedule the expanded info panel
@@ -625,6 +627,7 @@ export function createQuestEngine() {
 
         /** Open/close quest panel */
         openPanel() {
+            sfx.panelOpen();
             panelOpen = true;
             const panel = document.getElementById('qt-panel');
             if (panel) {
@@ -634,6 +637,7 @@ export function createQuestEngine() {
         },
         closePanel() {
             panelOpen = false;
+            sfx.panelClose();
             const panel = document.getElementById('qt-panel');
             if (panel) panel.classList.remove('visible');
         },

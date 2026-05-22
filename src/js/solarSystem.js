@@ -290,6 +290,7 @@ export function initSolarSystem(textures) {
     const _wp2 = new THREE.Vector3();
     const _dir = new THREE.Vector3();
     let occluders = [];
+    const labelData = []; // { element, bodyId } for lang switch
     let labelsEnabled = true; // controlled by label toggle
 
     // ── Helper: create a label div ──────────────────────────────────
@@ -531,6 +532,7 @@ export function initSolarSystem(textures) {
         posGroup.add(label);
         allLabels.push(label);
         occludePairs.push({ mesh, label });
+        labelData.push({ element: label.element, bodyId: d.english.toLowerCase() });
 
         planets.push({
             data: d,
@@ -724,6 +726,7 @@ export function initSolarSystem(textures) {
         cometLabels.push(label);
         allLabels.push(label); // controlled by label toggle
         occludePairs.push({ mesh, label });
+        labelData.push({ element: label.element, bodyId: cd.english.toLowerCase() });
 
         comets.push({
             data: cd,
@@ -810,6 +813,21 @@ export function initSolarSystem(textures) {
     function setLabelsVisible(v) {
         labelsEnabled = v;
         for (const lbl of allLabels) lbl.visible = v;
+    }
+
+    /** @param {string} lang - zh-CN or en-US */
+    function setLabelLanguage(lang) {
+        for (const { element, bodyId } of labelData) {
+            const data = PLANET_DATA.find(d => d.english.toLowerCase() === bodyId);
+            if (data) {
+                element.textContent = lang === "en-US" ? data.english : data.name;
+            } else {
+                const c_data = COMET_DATA.find(d => d.english.toLowerCase() === bodyId);
+                if (c_data) {
+                    element.textContent = lang === "en-US" ? c_data.english : c_data.name;
+                }
+            }
+        }
     }
 
     /** @param {number} mult - eccentricity multiplier, ≧0 (1 = real) */
@@ -979,7 +997,7 @@ export function initSolarSystem(textures) {
     return {
         scene, camera, renderer, labelRenderer,
         planets, moon: moonObj, comets, sun, asteroidBelt, eclipticDisc,
-        setScale, setSpeed, setLabelsVisible, setEccentricityMultiplier,
+        setScale, setSpeed, setLabelsVisible, setLabelLanguage, setEccentricityMultiplier,
         update: updateOrbits,
         SUN_RADIUS, MAX_SCALE,
     };

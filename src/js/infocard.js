@@ -1,6 +1,7 @@
 import { getPlanet, getAllPlanets, getQuestions } from './knowledge.js';
 import { startQuiz } from './quizEngine.js';
 import { sfx } from './sfx.js';
+import { t, onLangChange } from './i18n.js';
 
 // ── HTML template ──────────────────────────────────────────────────────
 const PANEL_HTML = `
@@ -9,9 +10,9 @@ const PANEL_HTML = `
     <button class="ic-close" id="ic-close">✕</button>
     <div class="ic-header" id="ic-header"></div>
     <div class="ic-tabs">
-      <button class="ic-tab active" data-tab="overview">概览</button>
-      <button class="ic-tab" data-tab="detail">详情</button>
-      <button class="ic-tab" data-tab="compare" id="ic-tab-compare">比较</button>
+      <button class="ic-tab active" data-tab="overview">${t('infoCard.overview')}</button>
+      <button class="ic-tab" data-tab="detail">${t('infoCard.detail')}</button>
+      <button class="ic-tab" data-tab="compare" id="ic-tab-compare">${t('infoCard.compare')}</button>
     </div>
     <div class="ic-body">
       <div class="ic-tab-content active" id="ic-overview"></div>
@@ -19,7 +20,7 @@ const PANEL_HTML = `
       <div class="ic-tab-content" id="ic-compare"></div>
     </div>
     <div class="ic-footer">
-      <button class="ic-quiz-btn" id="ic-quiz-btn">❓ 知识挑战</button>
+      <button class="ic-quiz-btn" id="ic-quiz-btn">${t('infoCard.quiz')}</button>
     </div>
   </div>
 `;
@@ -101,18 +102,18 @@ function overviewHTML(body) {
     return `
       ${hlHtml}
       <table class="ic-datatable">
-        <tr><td class="ic-label">半径</td><td class="ic-val">${fmtRadius(body.radius)}</td></tr>
-        <tr><td class="ic-label">质量</td><td class="ic-val">${fmtMass(body.mass)}</td></tr>
-        <tr><td class="ic-label">密度</td><td class="ic-val">${body.density} g/cm³</td></tr>
-        <tr><td class="ic-label">距太阳</td><td class="ic-val">${fmtAU(body.orbitA)}</td></tr>
-        <tr><td class="ic-label">公转周期</td><td class="ic-val">${fmtDays(body.period)}</td></tr>
-        <tr><td class="ic-label">自转周期</td><td class="ic-val">${fmtDays(body.rotPeriod)}</td></tr>
-        <tr><td class="ic-label">表面温度</td><td class="ic-val">${fmtTemp(body.surfaceTemp)}</td></tr>
-        <tr><td class="ic-label">大气成分</td><td class="ic-val">${body.atmosphere}</td></tr>
-        <tr><td class="ic-label">卫星数量</td><td class="ic-val">${fmtMoons(body.moons)}</td></tr>
+        <tr><td class="ic-label">${t('infoCard.labelRadius')}</td><td class="ic-val">${fmtRadius(body.radius)}</td></tr>
+        <tr><td class="ic-label">${t('infoCard.labelMass')}</td><td class="ic-val">${fmtMass(body.mass)}</td></tr>
+        <tr><td class="ic-label">${t('infoCard.labelDensity')}</td><td class="ic-val">${body.density} g/cm³</td></tr>
+        <tr><td class="ic-label">${t('infoCard.labelOrbit')}</td><td class="ic-val">${fmtAU(body.orbitA)}</td></tr>
+        <tr><td class="ic-label">${t('infoCard.labelPeriod')}</td><td class="ic-val">${fmtDays(body.period)}</td></tr>
+        <tr><td class="ic-label">${t('infoCard.labelRotPeriod')}</td><td class="ic-val">${fmtDays(body.rotPeriod)}</td></tr>
+        <tr><td class="ic-label">${t('infoCard.labelTemp')}</td><td class="ic-val">${fmtTemp(body.surfaceTemp)}</td></tr>
+        <tr><td class="ic-label">${t('infoCard.labelAtmo')}</td><td class="ic-val">${body.atmosphere}</td></tr>
+        <tr><td class="ic-label">${t('infoCard.labelMoons')}</td><td class="ic-val">${fmtMoons(body.moons)}</td></tr>
       </table>
-      <div class="ic-funfact">💡 ${body.funFact}</div>
-      <div class="ic-source">来源：${body.source}</div>
+      <div class="ic-funfact">${t('infoCard.funFact', { text: body.funFact })}</div>
+      <div class="ic-source">${t('infoCard.source', { source: body.source })}</div>
     `;
 }
 
@@ -133,9 +134,9 @@ function compareHTML(bodyA, bodyB) {
         ).join('');
         return `
           <div class="ic-cmp-empty">
-            <p>选择一个天体与 <strong>${bodyA.symbol} ${bodyA.name}</strong> 比较</p>
+            <p>${t('infoCard.cmpSelect', { name: bodyA.symbol + ' ' + bodyA.name })}</p>
             <select class="ic-cmp-select" id="ic-cmp-select">
-              <option value="">— 选择 —</option>
+              <option value="">${t('infoCard.cmpPlaceholder')}</option>
               ${opts}
             </select>
           </div>
@@ -158,17 +159,17 @@ function compareHTML(bodyA, bodyB) {
         </div>
       </div>
       <table class="ic-cmp-table">
-        ${compareRow('半径', fmtRadius(bodyA.radius), fmtRadius(bodyB.radius))}
-        ${compareRow('质量', fmtMass(bodyA.mass), fmtMass(bodyB.mass))}
-        ${compareRow('密度', bodyA.density + ' g/cm³', bodyB.density + ' g/cm³')}
-        ${compareRow('距太阳', fmtAU(bodyA.orbitA), fmtAU(bodyB.orbitA))}
-        ${compareRow('公转周期', fmtDays(bodyA.period), fmtDays(bodyB.period))}
-        ${compareRow('自转周期', fmtDays(bodyA.rotPeriod), fmtDays(bodyB.rotPeriod))}
-        ${compareRow('表面温度', fmtTemp(bodyA.surfaceTemp), fmtTemp(bodyB.surfaceTemp))}
-        ${compareRow('卫星数量', fmtMoons(bodyA.moons), fmtMoons(bodyB.moons))}
+        ${compareRow(t('infoCard.cmpRadius'), fmtRadius(bodyA.radius), fmtRadius(bodyB.radius))}
+        ${compareRow(t('infoCard.cmpMass'), fmtMass(bodyA.mass), fmtMass(bodyB.mass))}
+        ${compareRow(t('infoCard.cmpDensity'), bodyA.density + ' g/cm³', bodyB.density + ' g/cm³')}
+        ${compareRow(t('infoCard.cmpOrbit'), fmtAU(bodyA.orbitA), fmtAU(bodyB.orbitA))}
+        ${compareRow(t('infoCard.cmpPeriod'), fmtDays(bodyA.period), fmtDays(bodyB.period))}
+        ${compareRow(t('infoCard.cmpRotPeriod'), fmtDays(bodyA.rotPeriod), fmtDays(bodyB.rotPeriod))}
+        ${compareRow(t('infoCard.cmpTemp'), fmtTemp(bodyA.surfaceTemp), fmtTemp(bodyB.surfaceTemp))}
+        ${compareRow(t('infoCard.cmpMoons'), fmtMoons(bodyA.moons), fmtMoons(bodyB.moons))}
       </table>
       <select class="ic-cmp-select" id="ic-cmp-select">
-        <option value="">— 选择其他天体 —</option>
+        <option value="">${t('infoCard.cmpSelectOther')}</option>
         ${getAllPlanets().filter(b => b.id !== bodyA.id).map(b =>
             `<option value="${b.id}" ${b.id === bodyB.id ? 'selected' : ''}>${b.symbol} ${b.name}</option>`
         ).join('')}
@@ -209,8 +210,24 @@ function ensurePanel() {
         if (activeBodyId) {
             startQuiz({
                 bodyId: activeBodyId,
-                title: document.getElementById('ic-name')?.textContent || '知识挑战'
+                title: document.getElementById('ic-name')?.textContent || t('quiz.title')
             });
+        }
+    });
+
+    // 语言切换时更新 tab 标签
+    onLangChange(() => {
+        const tabs = document.querySelectorAll('.ic-tab');
+        if (tabs.length) {
+            tabs[0].textContent = t('infoCard.overview');
+            tabs[1].textContent = t('infoCard.detail');
+            tabs[2].textContent = t('infoCard.compare');
+        }
+        document.getElementById('ic-quiz-btn').textContent = t('infoCard.quiz');
+        // 如果面板打开，刷新概览标签
+        if (activeBodyId && document.getElementById('ic-overview').classList.contains('active')) {
+            const body = getPlanet(activeBodyId);
+            if (body) document.getElementById('ic-overview').innerHTML = overviewHTML(body);
         }
     });
 

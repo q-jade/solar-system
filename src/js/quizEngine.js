@@ -1,6 +1,7 @@
 import { getRandomQuestion, getQuestions } from './knowledge.js';
 import { recordAnswer } from './storage.js';
 import { sfx } from './sfx.js';
+import { t } from './i18n.js';
 
 let activeQuestions = [];
 let currentIndex = 0;
@@ -8,12 +9,13 @@ let correctCount = 0;
 let answeredCount = 0;
 let isAnswered = false;
 
-// ── HTML template ──────────────────────────────────────────────────────
-const QUIZ_HTML = `
+// ── HTML template (函数式，每次打开时取当前语言) ───────────────────
+function buildQuizHTML() {
+  return `
   <div class="qz-overlay" id="qz-overlay"></div>
   <div class="qz-card" id="qz-card">
     <div class="qz-header">
-      <span class="qz-title" id="qz-title">知识挑战</span>
+      <span class="qz-title" id="qz-title">${t('quiz.title')}</span>
       <span class="qz-score" id="qz-score">0/0</span>
       <button class="qz-close" id="qz-close">✕</button>
     </div>
@@ -22,18 +24,19 @@ const QUIZ_HTML = `
       <div class="qz-options" id="qz-options"></div>
       <div class="qz-feedback" id="qz-feedback" style="display:none">
         <div class="qz-explain" id="qz-explain"></div>
-        <button class="qz-next-btn" id="qz-next-btn">下一题</button>
+        <button class="qz-next-btn" id="qz-next-btn">${t('quiz.next')}</button>
       </div>
     </div>
   </div>
 `;
+}
 
 // ── DOM injection ──────────────────────────────────────────────────────
 function ensureQuizDOM() {
     if (document.getElementById('qz-overlay')) return;
 
     const wrapper = document.createElement('div');
-    wrapper.innerHTML = QUIZ_HTML;
+    wrapper.innerHTML = buildQuizHTML();
     while (wrapper.firstElementChild) {
         document.body.appendChild(wrapper.firstElementChild);
     }
@@ -113,7 +116,7 @@ function onAnswer(idx) {
     const explain = document.getElementById('qz-explain');
     explain.innerHTML = `
       <div class="qz-result ${isCorrect ? 'qz-result-correct' : 'qz-result-wrong'}">
-        ${isCorrect ? '✅ 正确！' : '❌ 答错了'}
+        ${isCorrect ? t('quiz.correct') : t('quiz.wrong')}
       </div>
       <div class="qz-explain-text">${q.explanation}</div>
     `;
@@ -181,10 +184,9 @@ export function startQuiz(opts = {}) {
     if (opts.title) {
         document.getElementById('qz-title').textContent = opts.title;
     } else if (opts.bodyId) {
-        // We'll get the body name from pool[0].relatedBody
-        document.getElementById('qz-title').textContent = '知识挑战';
+        document.getElementById('qz-title').textContent = t('quiz.title');
     } else {
-        document.getElementById('qz-title').textContent = '随机知识挑战';
+        document.getElementById('qz-title').textContent = t('quiz.random');
     }
 
     renderQuestion();

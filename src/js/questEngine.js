@@ -13,6 +13,7 @@
 import { getRaw, saveRaw, addXp, calcLevel } from './storage.js';
 import { openSortPanel } from './sortPanel.js';
 import { sfx } from './sfx.js';
+import { t, onLangChange } from './i18n.js';
 
 // ── Quest definitions ──────────────────────────────────────────────────
 
@@ -20,8 +21,8 @@ const QUESTS = [
     // ── Main line: 01–09 ──
     {
         id: 'quest_init',
-        name: '🌟 初识太阳系',
-        desc: '找到并点击太阳和所有 8 颗行星',
+        nameKey: 'quest_init',
+        descKey: 'quest_init',
         branch: 'main',
         order: 1,
         xp: 50,
@@ -40,12 +41,11 @@ const QUESTS = [
                 complete,
             };
         },
-        completeMsg: '太阳是太阳系的中心，包含了 99.86% 的质量。八大行星从近日的水星到远日的海王星各具特色。记住它们的名字和顺序，是认识太阳系的第一步。',
     },
     {
         id: 'quest_size_sort',
-        name: '📏 谁最大？',
-        desc: '按半径从大到小排列 5 颗行星',
+        nameKey: 'quest_size_sort',
+        descKey: 'quest_size_sort',
         branch: 'main',
         order: 2,
         xp: 80,
@@ -56,12 +56,11 @@ const QUESTS = [
                 complete: payload.correct === true,
             };
         },
-        completeMsg: '木星是太阳系最大的行星，直径约 139,820 km，是地球的 11 倍。土星紧随其后，而水星最小。行星间的体型差异远超你的想象。',
     },
     {
         id: 'quest_eccentric',
-        name: '🛤️ 古怪的轨道',
-        desc: '将偏心率滑杆拉到 ×4，观察水星 3 秒',
+        nameKey: 'quest_eccentric',
+        descKey: 'quest_eccentric',
         branch: 'main',
         order: 3,
         xp: 80,
@@ -75,12 +74,11 @@ const QUESTS = [
                 complete: newT >= 3,
             };
         },
-        completeMsg: '行星轨道并非完美的圆。水星的偏心率最大（0.2056），近日点比远日点近约 2300 万公里。把偏心率调到 ×4，水星的椭圆就很明显了。',
     },
     {
         id: 'quest_retrograde',
-        name: '🔄 逆向旋转',
-        desc: '找到并点击逆向自转的行星（金星、天王星各一次）',
+        nameKey: 'quest_retrograde',
+        descKey: 'quest_retrograde',
         branch: 'main',
         order: 4,
         xp: 80,
@@ -99,12 +97,11 @@ const QUESTS = [
                 complete,
             };
         },
-        completeMsg: '大多数行星自西向东自转，但金星和天王星是个例外。金星自转极慢且方向相反——在那里太阳从西方升起。天王星则是躺着自转，倾角达 97.77°。',
     },
     {
         id: 'quest_earth_scale',
-        name: '🌍 寻找家园',
-        desc: '将星体缩放调至 ×1（真实比例），保持 3 秒',
+        nameKey: 'quest_earth_scale',
+        descKey: 'quest_earth_scale',
         branch: 'main',
         order: 5,
         xp: 80,
@@ -118,12 +115,11 @@ const QUESTS = [
                 complete: newT >= 3,
             };
         },
-        completeMsg: '这就是行星在宇宙中的真实大小。在 ×1 比例下，即便是木星也不过是一个小点，地球几乎不可见。正因为如此，场景默认才采用了 ×1200 的缩放，否则你根本无法操作。宇宙的尺度远超想象。',
     },
     {
         id: 'quest_saturn',
-        name: '🪐 土星之环',
-        desc: '旋转视角对准土星并拉近，观察土星环 3 秒',
+        nameKey: 'quest_saturn',
+        descKey: 'quest_saturn',
         branch: 'main',
         order: 6,
         xp: 100,
@@ -139,12 +135,11 @@ const QUESTS = [
                 complete: newT >= 3,
             };
         },
-        completeMsg: '土星环主要由冰粒和岩石碎片组成，宽度约 28 万公里（相当于地球到月球距离的 3/4），但厚度只有约 10 米。这是一个巨大而极薄的盘状结构。',
     },
     {
         id: 'quest_asteroid',
-        name: '💫 小行星带穿越',
-        desc: '点击小行星带区域',
+        nameKey: 'quest_asteroid',
+        descKey: 'quest_asteroid',
         branch: 'main',
         order: 7,
         xp: 100,
@@ -155,12 +150,11 @@ const QUESTS = [
                 complete: true,
             };
         },
-        completeMsg: '小行星带位于火星和木星之间（2.2~3.2 AU），包含数百万颗小行星。但它们的总质量加起来还不到月球的 4%——看起来密密麻麻，实际上非常空旷。',
     },
     {
         id: 'quest_comet',
-        name: '☄️ 彗星猎人',
-        desc: '将时间流速拉到 ×200 以上，观察哈雷彗星尾迹 5 秒',
+        nameKey: 'quest_comet',
+        descKey: 'quest_comet',
         branch: 'main',
         order: 8,
         xp: 120,
@@ -174,12 +168,11 @@ const QUESTS = [
                 complete: newT >= 5,
             };
         },
-        completeMsg: '彗星来自太阳系边缘的柯伊伯带和奥尔特云，轨道极扁。当它们靠近太阳时，表面冰物质升华形成彗发和彗尾——尾巴总是指向背离太阳的方向。',
     },
     {
         id: 'quest_graduate',
-        name: '🏆 毕业考核',
-        desc: '连续答对 5 道中级题目',
+        nameKey: 'quest_graduate',
+        descKey: 'quest_graduate',
         branch: 'main',
         order: 9,
         xp: 200,
@@ -192,14 +185,13 @@ const QUESTS = [
                 complete: newStreak >= 5,
             };
         },
-        completeMsg: '恭喜完成了整个探索之旅！你现在已经认识了太阳系的组成、行星的尺度、轨道的形状、自转的多样性。宇宙很大，但你已经迈出了探索的第一步。',
     },
 
     // ── Side quests: A–D ──
     {
         id: 'quest_quiz_master',
-        name: '🧠 知识达人',
-        desc: '累计答对 10 道题',
+        nameKey: 'quest_quiz_master',
+        descKey: 'quest_quiz_master',
         branch: 'side',
         order: 'A',
         unlockMain: 3, // unlock after 3 main quests done
@@ -212,12 +204,11 @@ const QUESTS = [
                 complete: total >= 10,
             };
         },
-        completeMsg: '知识积累从一点一滴开始。你已经掌握了太阳系的基本知识，继续挑战更多题目吧。',
     },
     {
         id: 'quest_speedster',
-        name: '⏱️ 时光旅者',
-        desc: '将时间流速拉到 ×100 以上并保持 3 秒',
+        nameKey: 'quest_speedster',
+        descKey: 'quest_speedster',
         branch: 'side',
         order: 'B',
         unlockMain: 3, // unlock after quest_eccentric (main #3)
@@ -232,12 +223,11 @@ const QUESTS = [
                 complete: newT >= 3,
             };
         },
-        completeMsg: '时间流速改变了，行星的运动节奏也随之变化。这个功能让你能俯瞰行星的长期运动——一年的旅程浓缩在一瞬间。',
     },
     {
         id: 'quest_moon',
-        name: '🌙 月球漫步',
-        desc: '拉近观察地球，月球就在它旁边',
+        nameKey: 'quest_moon',
+        descKey: 'quest_moon',
         branch: 'side',
         order: 'C',
         unlockMain: 1, // unlock after quest_init
@@ -251,12 +241,11 @@ const QUESTS = [
                 complete: close,
             };
         },
-        completeMsg: '月球是地球唯一的天然卫星，直径 3,474 km，平均距离约 38.4 万公里。这个距离足以容纳下太阳系所有行星排成一列。',
     },
     {
         id: 'quest_neptune',
-        name: '🌌 天涯海角',
-        desc: '旋转视角找到并靠近海王星',
+        nameKey: 'quest_neptune',
+        descKey: 'quest_neptune',
         branch: 'side',
         order: 'D',
         unlockMain: 4, // unlock after quest_retrograde
@@ -270,7 +259,6 @@ const QUESTS = [
                 complete: close,
             };
         },
-        completeMsg: '海王星是太阳系最远的行星，平均距离太阳 30.1 AU。它发蓝色的光芒，风速可达 2,100 km/h，是太阳系中风速最快的行星。',
     },
 ];
 
@@ -352,7 +340,7 @@ export function createQuestEngine() {
                 s.status = STATUS.ACTIVE;
                 s.progress = null;
                 save();
-                showNotification('🔓 新任务解锁：' + q.name);
+                showNotification('🔓 ' + t('quest.names.' + q.nameKey));
             }
         }
     }
@@ -428,12 +416,12 @@ export function createQuestEngine() {
     function showCompletion(q, xp, level) {
         // First show a compact toast
         sfx.questDone();
-        showNotification('✅ ' + q.name + ' 完成！ +' + xp + ' XP', 'complete');
+        showNotification('✅ ' + t('quest.names.' + q.nameKey) + ' +' + xp + ' XP', 'complete');
 
         // If there's a completion message, schedule the expanded info panel
-        if (q.completeMsg) {
+        if (t('quest.msgs.' + q.nameKey)) {
             setTimeout(() => {
-                showExpandableInfo(q.name, q.completeMsg, xp);
+                showExpandableInfo(t('quest.names.' + q.nameKey), t('quest.msgs.' + q.nameKey), xp);
             }, 2200);
         }
     }
@@ -465,7 +453,7 @@ export function createQuestEngine() {
                 <button class="qt-dismiss" style="
                     background:rgba(100,150,255,0.12);border:1px solid rgba(100,150,255,0.25);
                     color:#8ab4ff;border-radius:6px;padding:4px 14px;font-size:12px;
-                    cursor:pointer;">知道了</button>
+                    cursor:pointer;">${t('quest.knowIt')}</button>
             </div>
         `;
 
@@ -655,13 +643,20 @@ export function createQuestEngine() {
             panel.className = 'qt-panel';
             panel.innerHTML = `
                 <div class="qt-panel-header">
-                    <span>📋 任务</span>
+                    <span>${t('quest.panelTitle')}</span>
                     <button class="qt-panel-close">✕</button>
                 </div>
                 <div class="qt-panel-body"></div>
                 <div class="qt-panel-footer"></div>
             `;
             document.body.appendChild(panel);
+
+            // 语言切换时更新面板标题和内容
+            onLangChange(() => {
+                const titleEl = panel.querySelector('.qt-panel-header span');
+                if (titleEl) titleEl.textContent = t('quest.panelTitle');
+                this._renderPanel();
+            });
 
             panel.querySelector('.qt-panel-close').addEventListener('click', () => api.closePanel());
 
@@ -690,6 +685,7 @@ export function createQuestEngine() {
             let html = '';
 
             // Main quests
+            html += '<div class="qt-section-title">' + t('quest.sidebar.main') + '</div>';
             for (const q of mainQuests) {
                 html += renderQuestItem(q, questState[q.id]);
             }
@@ -701,7 +697,7 @@ export function createQuestEngine() {
             });
 
             if (hasUnlockedSide) {
-                html += '<div class="qt-section-title">支线任务</div>';
+                html += '<div class="qt-section-title">' + t('quest.sidebar.side') + '</div>';
                 for (const q of sideQuests) {
                     const s = questState[q.id];
                     if (s && s.status !== STATUS.LOCKED) {
@@ -738,7 +734,7 @@ export function createQuestEngine() {
 
             footer.innerHTML = `
                 <div style="font-size:12px;color:#889;margin-bottom:4px;">
-                    主线进度：${mainDone}/${totalMain} · Lv.${level}
+                    ${t('quest.progress', { done: mainDone, total: totalMain, level: level })}
                 </div>
                 <div class="qt-progress-bar">
                     <div class="qt-progress-fill" style="width:${pct}%"></div>
@@ -772,19 +768,19 @@ export function createQuestEngine() {
 
 function renderQuestItem(q, state) {
     if (!state) {
-        return `<div class="qt-item qt-locked">🔒 ${q.name}</div>`;
+        return `<div class="qt-item qt-locked">🔒 ${t('quest.names.' + q.nameKey)}</div>`;
     }
 
     const status = state.status;
 
     if (status === STATUS.LOCKED || status === STATUS.HIDDEN) {
-        return `<div class="qt-item qt-locked">🔒 ${q.name}</div>`;
+        return `<div class="qt-item qt-locked">🔒 ${t('quest.names.' + q.nameKey)}</div>`;
     }
 
     if (status === STATUS.COMPLETED) {
         const dataAttr = (q.id === 'quest_size_sort') ? ' data-quest-click="quest_size_sort"' : '';
         const cursorStyle = (q.id === 'quest_size_sort') ? ' style="cursor:pointer"' : '';
-        return `<div class="qt-item qt-completed"${dataAttr}${cursorStyle}>✅ ${q.name}</div>`;
+        return `<div class="qt-item qt-completed"${dataAttr}${cursorStyle}>✅ ${t('quest.names.' + q.nameKey)}</div>`;
     }
 
     // Active
@@ -830,9 +826,9 @@ function renderQuestItem(q, state) {
     return `
         <div class="qt-item qt-active"${dataAttr}${cursorStyle}>
             <div class="qt-item-header">
-                <span class="qt-item-name">🎯 ${q.name}</span>
+                <span class="qt-item-name">🎯 ${t('quest.names.' + q.nameKey)}</span>
             </div>
-            <div class="qt-item-desc">${q.desc}</div>
+            <div class="qt-item-desc">${t('quest.descs.' + q.descKey)}</div>
             ${progressHtml}
         </div>
     `;

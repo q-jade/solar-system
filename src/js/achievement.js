@@ -7,6 +7,7 @@
 
 import { getRaw, saveRaw, addXp, calcLevel } from './storage.js';
 import { sfx } from './sfx.js';
+import { t, onLangChange } from './i18n.js';
 import { createQuestEngine } from './questEngine.js';
 
 // ── Achievement definitions ────────────────────────────────────────────
@@ -14,8 +15,8 @@ import { createQuestEngine } from './questEngine.js';
 const ACHIEVEMENTS = [
     {
         id: 'ach_explorer',
-        name: '🪐 环游者',
-        desc: '访问所有 8 颗行星各至少一次',
+        nameKey: 'ach_explorer',
+        descKey: 'ach_explorer',
         icon: '🪐',
         xp: 200,
         category: '探索',
@@ -27,8 +28,8 @@ const ACHIEVEMENTS = [
     },
     {
         id: 'ach_astronomer',
-        name: '⭐ 天文通',
-        desc: '累计答对 50 道题',
+        nameKey: 'ach_astronomer',
+        descKey: 'ach_astronomer',
         icon: '⭐',
         xp: 300,
         category: '学习',
@@ -37,8 +38,8 @@ const ACHIEVEMENTS = [
     },
     {
         id: 'ach_kepler',
-        name: '📐 开普勒学徒',
-        desc: '完成偏心率任务',
+        nameKey: 'ach_kepler',
+        descKey: 'ach_kepler',
         icon: '📐',
         xp: 150,
         category: '任务',
@@ -48,8 +49,8 @@ const ACHIEVEMENTS = [
     },
     {
         id: 'ach_earthling',
-        name: '🌍 地球人',
-        desc: '完成「寻找家园」任务',
+        nameKey: 'ach_earthling',
+        descKey: 'ach_earthling',
         icon: '🌍',
         xp: 150,
         category: '任务',
@@ -59,8 +60,8 @@ const ACHIEVEMENTS = [
     },
     {
         id: 'ach_collector',
-        name: '💎 天体收藏家',
-        desc: '探索太阳 + 八大行星',
+        nameKey: 'ach_collector',
+        descKey: 'ach_collector',
         icon: '💎',
         xp: 250,
         category: '收集',
@@ -78,8 +79,8 @@ const ACHIEVEMENTS = [
     },
     {
         id: 'ach_moon',
-        name: '🌙 月球访客',
-        desc: '完成「月球漫步」支线任务',
+        nameKey: 'ach_moon',
+        descKey: 'ach_moon',
         icon: '🌙',
         xp: 100,
         category: '支线',
@@ -89,8 +90,8 @@ const ACHIEVEMENTS = [
     },
     {
         id: 'ach_speedster',
-        name: '⚡ 时空穿越者',
-        desc: '将时间流速拉到 ×365（最大值）',
+        nameKey: 'ach_speedster',
+        descKey: 'ach_speedster',
         icon: '⚡',
         xp: 150,
         category: '实验',
@@ -103,8 +104,8 @@ const ACHIEVEMENTS = [
     },
     {
         id: 'ach_completionist',
-        name: '🏆 完美主义者',
-        desc: '完成所有 9 个主线任务',
+        nameKey: 'ach_completionist',
+        descKey: 'ach_completionist',
         icon: '🏆',
         xp: 500,
         category: '综合',
@@ -124,8 +125,8 @@ const ACHIEVEMENTS = [
     },
     {
         id: 'ach_hidden_tiny',
-        name: '🤏 小小的我',
-        desc: '将星体缩放拖到 ×3000（最大值）保持 3 秒',
+        nameKey: 'ach_hidden_tiny',
+        descKey: 'ach_hidden_tiny',
         icon: '🤏',
         xp: 80,
         category: '隐藏',
@@ -135,8 +136,8 @@ const ACHIEVEMENTS = [
     },
     {
         id: 'ach_hidden_orbit',
-        name: '🔄 椭圆狂人',
-        desc: '偏心率 ×4 的同时时间流速拉到 ×100 以上',
+        nameKey: 'ach_hidden_orbit',
+        descKey: 'ach_hidden_orbit',
         icon: '🔄',
         xp: 100,
         category: '隐藏',
@@ -183,13 +184,13 @@ export function createAchievement() {
         card.innerHTML = `
             <div style="text-align:center;font-size:28px;margin-bottom:4px;">${ach.icon}</div>
             <div style="font-weight:700;font-size:15px;text-align:center;color:#ffd966;margin-bottom:4px;">
-                🏆 成就解锁！
+                ${t('achievement.unlockTitle')}
             </div>
             <div style="text-align:center;font-weight:600;font-size:14px;margin-bottom:6px;">
-                ${ach.name}
+                ${t('achievement.names.' + ach.nameKey)}
             </div>
             <div style="text-align:center;color:#b0a8c0;font-size:12px;margin-bottom:10px;">
-                ${ach.desc}
+                ${t('achievement.descs.' + ach.descKey)}
             </div>
             <div style="text-align:center;color:#4ade80;font-weight:600;font-size:14px;">
                 +${xp} XP
@@ -294,13 +295,20 @@ export function createAchievement() {
             panel.className = 'ach-panel';
             panel.innerHTML = `
                 <div class="ach-panel-header">
-                    <span>🏆 成就</span>
+                    <span>${t('achievement.title')}</span>
                     <button class="ach-panel-close">✕</button>
                 </div>
                 <div class="ach-panel-body"></div>
                 <div class="ach-panel-footer"></div>
             `;
             document.body.appendChild(panel);
+
+            // 语言切换时更新面板标题和内容
+            onLangChange(() => {
+                const titleEl = panel.querySelector('.ach-panel-header span');
+                if (titleEl) titleEl.textContent = t('achievement.title');
+                this._renderPanel();
+            });
 
             panel.querySelector('.ach-panel-close').addEventListener('click', () => api.closePanel());
 
@@ -336,7 +344,7 @@ export function createAchievement() {
                 html += renderAchievementCard(ach, false);
             }
 
-            body.innerHTML = html || '<div style="padding:16px;color:#667;font-size:13px;">暂无成就</div>';
+            body.innerHTML = html || '<div style="padding:16px;color:#667;font-size:13px;">' + t('achievement.panelEmpty') + '</div>';
 
             // Footer
             const data = getRaw();
@@ -348,8 +356,8 @@ export function createAchievement() {
 
             footer.innerHTML = `
                 <div style="font-size:12px;color:#889;margin-bottom:3px;">
-                    已解锁：${unlocked.length}/${all.filter(a => !a.hidden).length}
-                    · 总 XP：${totalXp} · Lv.${lv}
+                    ${t('achievement.unlocked', { done: unlocked.length, total: all.filter(a => !a.hidden).length })}
+                    · ${t('achievement.xpLevel', { xp: totalXp, level: lv })}
                 </div>
                 <div class="qt-progress-bar">
                     <div class="qt-progress-fill" style="width:${pct}%"></div>
@@ -373,8 +381,8 @@ function renderAchievementCard(ach, unlocked) {
             <div class="ach-card ach-card-unlocked">
                 <div class="ach-card-icon" style="font-size:24px;">${ach.icon}</div>
                 <div class="ach-card-info">
-                    <div class="ach-card-name">${ach.name}</div>
-                    <div class="ach-card-desc">${ach.desc}</div>
+                    <div class="ach-card-name">${t('achievement.names.' + ach.nameKey)}</div>
+                    <div class="ach-card-desc">${t('achievement.descs.' + ach.descKey)}</div>
                     <div class="ach-card-xp">+${ach.xp} XP</div>
                 </div>
             </div>
@@ -399,8 +407,8 @@ function renderAchievementCard(ach, unlocked) {
         <div class="ach-card ach-card-locked">
             <div class="ach-card-icon" style="font-size:24px;filter:grayscale(1);opacity:0.4;">${ach.icon}</div>
             <div class="ach-card-info">
-                <div class="ach-card-name" style="color:#556;">${ach.name}</div>
-                <div class="ach-card-desc" style="color:#445;">${ach.desc}</div>
+                <div class="ach-card-name" style="color:#556;">${t('achievement.names.' + ach.nameKey)}</div>
+                <div class="ach-card-desc" style="color:#445;">${t('achievement.descs.' + ach.descKey)}</div>
                 ${progressHtml}
             </div>
         </div>

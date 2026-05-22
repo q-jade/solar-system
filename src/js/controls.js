@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { ambientMusic } from './ambientMusic.js';
+import { t, onLangChange, getLang } from './i18n.js';
 
 const DEFAULT_SCALE = 1200;
 const MIN_SPEED = 1 / 24;  // 1 hour/sec
@@ -347,10 +348,11 @@ export function initControls(sys, camera, renderer) {
     // ── Build size comparison panel (radius circles) ────────────────
     function buildSizePanel() {
         const list = document.getElementById('size-list');
+        const isEn = getLang() === 'en-US';
         const items = [
-            { name: '太阳', color: '#ffcc44', radius: 695508 },
+            { name: isEn ? 'Sun' : '太阳', color: '#ffcc44', radius: 695508 },
             ...sys.planets.map(p => ({
-                name: p.data.name,
+                name: isEn ? p.data.english : p.data.name,
                 color: '#' + p.data.color.toString(16).padStart(6, '0'),
                 radius: p.data.radius,
             })),
@@ -363,19 +365,20 @@ export function initControls(sys, camera, renderer) {
         const MAX_DIAM = 100;
         const MIN_DIAM = 3;
 
+        // Find earth for ratio
+        const earth = items.find(it => it.name === 'Earth' || it.name === '地球');
+        const ratio = earth ? Math.round(items[0].radius / earth.radius) : 109;
+
         let html = '';
         for (let i = 0; i < items.length; i++) {
             const d = items[i];
             if (i === 0) {
-                // Sun — special oversized circle + ratio note
-                const earth = items.find(it => it.name === '地球');
-                const ratio = earth ? Math.round(d.radius / earth.radius) : 109;
                 html += '<div class="sp-row">'
                     + '<span class="sp-circle-frame"><span class="sp-circle sp-circle-sun" style="width:130px;height:130px;background:' + d.color + '"></span></span>'
                     + '<span class="sp-name">' + d.name + '</span>'
                     + '<span class="sp-rad">' + d.radius.toLocaleString() + ' km</span>'
                     + '</div>'
-                    + '<div class="sp-note">≈' + ratio + ' × 地球</div>';
+                    + '<div class="sp-note">≈' + ratio + (isEn ? ' × Earth' : ' × 地球') + '</div>';
             } else {
                 const diam = Math.max(MIN_DIAM, Math.round(d.radius / maxPlanetR * MAX_DIAM));
                 html += '<div class="sp-row">'
@@ -387,7 +390,8 @@ export function initControls(sys, camera, renderer) {
         }
         list.innerHTML = html;
     }
-    buildSizePanel();
+
+    onLangChange(() => buildSizePanel());
 
     // ── Window resize ──────────────────────────────────────────────
     window.addEventListener('resize', () => {

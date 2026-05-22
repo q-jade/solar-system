@@ -12,6 +12,7 @@ import { createAchievement } from './achievement.js';
 import { loadTextures, setOnProgress } from './textureLoader.js';
 import { sfx } from './sfx.js';
 import { ambientMusic } from './ambientMusic.js';
+import { t, setLang, getLang, onLangChange } from './i18n.js';
 
 (async () => {
 // ── Loading screen ────────────────────────────────
@@ -129,7 +130,7 @@ renderer.domElement.addEventListener('pointerup', (e) => {
 
 // ── Global quiz button ────────────────────────────
 document.getElementById('global-quiz-btn').addEventListener('click', () => {
-    startQuiz({ title: '随机知识挑战' });
+    startQuiz({ title: t('quiz.random') });
     sfx.click();
 });
 
@@ -176,14 +177,14 @@ function showStats() {
     const overlay = document.getElementById('stats-overlay');
     const content = document.getElementById('stats-content');
     const stats = getStats();
-    content.innerHTML = '<div class="sp-header">📊 我的探索档案</div>'
+    content.innerHTML = '<div class="sp-header">' + t('stats.title') + '</div>'
         + '<div class="sp-body">'
-        + '<div class="sp-row"><span>已探索天体</span><span>' + stats.explored + ' / 9</span></div>'
-        + '<div class="sp-row"><span>答题总数</span><span>' + stats.answered + '</span></div>'
-        + '<div class="sp-row"><span>正确数</span><span>' + stats.correct + '</span></div>'
-        + '<div class="sp-row"><span>正确率</span><span>' + stats.rate + '%</span></div>'
+        + '<div class="sp-row"><span>' + t('stats.explored') + '</span><span>' + stats.explored + ' / 9</span></div>'
+        + '<div class="sp-row"><span>' + t('stats.quizAnswered') + '</span><span>' + stats.answered + '</span></div>'
+        + '<div class="sp-row"><span>' + t('stats.quizCorrect') + '</span><span>' + stats.correct + '</span></div>'
+        + '<div class="sp-row"><span>' + t('stats.quizCorrectRate') + '</span><span>' + stats.rate + '%</span></div>'
         + '</div>'
-        + '<div class="sp-actions"><button id="stats-reset-btn" class="sp-reset-btn">🗑️ 重置档案</button></div>';
+        + '<div class="sp-actions"><button id="stats-reset-btn" class="sp-reset-btn">🗑️ ' + t('stats.reset') + '</button></div>';
     overlay.style.display = '';
 }
 
@@ -206,12 +207,18 @@ document.getElementById('stats-overlay').addEventListener('click', (e) => {
 });
 
 // ── Distance info panel ───────────────────────────
-const distList = document.getElementById('distance-list');
-distList.innerHTML = sys.planets.map(p => {
-    const peri = (p.data.orbitA * (1 - p.data.e)).toFixed(3);
-    const aph = (p.data.orbitA * (1 + p.data.e)).toFixed(3);
-    return `<div class="dp-row"><span class="dp-name">${p.data.name}</span><span class="dp-dist">${peri}–${aph} AU</span></div>`;
-}).join('');
+function rebuildDistancePanel() {
+    const distList = document.getElementById('distance-list');
+    if (!distList) return;
+    const isEn = getLang() === 'en-US';
+    distList.innerHTML = sys.planets.map(p => {
+        const peri = (p.data.orbitA * (1 - p.data.e)).toFixed(3);
+        const aph = (p.data.orbitA * (1 + p.data.e)).toFixed(3);
+        const pname = isEn ? p.data.english : p.data.name;
+        return `<div class="dp-row"><span class="dp-name">${pname}</span><span class="dp-dist">${peri}–${aph} AU</span></div>`;
+    }).join('');
+}
+rebuildDistancePanel();
 
 let lastTime = performance.now();
 
@@ -301,4 +308,32 @@ function animate() {
 }
 
 animate();
+
+// ── 语言切换 ────────────────────────────────────────────
+const langSelect = document.getElementById('lang-select');
+langSelect.value = getLang();
+langSelect.addEventListener('change', () => {
+    setLang(langSelect.value);
+});
+
+// 语言变更时统一更新 UI
+onLangChange((lang) => {
+    updateUI();
+    if (typeof sys.setLabelLanguage === "function") sys.setLabelLanguage(lang);
+    rebuildDistancePanel();
+  });
+
+/** 重新翻译所有 data-i18n 元素和动态 UI */
+function updateUI() {
+    // 更新 data-i18n 元素
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        const val = el.tagName === 'INPUT' ? 'placeholder' : 'textContent';
+        el[val] = t(key);
+    });
+
+    // 控制面板提示文字
+    document.querySelector('#ctrl-hint').textContent = t('app.hint');
+}
+
 })();

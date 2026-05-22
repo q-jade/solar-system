@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D 太阳系</title>
+  <title data-i18n="app.title">3D 太阳系</title>
 </head>
 <body>
   <!-- ── Loading screen ──────────────────────────── -->
   <div id="loading-overlay">
     <div class="loading-content">
       <div class="loading-spinner"></div>
-      <div id="loading-text">加载纹理中...</div>
+      <div id="loading-text" >加载纹理中...</div>
       <div class="loading-bar-bg">
         <div id="loading-bar-fill" class="loading-bar-fill"></div>
       </div>
@@ -20,17 +20,17 @@
   <div id="solar-system-container"></div>
 
   <!-- ── Help text (top-right) ──────────────── -->
-  <div id="help-text">左键拖拽旋转 · 左键双击重置 · 滚轮缩放 · 右键单击行星聚焦</div>
+  <div id="help-text"><span id="ctrl-hint">左键拖拽旋转 · 左键双击重置 · 滚轮缩放 · 右键单击行星聚焦</span></div>
 
   <!-- ── Global quiz button ─────────────────── -->
-  <button id="global-quiz-btn">❓ 知识挑战</button>
+  <button id="global-quiz-btn" data-i18n="app.btnQuiz">❓ 知识挑战</button>
 
   <!-- ── Quest, Sort & Achievement buttons ──── -->
-  <button id="quest-btn">📋 任务</button>
-  <button id="ach-btn">🏆 成就</button>
+  <button id="quest-btn" data-i18n="app.btnQuest">📋 任务</button>
+  <button id="ach-btn" data-i18n="app.btnAch">🏆 成就</button>
 
   <!-- ── Stats button ────────────────────────── -->
-  <button id="stats-btn">📊 我的档案</button>
+  <button id="stats-btn" data-i18n="app.btnStats">📊 我的档案</button>
 
   <!-- ── Control panel overlay ──────────────── -->
   <div id="controls-panel">
@@ -38,7 +38,7 @@
     <div class="ctrl-row">
       <div class="ctrl-label">
         <span class="ctrl-icon">🔍</span>
-        <span>星体缩放</span>
+        <span data-i18n="control.scale">星体缩放</span>
       </div>
       <div class="ctrl-slider-row">
         <input type="range" id="scale-slider" min="0" max="100" value="0">
@@ -50,7 +50,7 @@
     <div class="ctrl-row">
       <div class="ctrl-label">
         <span class="ctrl-icon">⏱</span>
-        <span>时间流速</span>
+        <span data-i18n="control.speed">时间流速</span>
       </div>
       <div class="ctrl-slider-row">
         <input type="range" id="speed-slider" min="0" max="100" value="0">
@@ -62,7 +62,7 @@
     <div class="ctrl-row">
       <div class="ctrl-label">
         <span class="ctrl-icon">📐</span>
-        <span>偏心率</span>
+        <span data-i18n="control.eccentricity">偏心率</span>
       </div>
       <div class="ctrl-slider-row">
         <input type="range" id="ecc-slider" min="0" max="40" value="10">
@@ -76,45 +76,52 @@
       <label class="toggle-label">
         <input type="checkbox" id="labels-toggle" checked>
         <span class="toggle-track"></span>
-        名称
+        <span data-i18n="control.toggleLabels">名称</span>
       </label>
       <label class="toggle-label">
         <input type="checkbox" id="orbits-toggle" checked>
         <span class="toggle-track"></span>
-        轨道
+        <span data-i18n="control.toggleOrbits">轨道</span>
       </label>
       <label class="toggle-label">
         <input type="checkbox" id="distance-toggle" checked>
         <span class="toggle-track"></span>
-        距离
+        <span data-i18n="control.toggleDist">距离</span>
       </label>
       <label class="toggle-label">
         <input type="checkbox" id="size-toggle" checked>
         <span class="toggle-track"></span>
-        半径
+        <span data-i18n="control.toggleSize">半径</span>
       </label>
       <label class="toggle-label">
         <input type="checkbox" id="ecliptic-toggle">
         <span class="toggle-track"></span>
-        黄道面
+        <span data-i18n="control.toggleEcliptic">黄道面</span>
       </label>
       <label class="toggle-label">
         <input type="checkbox" id="music-toggle" checked>
         <span class="toggle-track"></span>
-        🎵 音乐
+        <span data-i18n="control.toggleMusic">🎵 音乐</span>
+      </label>
+      <label class="toggle-label" style="margin-top:6px;gap:4px;width:100%;">
+        <span style="font-size:11px;color:#889;">🌐</span>
+        <select class="lang-select" id="lang-select">
+          <option value="zh-CN">中文</option>
+          <option value="en-US">English</option>
+        </select>
       </label>
     </div>
   </div>
 
   <!-- ── Distance info panel (bottom-left) ──── -->
   <div id="distance-panel">
-    <div class="dp-title">轨道数据</div>
+    <div class="dp-title" data-i18n="control.orbitData">轨道数据</div>
     <div id="distance-list"></div>
   </div>
 
   <!-- ── Size comparison panel (bottom-right) ── -->
   <div id="size-panel">
-    <div class="sp-title">半径对比</div>
+    <div class="sp-title" data-i18n="control.radiusCompare">半径对比</div>
     <div id="size-list"></div>
   </div>
   <!-- ── Stats panel ────────────────────────── -->

@@ -268,6 +268,28 @@ input[type="range"]::-moz-range-thumb {
   box-shadow: 0 0 6px rgba(100, 180, 255, 0.4);
 }
 
+
+/* ── Language select ──────────────────────── */
+.lang-select {
+  background: rgba(10, 10, 30, 0.8);
+  border: 1px solid rgba(100, 120, 200, 0.3);
+  border-radius: 5px;
+  color: #dde;
+  font-size: 11px;
+  padding: 3px 6px;
+  cursor: pointer;
+  outline: none;
+  flex: 1;
+}
+.lang-select:focus {
+  border-color: rgba(100, 160, 255, 0.5);
+}
+.lang-select option {
+  background: #1a1a3a;
+  color: #dde;
+}
+
+
 /* ── Distance info panel (bottom-left) ────── */
 #distance-panel {
   position: fixed;

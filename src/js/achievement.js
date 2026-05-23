@@ -265,6 +265,7 @@ export function createAchievement() {
             const data = getRaw();
             data[flagName] = true;
             saveRaw(data);
+            this.evaluate();
         },
 
         /** Open/close achievement panel */
@@ -356,7 +357,7 @@ export function createAchievement() {
 
             footer.innerHTML = `
                 <div style="font-size:12px;color:#889;margin-bottom:3px;">
-                    ${t('achievement.unlocked', { done: unlocked.length, total: all.filter(a => !a.hidden).length })}
+                    ${t('achievement.unlocked', { done: unlocked.length, total: all.filter(a => !a.hidden || a.unlocked).length })}
                     · ${t('achievement.xpLevel', { xp: totalXp, level: lv })}
                 </div>
                 <div class="qt-progress-bar">

@@ -252,31 +252,6 @@ function checkProximity() {
             distance: moonDist,
         });
     }
-    // Hidden achievement: scale at max + eccentricity at max
-    (function checkHiddenAch() {
-        const scaleSlider = document.getElementById('scale-slider');
-        const eccSlider = document.getElementById('ecc-slider');
-        const speedSlider = document.getElementById('speed-slider');
-        if (!scaleSlider || !eccSlider || !speedSlider) return;
-        const scaleAtMax = parseFloat(scaleSlider.value) >= 99;
-        const eccAtMax = parseFloat(eccSlider.value) >= 39;
-        const speedHigh = parseFloat(speedSlider.value) >= 70; // ~×100
-
-        // ach_hidden_tiny: scale at max
-        if (scaleAtMax) {
-            window._scaleMaxAccum = (window._scaleMaxAccum || 0) + 1/30;
-            if (window._scaleMaxAccum >= 3) {
-                ach._setCustomFlag('_achTinyUnlocked');
-            }
-        } else {
-            window._scaleMaxAccum = 0;
-        }
-
-        // ach_hidden_orbit: ecc at max + speed high
-        if (eccAtMax && speedHigh) {
-            ach._setCustomFlag('_achOrbitUnlocked');
-        }
-    })();
 }
 
 function animate() {
@@ -292,12 +267,36 @@ function animate() {
 
     sys.update(dt);
 
-    // Proximity check + quest poll every 15 frames (~4 times/sec at 60fps)
+    // Proximity check + quest poll + hidden achiev every 15 frames (~4 times/sec)
     proxFrame++;
     if (proxFrame >= 15) {
         proxFrame = 0;
         checkProximity();
-        quest.poll(0.25); // ~250ms per poll interval
+        quest.poll(0.25);
+
+        // Hidden achievements: check sliders
+        const scaleSlider = document.getElementById('scale-slider');
+        const eccSlider = document.getElementById('ecc-slider');
+        const speedSlider = document.getElementById('speed-slider');
+        if (scaleSlider) {
+            const scaleAtMax = parseFloat(scaleSlider.value) >= 99;
+            if (scaleAtMax) {
+                window._scaleMaxAccum = (window._scaleMaxAccum || 0) + 0.25;
+                if (window._scaleMaxAccum >= 3) {
+                    ach._setCustomFlag('_achTinyUnlocked');
+                }
+            } else {
+                window._scaleMaxAccum = 0;
+            }
+        }
+        if (eccSlider && speedSlider) {
+            const eccAtMax = parseFloat(eccSlider.value) >= 39;
+            const speedHigh = parseFloat(speedSlider.value) >= 70;
+            if (eccAtMax && speedHigh) {
+                ach._setCustomFlag('_achOrbitUnlocked');
+            }
+        }
+
         ach.evaluate();
     }
 

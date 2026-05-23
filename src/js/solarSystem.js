@@ -358,7 +358,7 @@ export function initSolarSystem(textures) {
         for (let i = 0; i <= segs; i++) {
             const a = (i / segs) * Math.PI * 2;
             const r = orbitA * (1 - d.e * d.e) / (1 + d.e * Math.cos(a));
-            pts.push(new THREE.Vector3(r * Math.cos(a), 0, r * Math.sin(a)));
+            pts.push(new THREE.Vector3(r * Math.cos(a), 0, -r * Math.sin(a)));
         }
         const orbitLine = new THREE.Line(
             new THREE.BufferGeometry().setFromPoints(pts),
@@ -594,7 +594,7 @@ export function initSolarSystem(textures) {
         const a = (i / 64) * Math.PI * 2;
         const r = moonBaseDist * (1 - moonE * moonE) / (1 + moonE * Math.cos(a));
         moonOrbitPts.push(
-            new THREE.Vector3(r * Math.cos(a), 0, r * Math.sin(a))
+            new THREE.Vector3(r * Math.cos(a), 0, -r * Math.sin(a))
         );
     }
     const moonOrbitLine = new THREE.Line(
@@ -657,7 +657,7 @@ export function initSolarSystem(textures) {
         for (let i = 0; i <= segs; i++) {
             const a = (i / segs) * Math.PI * 2;
             const r = orbitA * (1 - cd.e * cd.e) / (1 + cd.e * Math.cos(a));
-            pts.push(new THREE.Vector3(r * Math.cos(a), 0, r * Math.sin(a)));
+            pts.push(new THREE.Vector3(r * Math.cos(a), 0, -r * Math.sin(a)));
         }
         const orbitLine = new THREE.Line(
             new THREE.BufferGeometry().setFromPoints(pts),
@@ -846,7 +846,7 @@ export function initSolarSystem(textures) {
             for (let i = 0; i <= segs; i++) {
                 const a = (i / segs) * Math.PI * 2;
                 const r = p.orbitA * (1 - effE * effE) / (1 + effE * Math.cos(a));
-                pts.push(new THREE.Vector3(r * Math.cos(a), 0, r * Math.sin(a)));
+                pts.push(new THREE.Vector3(r * Math.cos(a), 0, -r * Math.sin(a)));
             }
             const newLine = new THREE.Line(
                 new THREE.BufferGeometry().setFromPoints(pts),
@@ -869,7 +869,7 @@ export function initSolarSystem(textures) {
             for (let i = 0; i <= segs; i++) {
                 const a = (i / segs) * Math.PI * 2;
                 const r = moonObj.baseDist * (1 - effE * effE) / (1 + effE * Math.cos(a));
-                pts.push(new THREE.Vector3(r * Math.cos(a), 0, r * Math.sin(a)));
+                pts.push(new THREE.Vector3(r * Math.cos(a), 0, -r * Math.sin(a)));
             }
             const newLine = new THREE.Line(
                 new THREE.BufferGeometry().setFromPoints(pts),
@@ -890,7 +890,7 @@ export function initSolarSystem(textures) {
             p.meanAnomaly += p.angularSpeed * days;
             const E = solveKepler(p.meanAnomaly, effE);
             const x = p.orbitA * (Math.cos(E) - effE);
-            const z = p.orbitA * Math.sqrt(1 - effE * effE) * Math.sin(E);
+            const z = -p.orbitA * Math.sqrt(1 - effE * effE) * Math.sin(E);
             p.posGroup.position.set(x, 0, z);
 
             // Self-rotation (radians per Earth-day, signed for retrograde)
@@ -918,7 +918,7 @@ export function initSolarSystem(textures) {
         const effMoonE = Math.min(moonObj.orbitalE * eMultiplier, 0.99);
         const ME = solveKepler(moonObj.meanAnomaly, effMoonE);
         const mx = moonObj.baseDist * (Math.cos(ME) - effMoonE);
-        const mz = moonObj.baseDist * Math.sqrt(1 - effMoonE * effMoonE) * Math.sin(ME);
+        const mz = -moonObj.baseDist * Math.sqrt(1 - effMoonE * effMoonE) * Math.sin(ME);
         moonObj.posGroup.position.set(mx, 0, mz);
 
         // Comets — Kepler orbit with trail
@@ -926,7 +926,7 @@ export function initSolarSystem(textures) {
             c.meanAnomaly += c.angularSpeed * days;
             const E = solveKepler(c.meanAnomaly, c.originalE);
             const x = c.orbitA * (Math.cos(E) - c.originalE);
-            const z = c.orbitA * Math.sqrt(1 - c.originalE * c.originalE) * Math.sin(E);
+            const z = -c.orbitA * Math.sqrt(1 - c.originalE * c.originalE) * Math.sin(E);
             c.posGroup.position.set(x, 0, z);
 
             // Comet world position
@@ -947,7 +947,7 @@ export function initSolarSystem(textures) {
             a.M += a.speed * days;
             const E = solveKepler(a.M, a.e);
             const x0 = a.a * (Math.cos(E) - a.e);
-            const z0 = a.a * Math.sqrt(1 - a.e * a.e) * Math.sin(E);
+            const z0 = -a.a * Math.sqrt(1 - a.e * a.e) * Math.sin(E);
             const ci = Math.cos(a.incl);
             const si = Math.sin(a.incl);
             const cw = Math.cos(a.omega);

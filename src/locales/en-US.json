@@ -17,6 +17,8 @@
     "focus": "🔭 {{name}} (double-click to reset)",
     "real": "Real",
     "scaleReal": "x1 (real)",
+    "speedDayPerSec": "{{val}} d/s",
+    "speedHourPerSec": "{{val}} h/s",
     "eccReal": "×1.0 (real)",
     "eccDemo": "×{{val}} (demo)",
     "toggleLabels": "Labels",

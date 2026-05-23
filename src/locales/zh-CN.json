@@ -17,6 +17,8 @@
     "focus": "🔭 {{name}}（左键双击重置）",
     "real": "真实",
     "scaleReal": "x1 (真实)",
+    "speedDayPerSec": "{{val}} 天/秒",
+    "speedHourPerSec": "{{val}} 小时/秒",
     "eccReal": "×1.0 (真实)",
     "eccDemo": "×{{val}} (示意)",
     "toggleLabels": "名称",

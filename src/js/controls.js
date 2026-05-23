@@ -183,7 +183,7 @@ export function initControls(sys, camera, renderer) {
         // 动态调整相机最近缩放: 1x→0.5, 1200x及以上→5
         orbit.minDistance = Math.min(5, 0.5 + (s - 1) * 4.5 / 1199);
         if (s === 1) {
-            scaleVal.textContent = 'x1 (真实)';
+            scaleVal.textContent = t('control.scaleReal');
         } else if (s < 10) {
             scaleVal.textContent = 'x' + s.toFixed(1);
         } else {
@@ -217,13 +217,11 @@ export function initControls(sys, camera, renderer) {
         sys.setSpeed(speed);
         if (speed < 1) {
             const hours = speed * 24;
-            speedVal.textContent = hours < 10
-                ? hours.toFixed(1) + ' 小时/秒'
-                : Math.round(hours) + ' 小时/秒';
+            const val = hours < 10 ? hours.toFixed(1) : Math.round(hours);
+            speedVal.textContent = t('control.speedHourPerSec', { val: String(val) });
         } else {
-            speedVal.textContent = speed < 10
-                ? speed.toFixed(1) + ' 天/秒'
-                : Math.round(speed) + ' 天/秒';
+            const val = speed < 10 ? speed.toFixed(1) : Math.round(speed);
+            speedVal.textContent = t('control.speedDayPerSec', { val: String(val) });
         }
     }
     speedSlider.addEventListener('input', () => {
@@ -251,9 +249,9 @@ export function initControls(sys, camera, renderer) {
         const m = sliderToEcc(v);
         sys.setEccentricityMultiplier(m);
         if (m === 1) {
-            eccVal.textContent = '×1.0 (真实)';
+            eccVal.textContent = t('control.eccReal');
         } else {
-            eccVal.textContent = '×' + m.toFixed(1) + ' (示意)';
+            eccVal.textContent = t('control.eccDemo', { val: m.toFixed(1) });
         }
     }
     eccSlider.addEventListener('input', () => {
@@ -391,7 +389,16 @@ export function initControls(sys, camera, renderer) {
         list.innerHTML = html;
     }
 
-    onLangChange(() => buildSizePanel());
+    function refreshSliderValues() {
+        updateScale();
+        updateSpeed();
+        updateEcc();
+    }
+
+    onLangChange(() => {
+        buildSizePanel();
+        refreshSliderValues();
+    });
 
     // ── Window resize ──────────────────────────────────────────────
     window.addEventListener('resize', () => {

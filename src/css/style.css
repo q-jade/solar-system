@@ -218,7 +218,8 @@ input[type="range"]::-moz-range-thumb {
 /* ── Toggle switches ──────────────────────── */
 .ctrl-toggles {
   display: flex;
-  gap: 14px;
+  flex-wrap: wrap;
+  gap: 10px 14px;
   padding-top: 2px;
   justify-content: center;
 }
@@ -790,25 +791,32 @@ input[type="range"]::-moz-range-thumb {
   box-shadow: 0 0 12px rgba(100, 160, 255, 0.2);
 }
 
-/* ── Global quiz button (top-right) ──────── */
-#global-quiz-btn {
+/* ── Top-right buttons container ──────────── */
+#top-buttons {
   position: fixed;
   top: 16px;
-  right: 180px;
+  right: 16px;
   z-index: 5;
-  padding: 7px 16px;
+  display: flex;
+  gap: 8px;
+}
+
+#top-buttons button {
+  padding: 7px 14px;
   background: rgba(10, 10, 30, 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(100, 160, 255, 0.25);
+  border: 1px solid rgba(100, 160, 255, 0.2);
   border-radius: 8px;
   color: #acf;
   font-size: 13px;
   cursor: pointer;
   transition: all 0.15s;
   line-height: 1;
+  white-space: nowrap;
 }
-#global-quiz-btn:hover {
+
+#top-buttons button:hover {
   background: rgba(30, 40, 80, 0.8);
   border-color: rgba(100, 160, 255, 0.5);
   box-shadow: 0 0 10px rgba(100, 160, 255, 0.15);
@@ -1001,29 +1009,8 @@ input[type="range"]::-moz-range-thumb {
   box-shadow: 0 0 12px rgba(100, 160, 255, 0.2);
 }
 
-/* ── Stats button (top-right) ─────────────── */
-#stats-btn {
-  position: fixed;
-  top: 16px;
-  right: 290px;
-  z-index: 5;
-  padding: 7px 14px;
-  background: rgba(10, 10, 30, 0.7);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(100, 120, 200, 0.2);
-  border-radius: 8px;
-  color: #acf;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.15s;
-  line-height: 1;
-  white-space: nowrap;
-}
-#stats-btn:hover {
-  background: rgba(30, 40, 80, 0.8);
-  border-color: rgba(100, 160, 255, 0.4);
-}
+/* ── Stats button (old positioning replaced by #top-buttons) ── */
+/* #stats-btn positioning is now handled by #top-buttons flexbox */
 
 /* ── Stats panel ─────────────────────────── */
 #stats-overlay {

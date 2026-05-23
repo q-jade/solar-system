@@ -163,8 +163,13 @@ export function createAchievement() {
 
     function showUnlockAnimation(ach, xp) {
         // Use quest engine's notification system for consistency
-        const container = document.getElementById('qt-toast-container');
-        if (!container) return;
+        let container = document.getElementById('qt-toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'qt-toast-container';
+            container.style.cssText = 'position:fixed;top:90px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none';
+            document.body.appendChild(container);
+        }
 
         const card = document.createElement('div');
         card.style.cssText = `

@@ -24,6 +24,7 @@ export function initControls(sys, camera, renderer) {
     let focusedBody = null;
     let focusedId = '';
     let focusName = '';
+    let focusNameEn = '';
     let flying = false;
     let flyBackToSun = false;
     let flyProgress = 0;
@@ -41,12 +42,18 @@ export function initControls(sys, camera, renderer) {
     focusLabel.textContent = '';
     document.body.appendChild(focusLabel);
 
+    function refreshFocusLabel() {
+        const lang = getLang();
+        const displayName = lang === 'en-US' ? focusNameEn : focusName;
+        focusLabel.textContent = t('control.focus', { name: displayName });
+    }
+
     function smoothstep(t) {
         return t * t * (3 - 2 * t);
     }
 
     /** Smoothly fly camera to look at a planet */
-    function setFocus(bodyData, name, bodyId) {
+    function setFocus(bodyData, name, bodyId, nameEn) {
         focusedId = bodyId || '';
         // Calculate end camera position: approach the planet along current view direction
         bodyData.getWorldPosition(_wp);
@@ -78,7 +85,8 @@ export function initControls(sys, camera, renderer) {
         flyProgress = 0;
         focusedBody = bodyData;
         focusName = name || '';
-        focusLabel.textContent = '🔭 ' + focusName + '（左键双击重置）';
+        focusNameEn = nameEn || name || '';
+        refreshFocusLabel();
         focusLabel.style.display = 'block';
     }
 
@@ -89,6 +97,7 @@ export function initControls(sys, camera, renderer) {
         focusedBody = null;
         focusedId = '';
         focusName = '';
+        focusNameEn = '';
         focusLabel.style.display = 'none';
         orbit.target.set(0, 0, 0);
     }
@@ -398,6 +407,7 @@ export function initControls(sys, camera, renderer) {
     onLangChange(() => {
         buildSizePanel();
         refreshSliderValues();
+        if (focusedId) refreshFocusLabel();
     });
 
     // ── Window resize ──────────────────────────────────────────────

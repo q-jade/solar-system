@@ -102,12 +102,12 @@ renderer.domElement.addEventListener('pointerup', (e) => {
                 // Right-click: focus camera on planet or sun
                 if (getFocusedId() === entry.bodyId) return; // already focused
                 if (entry.bodyId === 'sun') {
-                    setFocus(sys.sunMesh, '太阳', 'sun');
+                    setFocus(sys.sunMesh, '太阳', 'sun', 'Sun');
                 } else {
                     const pMatch = sys.planets.find(p =>
                         (p.data.english || '').toLowerCase() === entry.bodyId
                     );
-                    if (pMatch) setFocus(pMatch.mesh, pMatch.data.name, entry.bodyId);
+                    if (pMatch) setFocus(pMatch.mesh, pMatch.data.name, entry.bodyId, pMatch.data.english || '');
                 }
                 return;
             }

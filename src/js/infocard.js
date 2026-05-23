@@ -1,7 +1,7 @@
 import { getPlanet, getAllPlanets, getQuestions } from './knowledge.js';
 import { startQuiz } from './quizEngine.js';
 import { sfx } from './sfx.js';
-import { t, onLangChange } from './i18n.js';
+import { t, onLangChange, getLang } from './i18n.js';
 
 // ── HTML template ──────────────────────────────────────────────────────
 const PANEL_HTML = `
@@ -49,10 +49,10 @@ function fmtAU(au) {
 
 function fmtDays(d) {
     if (d === 0) return '—';
-    if (Math.abs(d) < 1) return (Math.abs(d) * 24).toFixed(1) + ' 小时';
+    if (Math.abs(d) < 1) return (Math.abs(d) * 24).toFixed(1) + t('unit.hours');
     const val = Math.abs(d).toFixed(d < 10 ? 3 : (d < 1000 ? 2 : (d < 10000 ? 1 : 0)));
-    if (d < 0) return val + ' 天（逆向）';
-    return val + ' 天';
+    if (d < 0) return val + t('unit.daysRetro');
+    return val + t('unit.days');
 }
 
 function fmtMoons(count) {
@@ -61,7 +61,7 @@ function fmtMoons(count) {
 }
 
 function fmtRadius(r) {
-    return r.toLocaleString() + ' km';
+    return r.toLocaleString() + ' ' + t('unit.km');
 }
 
 // ── Texture path ───────────────────────────────────────────────────────
@@ -90,8 +90,23 @@ function compareRow(label, valA, valB, unit) {
     </tr>`;
 }
 
+// ── 双语适配：根据语言选用 body 的英文字段 ─────────────────────────
+function localizeBody(body) {
+    if (getLang() !== 'en-US') return body;
+    return {
+        ...body,
+        name: body.nameEn || body.name,
+        highlights: body.highlightsEn || body.highlights,
+        atmosphere: body.atmosphereEn || body.atmosphere,
+        funFact: body.funFactEn || body.funFact,
+        detail: body.detailEn || body.detail,
+        moonNames: body.moonNamesEn || body.moonNames,
+    };
+}
+
 // ── Build overview tab content ─────────────────────────────────────────
 function overviewHTML(body) {
+    body = localizeBody(body);
     const colorHex = '#' + body.color.toString(16).padStart(6, '0');
     let hlHtml = '';
     if (body.highlights && body.highlights.length) {
@@ -119,6 +134,7 @@ function overviewHTML(body) {
 
 // ── Build detail tab content ───────────────────────────────────────────
 function detailHTML(body) {
+    body = localizeBody(body);
     const paragraphs = body.detail.split('\n\n').filter(Boolean);
     const html = paragraphs.map(p => `<p>${p}</p>`).join('');
     return `<div class="ic-detail-text">${html}</div>`;
@@ -126,11 +142,13 @@ function detailHTML(body) {
 
 // ── Build compare tab content ──────────────────────────────────────────
 function compareHTML(bodyA, bodyB) {
+    bodyA = localizeBody(bodyA);
+    const localName = b => localizeBody(b).name;
     if (!bodyB) {
         // 未选择比较对象，显示选择器
         const allBodies = getAllPlanets().filter(b => b.id !== bodyA.id);
         const opts = allBodies.map(b =>
-            `<option value="${b.id}">${b.symbol} ${b.name}</option>`
+            `<option value="${b.id}">${b.symbol} ${localName(b)}</option>`
         ).join('');
         return `
           <div class="ic-cmp-empty">
@@ -142,6 +160,8 @@ function compareHTML(bodyA, bodyB) {
           </div>
         `;
     }
+
+    bodyB = localizeBody(bodyB);
 
     // 比较表格
     const colorA = '#' + bodyA.color.toString(16).padStart(6, '0');
@@ -171,7 +191,7 @@ function compareHTML(bodyA, bodyB) {
       <select class="ic-cmp-select" id="ic-cmp-select">
         <option value="">${t('infoCard.cmpSelectOther')}</option>
         ${getAllPlanets().filter(b => b.id !== bodyA.id).map(b =>
-            `<option value="${b.id}" ${b.id === bodyB.id ? 'selected' : ''}>${b.symbol} ${b.name}</option>`
+            `<option value="${b.id}" ${b.id === bodyB.id ? 'selected' : ''}>${b.symbol} ${localName(b)}</option>`
         ).join('')}
       </select>
     `;
@@ -215,7 +235,7 @@ function ensurePanel() {
         }
     });
 
-    // 语言切换时更新 tab 标签
+    // 语言切换时刷新整个面板
     onLangChange(() => {
         const tabs = document.querySelectorAll('.ic-tab');
         if (tabs.length) {
@@ -224,10 +244,30 @@ function ensurePanel() {
             tabs[2].textContent = t('infoCard.compare');
         }
         document.getElementById('ic-quiz-btn').textContent = t('infoCard.quiz');
-        // 如果面板打开，刷新概览标签
-        if (activeBodyId && document.getElementById('ic-overview').classList.contains('active')) {
+        if (activeBodyId) {
             const body = getPlanet(activeBodyId);
-            if (body) document.getElementById('ic-overview').innerHTML = overviewHTML(body);
+            if (body) {
+                // 刷新标题
+                const colorHex = '#' + body.color.toString(16).padStart(6, '0');
+                const lb = localizeBody(body);
+                document.getElementById('ic-header').innerHTML = `
+                  <span class="ic-color-dot" style="background:${colorHex}"></span>
+                  <span class="ic-name" id="ic-name">${lb.symbol} ${lb.name}</span>
+                  <span class="ic-english">${lb.english}</span>
+                `;
+                // 刷新所有 tab 内容
+                document.getElementById('ic-overview').innerHTML = overviewHTML(body);
+                document.getElementById('ic-detail').innerHTML = detailHTML(body);
+                const imgPath = getTexturePath(body.id);
+                if (imgPath) {
+                    const imgHtml = `<div class="ic-planet-img"><img src="${imgPath}" alt="${lb.name}" loading="lazy"></div>`;
+                    document.getElementById('ic-detail').innerHTML = imgHtml + document.getElementById('ic-detail').innerHTML;
+                }
+                // 如果在比较 tab 则刷新
+                if (document.getElementById('ic-compare').classList.contains('active')) {
+                    renderCompare();
+                }
+            }
         }
     });
 
@@ -264,12 +304,14 @@ export function selectBody(bodyId) {
     document.getElementById('ic-overlay').classList.add('visible');
     sfx.panelOpen();
 
-    // Header
+    // Header（双语：英文模式时主名用英文，隐藏副标题）
+    const lb = localizeBody(body);
+    const isEn = getLang() === 'en-US';
     const colorHex = '#' + body.color.toString(16).padStart(6, '0');
     document.getElementById('ic-header').innerHTML = `
       <span class="ic-color-dot" style="background:${colorHex}"></span>
-      <span class="ic-name" id="ic-name">${body.symbol} ${body.name}</span>
-      <span class="ic-english">${body.english}</span>
+      <span class="ic-name" id="ic-name">${lb.symbol} ${lb.name}</span>
+      <span class="ic-english"${isEn ? ' style="display:none"' : ''}>${lb.english}</span>
     `;
 
     // Tab content
@@ -280,7 +322,7 @@ export function selectBody(bodyId) {
     const txtEl = document.getElementById('ic-detail');
     const imgPath = getTexturePath(bodyId);
     if (imgPath) {
-        const imgHtml = `<div class="ic-planet-img"><img src="${imgPath}" alt="${body.name}" loading="lazy"></div>`;
+        const imgHtml = `<div class="ic-planet-img"><img src="${imgPath}" alt="${lb.name}" loading="lazy"></div>`;
         txtEl.innerHTML = imgHtml + txtEl.innerHTML;
     }
 

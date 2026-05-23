@@ -1,7 +1,7 @@
 import { getRandomQuestion, getQuestions } from './knowledge.js';
 import { recordAnswer } from './storage.js';
 import { sfx } from './sfx.js';
-import { t } from './i18n.js';
+import { t, getLang } from './i18n.js';
 
 let activeQuestions = [];
 let currentIndex = 0;
@@ -129,9 +129,9 @@ function onAnswer(idx) {
     // Last question? Change button text
     const nextBtn = document.getElementById('qz-next-btn');
     if (currentIndex >= activeQuestions.length - 1) {
-        nextBtn.textContent = '完成';
+        nextBtn.textContent = t('quiz.finish');
     } else {
-        nextBtn.textContent = '下一题';
+        nextBtn.textContent = t('quiz.next');
     }
 }
 
@@ -145,6 +145,18 @@ function nextQuestion() {
     renderQuestion();
 }
 
+// ── 双语适配：根据当前语言选用 question/options/explanation ─────────
+function localizeQuestions(pool) {
+    const lang = getLang();
+    if (lang !== 'en-US') return pool;
+    return pool.map(q => ({
+        ...q,
+        question: q.questionEn || q.question,
+        options: q.optionsEn || q.options,
+        explanation: q.explanationEn || q.explanation,
+    }));
+}
+
 // ── Start quiz ─────────────────────────────────────────────────────────
 export function startQuiz(opts = {}) {
     // opts: { title?, questions?, bodyId?, level?, count? }
@@ -152,11 +164,11 @@ export function startQuiz(opts = {}) {
 
     let pool;
     if (opts.questions) {
-        pool = opts.questions;
+        pool = localizeQuestions(opts.questions);
     } else if (opts.bodyId) {
-        pool = getQuestions({ relatedBody: opts.bodyId, shuffle: true });
+        pool = localizeQuestions(getQuestions({ relatedBody: opts.bodyId, shuffle: true }));
     } else {
-        pool = getQuestions({ shuffle: true, level: opts.level });
+        pool = localizeQuestions(getQuestions({ shuffle: true, level: opts.level }));
     }
 
     // Limit count

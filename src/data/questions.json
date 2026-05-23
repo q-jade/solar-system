@@ -4,100 +4,230 @@
     "level": "beginner",
     "type": "choice",
     "question": "太阳系中最大的行星是？",
-    "options": ["土星", "木星", "海王星", "天王星"],
+    "options": [
+      "土星",
+      "木星",
+      "海王星",
+      "天王星"
+    ],
     "answer": 1,
     "explanation": "木星直径约 139,820 km，是太阳系最大行星，其质量是其他所有行星总和的2.5倍。",
-    "relatedBody": "jupiter"
+    "relatedBody": "jupiter",
+    "questionEn": "Which is the largest planet in the solar system?",
+    "optionsEn": [
+      "Saturn",
+      "Jupiter",
+      "Neptune",
+      "Uranus"
+    ],
+    "explanationEn": "Jupiter's diameter is about 139,820 km, making it the largest planet. Its mass is 2.5 times that of all other planets combined."
   },
   {
     "id": "q002",
     "level": "beginner",
     "type": "choice",
     "question": "离太阳最近的行星是？",
-    "options": ["金星", "水星", "地球", "火星"],
+    "options": [
+      "金星",
+      "水星",
+      "地球",
+      "火星"
+    ],
     "answer": 1,
     "explanation": "水星平均距离太阳 0.387 AU（约5790万公里），是离太阳最近的行星。",
-    "relatedBody": "mercury"
+    "relatedBody": "mercury",
+    "questionEn": "Which planet is closest to the Sun?",
+    "optionsEn": [
+      "Venus",
+      "Mercury",
+      "Earth",
+      "Mars"
+    ],
+    "explanationEn": "Mercury orbits at an average distance of 0.387 AU (about 57.9 million km) from the Sun."
   },
   {
     "id": "q003",
     "level": "beginner",
     "type": "choice",
     "question": "太阳系中最热的行星是？",
-    "options": ["水星", "金星", "火星", "木星"],
+    "options": [
+      "水星",
+      "金星",
+      "火星",
+      "木星"
+    ],
     "answer": 1,
     "explanation": "金星因浓厚的二氧化碳大气层产生强烈温室效应，表面温度高达462°C，比离太阳更近的水星还热。",
-    "relatedBody": "venus"
+    "relatedBody": "venus",
+    "questionEn": "Which is the hottest planet in the solar system?",
+    "optionsEn": [
+      "Mercury",
+      "Venus",
+      "Mars",
+      "Jupiter"
+    ],
+    "explanationEn": "Venus has a thick CO₂ atmosphere creating a runaway greenhouse effect, with surface temperatures reaching 462°C — hotter than Mercury which is closer to the Sun."
   },
   {
     "id": "q004",
     "level": "beginner",
     "type": "choice",
     "question": "地球的天然卫星叫什么？",
-    "options": ["火星", "太阳", "月球", "金星"],
+    "options": [
+      "火星",
+      "太阳",
+      "月球",
+      "金星"
+    ],
     "answer": 2,
     "explanation": "月球是地球唯一的天然卫星，直径约3474 km。",
-    "relatedBody": "earth"
+    "relatedBody": "earth",
+    "questionEn": "What is Earth's natural satellite called?",
+    "optionsEn": [
+      "Mars",
+      "Sun",
+      "Moon",
+      "Venus"
+    ],
+    "explanationEn": "The Moon is Earth's only natural satellite, with a diameter of about 3,474 km."
   },
   {
     "id": "q005",
     "level": "beginner",
     "type": "choice",
     "question": "太阳系中拥有最壮观环系统的行星是？",
-    "options": ["木星", "土星", "天王星", "海王星"],
+    "options": [
+      "木星",
+      "土星",
+      "天王星",
+      "海王星"
+    ],
     "answer": 1,
     "explanation": "土星的环系统主要由冰粒和岩石碎片组成，宽度约28万公里但厚度仅10~100米。",
-    "relatedBody": "saturn"
+    "relatedBody": "saturn",
+    "questionEn": "Which planet has the most magnificent ring system?",
+    "optionsEn": [
+      "Jupiter",
+      "Saturn",
+      "Uranus",
+      "Neptune"
+    ],
+    "explanationEn": "Saturn's ring system is made of ice particles and rocky debris, spanning about 280,000 km but only 10~100 meters thick."
   },
   {
     "id": "q006",
     "level": "intermediate",
     "type": "choice",
     "question": "哪颗行星的自转方向是逆向的（从东向西转）？",
-    "options": ["火星", "金星", "木星", "海王星"],
+    "options": [
+      "火星",
+      "金星",
+      "木星",
+      "海王星"
+    ],
     "answer": 1,
     "explanation": "金星是逆向自转（自转周期-243天），此外天王星也几乎是侧躺自转（轴倾角97.8°）。",
-    "relatedBody": "venus"
+    "relatedBody": "venus",
+    "questionEn": "Which planet rotates in reverse (east to west)?",
+    "optionsEn": [
+      "Mars",
+      "Venus",
+      "Jupiter",
+      "Neptune"
+    ],
+    "explanationEn": "Venus rotates retrograde (rotation period -243 days). Uranus also spins nearly on its side (axial tilt 97.8°)."
   },
   {
     "id": "q007",
     "level": "intermediate",
     "type": "choice",
     "question": "火星上最高的火山叫什么？",
-    "options": ["埃特纳火山", "珠穆朗玛峰", "奥林匹斯山", "富士山"],
+    "options": [
+      "埃特纳火山",
+      "珠穆朗玛峰",
+      "奥林匹斯山",
+      "富士山"
+    ],
     "answer": 2,
     "explanation": "奥林匹斯山（Olympus Mons）高21.9km，是太阳系已知最高山峰。",
-    "relatedBody": "mars"
+    "relatedBody": "mars",
+    "questionEn": "What is the tallest volcano on Mars called?",
+    "optionsEn": [
+      "Mount Etna",
+      "Mount Everest",
+      "Olympus Mons",
+      "Mount Fuji"
+    ],
+    "explanationEn": "Olympus Mons stands 21.9 km high, making it the tallest known mountain in the solar system."
   },
   {
     "id": "q008",
     "level": "intermediate",
     "type": "choice",
     "question": "土星的密度约为多少？",
-    "options": ["5.51 g/cm³", "3.93 g/cm³", "0.69 g/cm³", "1.33 g/cm³"],
+    "options": [
+      "5.51 g/cm³",
+      "3.93 g/cm³",
+      "0.69 g/cm³",
+      "1.33 g/cm³"
+    ],
     "answer": 2,
     "explanation": "土星密度仅0.69 g/cm³，比水（1.0 g/cm³）还低，是太阳系密度最小的行星。",
-    "relatedBody": "saturn"
+    "relatedBody": "saturn",
+    "questionEn": "What is Saturn's approximate density?",
+    "optionsEn": [
+      "5.51 g/cm³",
+      "3.93 g/cm³",
+      "0.69 g/cm³",
+      "1.33 g/cm³"
+    ],
+    "explanationEn": "Saturn's density is only 0.69 g/cm³ — lower than water (1.0 g/cm³). It's the least dense planet in the solar system."
   },
   {
     "id": "q009",
     "level": "intermediate",
     "type": "choice",
     "question": "太阳系中自转轴几乎与公转面平行（「躺着」转）的行星是？",
-    "options": ["海王星", "天王星", "金星", "水星"],
+    "options": [
+      "海王星",
+      "天王星",
+      "金星",
+      "水星"
+    ],
     "answer": 1,
     "explanation": "天王星的自转轴倾斜约97.8°，几乎平躺在公转轨道面上。",
-    "relatedBody": "uranus"
+    "relatedBody": "uranus",
+    "questionEn": "Which planet rotates almost on its side (parallel to its orbit)?",
+    "optionsEn": [
+      "Neptune",
+      "Uranus",
+      "Venus",
+      "Mercury"
+    ],
+    "explanationEn": "Uranus has an axial tilt of about 97.8°, essentially lying on its side relative to its orbital plane."
   },
   {
     "id": "q010",
     "level": "intermediate",
     "type": "choice",
     "question": "以下哪颗行星不是气态巨行星？",
-    "options": ["木星", "土星", "天王星", "火星"],
+    "options": [
+      "木星",
+      "土星",
+      "天王星",
+      "火星"
+    ],
     "answer": 3,
     "explanation": "火星是类地行星（岩质行星），木星、土星、天王星、海王星均为气态/冰巨行星。",
-    "relatedBody": "mars"
+    "relatedBody": "mars",
+    "questionEn": "Which of the following is NOT a gas giant?",
+    "optionsEn": [
+      "Jupiter",
+      "Saturn",
+      "Uranus",
+      "Mars"
+    ],
+    "explanationEn": "Mars is a terrestrial (rocky) planet. Jupiter, Saturn, Uranus, and Neptune are gas/ice giants."
   },
   {
     "id": "q011",
@@ -112,37 +242,84 @@
     ],
     "answer": 1,
     "explanation": "海王星是唯一先通过数学计算预测轨道、再通过望远镜观测确认的行星（1846年，勒维耶 & 亚当斯）。",
-    "relatedBody": "neptune"
+    "relatedBody": "neptune",
+    "questionEn": "What is unique about Neptune's discovery?",
+    "optionsEn": [
+      "Discovered by telescope by accident",
+      "Predicted by math, then confirmed by observation",
+      "Discovered by Voyager probe",
+      "Inferred from comet orbits"
+    ],
+    "explanationEn": "Neptune is the only planet discovered through mathematical prediction before direct observation (1846, Le Verrier & Adams)."
   },
   {
     "id": "q012",
     "level": "advanced",
     "type": "choice",
     "question": "太阳系中最大的卫星（比水星还大）是？",
-    "options": ["月球", "木卫三（盖尼米得）", "土卫六（提坦）", "海卫一（特里同）"],
+    "options": [
+      "月球",
+      "木卫三（盖尼米得）",
+      "土卫六（提坦）",
+      "海卫一（特里同）"
+    ],
     "answer": 1,
     "explanation": "木卫三（盖尼米得）直径约5268 km，比水星（4879 km）还大，是太阳系最大的卫星。",
-    "relatedBody": "jupiter"
+    "relatedBody": "jupiter",
+    "questionEn": "Which is the largest moon in the solar system (bigger than Mercury)?",
+    "optionsEn": [
+      "Moon",
+      "Ganymede",
+      "Titan",
+      "Triton"
+    ],
+    "explanationEn": "Ganymede, with a diameter of about 5,268 km, is larger than Mercury (4,879 km) and is the largest moon in the solar system."
   },
   {
     "id": "q013",
     "level": "advanced",
     "type": "choice",
     "question": "水星的轨道偏心率约为多少？",
-    "options": ["0.0068", "0.0167", "0.2056", "0.0934"],
+    "options": [
+      "0.0068",
+      "0.0167",
+      "0.2056",
+      "0.0934"
+    ],
     "answer": 2,
     "explanation": "水星偏心率约0.2056，是八大行星中轨道最椭圆的。近日点约0.307 AU，远日点约0.467 AU。",
-    "relatedBody": "mercury"
+    "relatedBody": "mercury",
+    "questionEn": "What is Mercury's orbital eccentricity?",
+    "optionsEn": [
+      "0.0068",
+      "0.0167",
+      "0.2056",
+      "0.0934"
+    ],
+    "explanationEn": "Mercury's eccentricity is about 0.2056, the most elliptical orbit among the eight planets. Perihelion: 0.307 AU, aphelion: 0.467 AU."
   },
   {
     "id": "q014",
     "level": "advanced",
     "type": "choice",
     "question": "金星上的一天（自转周期）相当于多少个地球日？",
-    "options": ["约 1 天", "约 58 天", "约 243 天", "约 365 天"],
+    "options": [
+      "约 1 天",
+      "约 58 天",
+      "约 243 天",
+      "约 365 天"
+    ],
     "answer": 2,
     "explanation": "金星自转周期约243地球日，比其公转周期（225天）还长——意味着金星上一天比一年还长。",
-    "relatedBody": "venus"
+    "relatedBody": "venus",
+    "questionEn": "How many Earth days is one day on Venus (its rotation period)?",
+    "optionsEn": [
+      "About 1 day",
+      "About 58 days",
+      "About 243 days",
+      "About 365 days"
+    ],
+    "explanationEn": "Venus takes about 243 Earth days to rotate once — longer than its orbital period (225 days). A day on Venus is longer than its year."
   },
   {
     "id": "q015",
@@ -157,536 +334,1233 @@
     ],
     "answer": 0,
     "explanation": "大红斑是一个比地球还大的巨型风暴（反气旋），自17世纪起被持续观测至今。",
-    "relatedBody": "jupiter"
+    "relatedBody": "jupiter",
+    "questionEn": "Which statement about Jupiter's Great Red Spot is correct?",
+    "optionsEn": [
+      "A giant anti-cyclonic storm observed for at least 400 years",
+      "An impact crater from a celestial collision",
+      "A giant volcano on Jupiter",
+      "A shadow cast by Io"
+    ],
+    "explanationEn": "The Great Red Spot is a giant storm (anti-cyclone) larger than Earth, continuously observed since the 17th century."
   },
   {
     "id": "q016",
     "level": "beginner",
     "type": "choice",
     "question": "太阳系中质量最大的天体是？",
-    "options": ["木星", "太阳", "土星", "地球"],
+    "options": [
+      "木星",
+      "太阳",
+      "土星",
+      "地球"
+    ],
     "answer": 1,
     "explanation": "太阳的质量占整个太阳系的99.86%，约是木星质量的1000倍。",
-    "relatedBody": "sun"
+    "relatedBody": "sun",
+    "questionEn": "What is the most massive object in the solar system?",
+    "optionsEn": [
+      "Jupiter",
+      "Sun",
+      "Saturn",
+      "Earth"
+    ],
+    "explanationEn": "The Sun contains 99.86% of the solar system's mass — about 1,000 times the mass of Jupiter."
   },
   {
     "id": "q017",
     "level": "beginner",
     "type": "choice",
     "question": "太阳的能量来自什么反应？",
-    "options": ["化学燃烧", "核裂变", "核聚变", "摩擦生热"],
+    "options": [
+      "化学燃烧",
+      "核裂变",
+      "核聚变",
+      "摩擦生热"
+    ],
     "answer": 2,
     "explanation": "太阳核心在1500万°C高温下将氢聚变为氦，每秒钟消耗约6亿吨氢。",
-    "relatedBody": "sun"
+    "relatedBody": "sun",
+    "questionEn": "What process generates the Sun's energy?",
+    "optionsEn": [
+      "Chemical combustion",
+      "Nuclear fission",
+      "Nuclear fusion",
+      "Frictional heating"
+    ],
+    "explanationEn": "The Sun's core fuses hydrogen into helium at 15 million °C, consuming about 600 million tons of hydrogen per second."
   },
   {
     "id": "q018",
     "level": "intermediate",
     "type": "choice",
     "question": "太阳的表面温度约为多少？",
-    "options": ["1500°C", "5500°C", "10000°C", "1500万°C"],
+    "options": [
+      "1500°C",
+      "5500°C",
+      "10000°C",
+      "1500万°C"
+    ],
     "answer": 1,
     "explanation": "太阳表面（光球层）温度约5500°C，而核心温度高达1500万°C。",
-    "relatedBody": "sun"
+    "relatedBody": "sun",
+    "questionEn": "What is the surface temperature of the Sun?",
+    "optionsEn": [
+      "1,500°C",
+      "5,500°C",
+      "10,000°C",
+      "15 million °C"
+    ],
+    "explanationEn": "The Sun's surface (photosphere) is about 5,500°C, while its core reaches 15 million °C."
   },
   {
     "id": "q019",
     "level": "intermediate",
     "type": "choice",
     "question": "太阳的恒星类型是什么？",
-    "options": ["红矮星", "黄矮星", "白矮星", "蓝巨星"],
+    "options": [
+      "红矮星",
+      "黄矮星",
+      "白矮星",
+      "蓝巨星"
+    ],
     "answer": 1,
     "explanation": "太阳属于G2V型黄矮星，寿命约100亿年，目前约46亿岁。",
-    "relatedBody": "sun"
+    "relatedBody": "sun",
+    "questionEn": "What stellar type is the Sun?",
+    "optionsEn": [
+      "Red dwarf",
+      "Yellow dwarf",
+      "White dwarf",
+      "Blue giant"
+    ],
+    "explanationEn": "The Sun is a G2V-type yellow dwarf, with a lifespan of about 10 billion years. It's currently about 4.6 billion years old."
   },
   {
     "id": "q020",
     "level": "advanced",
     "type": "choice",
     "question": "太阳的磁场活动周期大约是多少年？",
-    "options": ["5.5年", "11年", "22年", "100年"],
+    "options": [
+      "5.5年",
+      "11年",
+      "22年",
+      "100年"
+    ],
     "answer": 1,
     "explanation": "太阳活动周期约11年，表现为太阳黑子数量的增减。每22年为一个完整的磁周期（磁场极性反转）。",
-    "relatedBody": "sun"
+    "relatedBody": "sun",
+    "questionEn": "Approximately how long is the Sun's magnetic activity cycle?",
+    "optionsEn": [
+      "5.5 years",
+      "11 years",
+      "22 years",
+      "100 years"
+    ],
+    "explanationEn": "The solar activity cycle is about 11 years, shown by sunspot counts. Each 22-year period completes a full magnetic polarity reversal."
   },
   {
     "id": "q021",
     "level": "beginner",
     "type": "choice",
     "question": "哪颗行星的大气层最浓厚？",
-    "options": ["金星", "地球", "火星", "木星"],
+    "options": [
+      "金星",
+      "地球",
+      "火星",
+      "木星"
+    ],
     "answer": 0,
     "explanation": "金星大气层密度是地球的 92 倍，主要成分是二氧化碳。",
-    "relatedBody": "venus"
+    "relatedBody": "venus",
+    "questionEn": "Which planet has the thickest atmosphere?",
+    "optionsEn": [
+      "Venus",
+      "Earth",
+      "Mars",
+      "Jupiter"
+    ],
+    "explanationEn": "Venus's atmosphere is 92 times denser than Earth's, composed mainly of carbon dioxide."
   },
   {
     "id": "q022",
     "level": "beginner",
     "type": "choice",
     "question": "地球的大气层中含量最多的气体是？",
-    "options": ["氧气", "氮气", "二氧化碳", "氩气"],
+    "options": [
+      "氧气",
+      "氮气",
+      "二氧化碳",
+      "氩气"
+    ],
     "answer": 1,
     "explanation": "地球大气中氮气约占 78%，氧气约占 21%，其余为氩气、二氧化碳等。",
-    "relatedBody": "earth"
+    "relatedBody": "earth",
+    "questionEn": "What is the most abundant gas in Earth's atmosphere?",
+    "optionsEn": [
+      "Oxygen",
+      "Nitrogen",
+      "Carbon dioxide",
+      "Argon"
+    ],
+    "explanationEn": "Earth's atmosphere is about 78% nitrogen and 21% oxygen, with traces of argon, CO₂, and others."
   },
   {
     "id": "q023",
     "level": "beginner",
     "type": "choice",
     "question": "木星有多少颗已确认的卫星？",
-    "options": ["4 颗", "6 颗", "79 颗以上", "100 颗以上"],
+    "options": [
+      "4 颗",
+      "6 颗",
+      "79 颗以上",
+      "100 颗以上"
+    ],
     "answer": 2,
     "explanation": "截至 2023 年，木星已确认有 95 颗卫星，其中 4 颗是伽利略卫星。",
-    "relatedBody": "jupiter"
+    "relatedBody": "jupiter",
+    "questionEn": "How many confirmed moons does Jupiter have?",
+    "optionsEn": [
+      "4",
+      "6",
+      "79+",
+      "100+"
+    ],
+    "explanationEn": "As of 2023, Jupiter has 95 confirmed moons, including the four Galilean moons."
   },
   {
     "id": "q024",
     "level": "beginner",
     "type": "choice",
     "question": "土星有多少颗已确认的卫星？",
-    "options": ["6 颗", "14 颗", "82 颗以上", "100 颗以上"],
+    "options": [
+      "6 颗",
+      "14 颗",
+      "82 颗以上",
+      "100 颗以上"
+    ],
     "answer": 2,
     "explanation": "截至 2023 年，土星已确认有 146 颗卫星，其中土卫六（泰坦）有浓厚大气层。",
-    "relatedBody": "saturn"
+    "relatedBody": "saturn",
+    "questionEn": "How many confirmed moons does Saturn have?",
+    "optionsEn": [
+      "6",
+      "14",
+      "82+",
+      "100+"
+    ],
+    "explanationEn": "As of 2023, Saturn has 146 confirmed moons. Titan, the largest, has a thick atmosphere."
   },
   {
     "id": "q025",
     "level": "beginner",
     "type": "choice",
     "question": "小行星带位于哪两颗行星之间？",
-    "options": ["水星和金星", "地球和火星", "火星和木星", "木星和土星"],
+    "options": [
+      "水星和金星",
+      "地球和火星",
+      "火星和木星",
+      "木星和土星"
+    ],
     "answer": 2,
     "explanation": "小行星带位于火星和木星之间（2.2~3.2 AU），包含数百万颗小行星。",
-    "relatedBody": "mars"
+    "relatedBody": "mars",
+    "questionEn": "Where is the asteroid belt located?",
+    "optionsEn": [
+      "Between Mercury and Venus",
+      "Between Earth and Mars",
+      "Between Mars and Jupiter",
+      "Between Jupiter and Saturn"
+    ],
+    "explanationEn": "The asteroid belt lies between Mars and Jupiter (2.2~3.2 AU), containing millions of asteroids."
   },
   {
     "id": "q026",
     "level": "beginner",
     "type": "choice",
     "question": "彗星的尾巴总是指向哪个方向？",
-    "options": ["背离太阳", "指向太阳", "垂直于轨道", "随机方向"],
+    "options": [
+      "背离太阳",
+      "指向太阳",
+      "垂直于轨道",
+      "随机方向"
+    ],
     "answer": 0,
     "explanation": "彗尾由太阳风和太阳辐射压力推开，总是背离太阳方向。",
-    "relatedBody": "sun"
+    "relatedBody": "sun",
+    "questionEn": "Which direction does a comet's tail always point?",
+    "optionsEn": [
+      "Away from the Sun",
+      "Toward the Sun",
+      "Perpendicular to orbit",
+      "Random direction"
+    ],
+    "explanationEn": "A comet's tail is pushed by solar wind and radiation pressure, always pointing away from the Sun."
   },
   {
     "id": "q027",
     "level": "beginner",
     "type": "choice",
     "question": "冥王星被重新分类为什么？",
-    "options": ["矮行星", "小行星", "卫星", "黑洞"],
+    "options": [
+      "矮行星",
+      "小行星",
+      "卫星",
+      "黑洞"
+    ],
     "answer": 0,
     "explanation": "2006 年国际天文学联合会将冥王星重新分类为矮行星。",
-    "relatedBody": "sun"
+    "relatedBody": "sun",
+    "questionEn": "What was Pluto reclassified as?",
+    "optionsEn": [
+      "Dwarf planet",
+      "Asteroid",
+      "Moon",
+      "Black hole"
+    ],
+    "explanationEn": "In 2006, the IAU reclassified Pluto as a dwarf planet."
   },
   {
     "id": "q028",
     "level": "beginner",
     "type": "choice",
     "question": "太阳系中离太阳最远的行星是？",
-    "options": ["海王星", "天王星", "冥王星", "土星"],
+    "options": [
+      "海王星",
+      "天王星",
+      "冥王星",
+      "土星"
+    ],
     "answer": 0,
     "explanation": "海王星平均距离太阳 30.1 AU，是八大行星中距离太阳最远的。",
-    "relatedBody": "neptune"
+    "relatedBody": "neptune",
+    "questionEn": "Which planet is farthest from the Sun?",
+    "optionsEn": [
+      "Neptune",
+      "Uranus",
+      "Pluto",
+      "Saturn"
+    ],
+    "explanationEn": "Neptune orbits at an average distance of 30.1 AU, making it the farthest of the eight planets."
   },
   {
     "id": "q029",
     "level": "beginner",
     "type": "choice",
     "question": "太阳系中体积最小的行星是？",
-    "options": ["水星", "火星", "金星", "地球"],
+    "options": [
+      "水星",
+      "火星",
+      "金星",
+      "地球"
+    ],
     "answer": 0,
     "explanation": "水星半径约 2440 km，是八大行星中最小的。",
-    "relatedBody": "mercury"
+    "relatedBody": "mercury",
+    "questionEn": "Which is the smallest planet in the solar system?",
+    "optionsEn": [
+      "Mercury",
+      "Mars",
+      "Venus",
+      "Earth"
+    ],
+    "explanationEn": "Mercury has a radius of about 2,440 km, making it the smallest of the eight planets."
   },
   {
     "id": "q030",
     "level": "beginner",
     "type": "choice",
     "question": "木星的大红斑是什么？",
-    "options": ["火山口", "风暴", "撞击坑", "卫星"],
+    "options": [
+      "火山口",
+      "风暴",
+      "撞击坑",
+      "卫星"
+    ],
     "answer": 1,
     "explanation": "大红斑是一个比地球还大的巨型风暴（反气旋），自 17 世纪起被持续观测至今。",
-    "relatedBody": "jupiter"
+    "relatedBody": "jupiter",
+    "questionEn": "What is Jupiter's Great Red Spot?",
+    "optionsEn": [
+      "Volcanic crater",
+      "Storm",
+      "Impact crater",
+      "Moon"
+    ],
+    "explanationEn": "The Great Red Spot is a giant storm (anti-cyclone) larger than Earth, observed continuously since the 17th century."
   },
   {
     "id": "q031",
     "level": "beginner",
     "type": "choice",
     "question": "哪颗行星表面有最多的环形山？",
-    "options": ["地球", "金星", "水星", "火星"],
+    "options": [
+      "地球",
+      "金星",
+      "水星",
+      "火星"
+    ],
     "answer": 2,
     "explanation": "水星几乎没有大气层保护，表面布满陨石坑，是太阳系中环形山最多的行星。",
-    "relatedBody": "mercury"
+    "relatedBody": "mercury",
+    "questionEn": "Which planet's surface has the most craters?",
+    "optionsEn": [
+      "Earth",
+      "Venus",
+      "Mercury",
+      "Mars"
+    ],
+    "explanationEn": "Mercury has almost no atmosphere to protect it, so its surface is heavily cratered — the most cratered planet in the solar system."
   },
   {
     "id": "q032",
     "level": "beginner",
     "type": "choice",
     "question": "土星环主要由什么组成？",
-    "options": ["岩石", "冰粒", "气体", "尘埃"],
+    "options": [
+      "岩石",
+      "冰粒",
+      "气体",
+      "尘埃"
+    ],
     "answer": 1,
     "explanation": "土星环主要由冰粒和岩石碎片组成，冰粒大小从微米到米不等。",
-    "relatedBody": "saturn"
+    "relatedBody": "saturn",
+    "questionEn": "What are Saturn's rings primarily made of?",
+    "optionsEn": [
+      "Rock",
+      "Ice particles",
+      "Gas",
+      "Dust"
+    ],
+    "explanationEn": "Saturn's rings are mainly composed of ice particles and rocky debris, ranging from micrometers to meters in size."
   },
   {
     "id": "q033",
     "level": "beginner",
     "type": "choice",
     "question": "火星的卫星叫什么？",
-    "options": ["火卫一和火卫二", "木卫一和木卫二", "土卫六和土卫七", "月神和日神"],
+    "options": [
+      "火卫一和火卫二",
+      "木卫一和木卫二",
+      "土卫六和土卫七",
+      "月神和日神"
+    ],
     "answer": 0,
     "explanation": "火星有两颗卫星：火卫一（Phobos）和火卫二（Deimos），都是不规则小行星。",
-    "relatedBody": "mars"
+    "relatedBody": "mars",
+    "questionEn": "What are the names of Mars' moons?",
+    "optionsEn": [
+      "Phobos and Deimos",
+      "Io and Europa",
+      "Titan and Hyperion",
+      "Luna and Sol"
+    ],
+    "explanationEn": "Mars has two moons: Phobos and Deimos, both irregularly shaped and likely captured asteroids."
   },
   {
     "id": "q034",
     "level": "beginner",
     "type": "choice",
     "question": "天王星的大气层中主要含有什么气体？",
-    "options": ["二氧化碳", "甲烷", "氨", "硫化氢"],
+    "options": [
+      "二氧化碳",
+      "甲烷",
+      "氨",
+      "硫化氢"
+    ],
     "answer": 1,
     "explanation": "天王星大气中含有约 2.3% 的甲烷，吸收红光使其呈现蓝绿色。",
-    "relatedBody": "uranus"
+    "relatedBody": "uranus",
+    "questionEn": "Which gas gives Uranus its blue-green color?",
+    "optionsEn": [
+      "Carbon dioxide",
+      "Methane",
+      "Ammonia",
+      "Hydrogen sulfide"
+    ],
+    "explanationEn": "Uranus's atmosphere contains about 2.3% methane, which absorbs red light and gives the planet its blue-green appearance."
   },
   {
     "id": "q035",
     "level": "beginner",
     "type": "choice",
     "question": "海王星的大气层中有什么现象？",
-    "options": ["超级风暴", "火山喷发", "极光", "沙尘暴"],
+    "options": [
+      "超级风暴",
+      "火山喷发",
+      "极光",
+      "沙尘暴"
+    ],
     "answer": 0,
     "explanation": "海王星风速可达 2100 km/h，是太阳系中风速最快的行星，大气层中常有超级风暴。",
-    "relatedBody": "neptune"
+    "relatedBody": "neptune",
+    "questionEn": "What atmospheric phenomenon is observed on Neptune?",
+    "optionsEn": [
+      "Super storms",
+      "Volcanic eruptions",
+      "Auroras",
+      "Dust storms"
+    ],
+    "explanationEn": "Neptune has the fastest winds in the solar system — up to 2,100 km/h — with massive super storms in its atmosphere."
   },
   {
     "id": "q036",
     "level": "intermediate",
     "type": "choice",
     "question": "金星的表面温度约为多少？",
-    "options": ["-180°C", "-60°C", "462°C", "1000°C"],
+    "options": [
+      "-180°C",
+      "-60°C",
+      "462°C",
+      "1000°C"
+    ],
     "answer": 2,
     "explanation": "金星表面平均温度约 462°C，是太阳系最热的行星。",
-    "relatedBody": "venus"
+    "relatedBody": "venus",
+    "questionEn": "What is Venus's average surface temperature?",
+    "optionsEn": [
+      "-180°C",
+      "-60°C",
+      "462°C",
+      "1,000°C"
+    ],
+    "explanationEn": "Venus has an average surface temperature of about 462°C, making it the hottest planet in the solar system."
   },
   {
     "id": "q037",
     "level": "intermediate",
     "type": "choice",
     "question": "地球的公转周期约为多少天？",
-    "options": ["30 天", "90 天", "365 天", "400 天"],
+    "options": [
+      "30 天",
+      "90 天",
+      "365 天",
+      "400 天"
+    ],
     "answer": 2,
     "explanation": "地球公转周期约 365.25 天，即一个恒星年。",
-    "relatedBody": "earth"
+    "relatedBody": "earth",
+    "questionEn": "What is Earth's orbital period in days?",
+    "optionsEn": [
+      "30 days",
+      "90 days",
+      "365 days",
+      "400 days"
+    ],
+    "explanationEn": "Earth orbits the Sun in about 365.25 days (one sidereal year)."
   },
   {
     "id": "q038",
     "level": "intermediate",
     "type": "choice",
     "question": "木星的公转周期约为多少地球年？",
-    "options": ["0.24 年", "0.62 年", "11.86 年", "164.8 年"],
+    "options": [
+      "0.24 年",
+      "0.62 年",
+      "11.86 年",
+      "164.8 年"
+    ],
     "answer": 2,
     "explanation": "木星公转周期约 11.86 地球年（4332.59 天）。",
-    "relatedBody": "jupiter"
+    "relatedBody": "jupiter",
+    "questionEn": "How many Earth years is Jupiter's orbital period?",
+    "optionsEn": [
+      "0.24 years",
+      "0.62 years",
+      "11.86 years",
+      "164.8 years"
+    ],
+    "explanationEn": "Jupiter takes about 11.86 Earth years (4,332.59 days) to complete one orbit."
   },
   {
     "id": "q039",
     "level": "intermediate",
     "type": "choice",
     "question": "土星的公转周期约为多少地球年？",
-    "options": ["0.69 年", "2.84 年", "29.46 年", "164.8 年"],
+    "options": [
+      "0.69 年",
+      "2.84 年",
+      "29.46 年",
+      "164.8 年"
+    ],
     "answer": 2,
     "explanation": "土星公转周期约 29.46 地球年。",
-    "relatedBody": "saturn"
+    "relatedBody": "saturn",
+    "questionEn": "How many Earth years is Saturn's orbital period?",
+    "optionsEn": [
+      "0.69 years",
+      "2.84 years",
+      "29.46 years",
+      "164.8 years"
+    ],
+    "explanationEn": "Saturn takes about 29.46 Earth years to complete one orbit."
   },
   {
     "id": "q040",
     "level": "intermediate",
     "type": "choice",
     "question": "天王星的公转周期约为多少地球年？",
-    "options": ["0.44 年", "84 年", "165 年", "200 年"],
+    "options": [
+      "0.44 年",
+      "84 年",
+      "165 年",
+      "200 年"
+    ],
     "answer": 1,
     "explanation": "天王星公转周期约 84 地球年。",
-    "relatedBody": "uranus"
+    "relatedBody": "uranus",
+    "questionEn": "How many Earth years is Uranus's orbital period?",
+    "optionsEn": [
+      "0.44 years",
+      "84 years",
+      "165 years",
+      "200 years"
+    ],
+    "explanationEn": "Uranus takes about 84 Earth years to complete one orbit."
   },
   {
     "id": "q041",
     "level": "intermediate",
     "type": "choice",
     "question": "海王星的公转周期约为多少地球年？",
-    "options": ["165 年", "84 年", "11.86 年", "29.46 年"],
+    "options": [
+      "165 年",
+      "84 年",
+      "11.86 年",
+      "29.46 年"
+    ],
     "answer": 0,
     "explanation": "海王星公转周期约 164.8 地球年，是八大行星中最长的。",
-    "relatedBody": "neptune"
+    "relatedBody": "neptune",
+    "questionEn": "How many Earth years is Neptune's orbital period?",
+    "optionsEn": [
+      "165 years",
+      "84 years",
+      "11.86 years",
+      "29.46 years"
+    ],
+    "explanationEn": "Neptune takes about 164.8 Earth years — the longest orbital period of the eight planets."
   },
   {
     "id": "q042",
     "level": "intermediate",
     "type": "choice",
     "question": "木星的自转周期约为多少小时？",
-    "options": ["24 小时", "10 小时", "58 天", "365 天"],
+    "options": [
+      "24 小时",
+      "10 小时",
+      "58 天",
+      "365 天"
+    ],
     "answer": 1,
     "explanation": "木星自转周期约 9 小时 55 分，是太阳系中自转最快的行星。",
-    "relatedBody": "jupiter"
+    "relatedBody": "jupiter",
+    "questionEn": "What is Jupiter's rotation period in hours?",
+    "optionsEn": [
+      "24 hours",
+      "10 hours",
+      "58 days",
+      "365 days"
+    ],
+    "explanationEn": "Jupiter rotates in about 9 hours 55 minutes — the fastest rotation of any planet in the solar system."
   },
   {
     "id": "q043",
     "level": "intermediate",
     "type": "choice",
     "question": "土星的自转周期约为多少小时？",
-    "options": ["10 小时", "10.7 小时", "24 小时", "48 小时"],
+    "options": [
+      "10 小时",
+      "10.7 小时",
+      "24 小时",
+      "48 小时"
+    ],
     "answer": 1,
     "explanation": "土星自转周期约 10 小时 33 分。",
-    "relatedBody": "saturn"
+    "relatedBody": "saturn",
+    "questionEn": "What is Saturn's rotation period in hours?",
+    "optionsEn": [
+      "10 hours",
+      "10.7 hours",
+      "24 hours",
+      "48 hours"
+    ],
+    "explanationEn": "Saturn rotates in about 10 hours 33 minutes."
   },
   {
     "id": "q044",
     "level": "intermediate",
     "type": "choice",
     "question": "地球的自转轴倾角约为多少度？",
-    "options": ["0°", "23.44°", "45°", "90°"],
+    "options": [
+      "0°",
+      "23.44°",
+      "45°",
+      "90°"
+    ],
     "answer": 1,
     "explanation": "地球自转轴倾角约 23.44°，导致四季变化。",
-    "relatedBody": "earth"
+    "relatedBody": "earth",
+    "questionEn": "What is Earth's axial tilt in degrees?",
+    "optionsEn": [
+      "0°",
+      "23.44°",
+      "45°",
+      "90°"
+    ],
+    "explanationEn": "Earth's axial tilt of about 23.44° causes the seasons."
   },
   {
     "id": "q045",
     "level": "intermediate",
     "type": "choice",
     "question": "火星的自转轴倾角约为多少度？",
-    "options": ["0.03°", "25.19°", "82°", "98°"],
+    "options": [
+      "0.03°",
+      "25.19°",
+      "82°",
+      "98°"
+    ],
     "answer": 1,
     "explanation": "火星自转轴倾角约 25.19°，与地球相近，也有四季。",
-    "relatedBody": "mars"
+    "relatedBody": "mars",
+    "questionEn": "What is Mars' axial tilt in degrees?",
+    "optionsEn": [
+      "0.03°",
+      "25.19°",
+      "82°",
+      "98°"
+    ],
+    "explanationEn": "Mars has an axial tilt of about 25.19°, similar to Earth, giving it seasons as well."
   },
   {
     "id": "q046",
     "level": "intermediate",
     "type": "choice",
     "question": "金星的自转周期约为多少天？",
-    "options": ["243 天", "225 天", "365 天", "1000 天"],
+    "options": [
+      "243 天",
+      "225 天",
+      "365 天",
+      "1000 天"
+    ],
     "answer": 0,
     "explanation": "金星自转周期约 243 地球日，且是逆向自转（负值表示从东向西转）。",
-    "relatedBody": "venus"
+    "relatedBody": "venus",
+    "questionEn": "How many Earth days is Venus's rotation period?",
+    "optionsEn": [
+      "243 days",
+      "225 days",
+      "365 days",
+      "1,000 days"
+    ],
+    "explanationEn": "Venus rotates once every 243 Earth days — and in reverse (retrograde rotation)."
   },
   {
     "id": "q047",
     "level": "intermediate",
     "type": "choice",
     "question": "木星的卫星中哪颗有浓厚大气层？",
-    "options": ["木卫一", "木卫二", "木卫三", "木卫四"],
+    "options": [
+      "木卫一",
+      "木卫二",
+      "木卫三",
+      "木卫四"
+    ],
     "answer": 2,
     "explanation": "木卫三（盖尼米得）是太阳系最大的卫星，有稀薄的大气层。",
-    "relatedBody": "jupiter"
+    "relatedBody": "jupiter",
+    "questionEn": "Which of Jupiter's moons has a thick atmosphere?",
+    "optionsEn": [
+      "Io",
+      "Europa",
+      "Ganymede",
+      "Callisto"
+    ],
+    "explanationEn": "Ganymede, the largest moon in the solar system, has a tenuous atmosphere."
   },
   {
     "id": "q048",
     "level": "intermediate",
     "type": "choice",
     "question": "土卫六（泰坦）有什么特殊之处？",
-    "options": ["有浓厚大气层", "是冰卫星", "有液态水海洋", "是气态行星"],
+    "options": [
+      "有浓厚大气层",
+      "是冰卫星",
+      "有液态水海洋",
+      "是气态行星"
+    ],
     "answer": 0,
     "explanation": "土卫六有浓厚氮气大气层，表面有液态甲烷湖泊。",
-    "relatedBody": "saturn"
+    "relatedBody": "saturn",
+    "questionEn": "What is special about Titan (Saturn's moon)?",
+    "optionsEn": [
+      "It has a thick atmosphere",
+      "It's an ice moon",
+      "It has liquid water oceans",
+      "It's a gas planet"
+    ],
+    "explanationEn": "Titan has a thick nitrogen atmosphere and liquid methane lakes on its surface."
   },
   {
     "id": "q049",
     "level": "intermediate",
     "type": "choice",
     "question": "木卫一（艾奥）有什么现象？",
-    "options": ["火山活动", "极光", "磁场", "冰壳"],
+    "options": [
+      "火山活动",
+      "极光",
+      "磁场",
+      "冰壳"
+    ],
     "answer": 0,
     "explanation": "木卫一有活跃的火山活动，是太阳系中最活跃的火山体。",
-    "relatedBody": "jupiter"
+    "relatedBody": "jupiter",
+    "questionEn": "What phenomenon is observed on Io (Jupiter's moon)?",
+    "optionsEn": [
+      "Volcanic activity",
+      "Auroras",
+      "Magnetic field",
+      "Ice crust"
+    ],
+    "explanationEn": "Io has active volcanism — the most volcanically active body in the solar system."
   },
   {
     "id": "q050",
     "level": "intermediate",
     "type": "choice",
     "question": "木卫二（欧罗巴）的冰层下有什么？",
-    "options": ["液态水海洋", "岩浆", "钻石雨", "空洞"],
+    "options": [
+      "液态水海洋",
+      "岩浆",
+      "钻石雨",
+      "空洞"
+    ],
     "answer": 0,
     "explanation": "木卫二冰层下可能有全球性液态水海洋，是地外生命潜在栖息地。",
-    "relatedBody": "jupiter"
+    "relatedBody": "jupiter",
+    "questionEn": "What lies beneath Europa's icy crust?",
+    "optionsEn": [
+      "Liquid water ocean",
+      "Magma",
+      "Diamond rain",
+      "Void"
+    ],
+    "explanationEn": "Europa likely has a global subsurface liquid water ocean, making it a potential habitat for extraterrestrial life."
   },
   {
     "id": "q051",
     "level": "intermediate",
     "type": "choice",
     "question": "土卫六的大气层主要含有什么气体？",
-    "options": ["氧气", "氮气", "二氧化碳", "甲烷"],
+    "options": [
+      "氧气",
+      "氮气",
+      "二氧化碳",
+      "甲烷"
+    ],
     "answer": 1,
     "explanation": "土卫六大气层约 98% 是氮气，其余为甲烷、乙烷等。",
-    "relatedBody": "saturn"
+    "relatedBody": "saturn",
+    "questionEn": "What is the main gas in Titan's atmosphere?",
+    "optionsEn": [
+      "Oxygen",
+      "Nitrogen",
+      "Carbon dioxide",
+      "Methane"
+    ],
+    "explanationEn": "Titan's atmosphere is about 98% nitrogen, with traces of methane, ethane, and other gases."
   },
   {
     "id": "q052",
     "level": "intermediate",
     "type": "choice",
     "question": "天王星的内部结构可能是什么？",
-    "options": ["岩石核心 + 冰幔 + 氢氦大气", "纯气体", "纯冰", "纯岩石"],
+    "options": [
+      "岩石核心 + 冰幔 + 氢氦大气",
+      "纯气体",
+      "纯冰",
+      "纯岩石"
+    ],
     "answer": 0,
     "explanation": "天王星可能有岩石核心、冰幔（水、氨、甲烷）和氢氦大气层。",
-    "relatedBody": "uranus"
+    "relatedBody": "uranus",
+    "questionEn": "What is Uranus's likely internal structure?",
+    "optionsEn": [
+      "Rocky core + ice mantle + H/He atmosphere",
+      "Pure gas",
+      "Pure ice",
+      "Pure rock"
+    ],
+    "explanationEn": "Uranus likely has a rocky core, an ice mantle (water, ammonia, methane), and a hydrogen-helium atmosphere."
   },
   {
     "id": "q053",
     "level": "intermediate",
     "type": "choice",
     "question": "海王星的磁场有什么特点？",
-    "options": ["与自转轴倾斜约 47°", "与自转轴平行", "不存在", "反向"],
+    "options": [
+      "与自转轴倾斜约 47°",
+      "与自转轴平行",
+      "不存在",
+      "反向"
+    ],
     "answer": 0,
     "explanation": "海王星磁场与自转轴倾斜约 47°，且偏移行星中心。",
-    "relatedBody": "neptune"
+    "relatedBody": "neptune",
+    "questionEn": "What is unique about Neptune's magnetic field?",
+    "optionsEn": [
+      "Tilted ~47° from rotation axis",
+      "Aligned with rotation axis",
+      "Nonexistent",
+      "Reversed polarity"
+    ],
+    "explanationEn": "Neptune's magnetic field is tilted about 47° from its rotation axis and offset from the planet's center."
   },
   {
     "id": "q054",
     "level": "intermediate",
     "type": "choice",
     "question": "太阳风主要由什么粒子组成？",
-    "options": ["电子", "质子", "中子", "α粒子"],
+    "options": [
+      "电子",
+      "质子",
+      "中子",
+      "α粒子"
+    ],
     "answer": 1,
     "explanation": "太阳风主要由质子和电子组成，速度可达 400~800 km/s。",
-    "relatedBody": "sun"
+    "relatedBody": "sun",
+    "questionEn": "What particles primarily make up the solar wind?",
+    "optionsEn": [
+      "Electrons",
+      "Protons",
+      "Neutrons",
+      "Alpha particles"
+    ],
+    "explanationEn": "The solar wind consists mainly of protons and electrons, traveling at 400~800 km/s."
   },
   {
     "id": "q055",
     "level": "intermediate",
     "type": "choice",
     "question": "地球磁层的主要作用是什么？",
-    "options": ["保护大气层免受太阳风侵蚀", "产生极光", "产生重力", "产生热量"],
+    "options": [
+      "保护大气层免受太阳风侵蚀",
+      "产生极光",
+      "产生重力",
+      "产生热量"
+    ],
     "answer": 0,
     "explanation": "地球磁层偏转太阳风，保护大气层和地表生物免受高能粒子辐射。",
-    "relatedBody": "earth"
+    "relatedBody": "earth",
+    "questionEn": "What is the main function of Earth's magnetosphere?",
+    "optionsEn": [
+      "Protects the atmosphere from solar wind erosion",
+      "Creates auroras",
+      "Generates gravity",
+      "Generates heat"
+    ],
+    "explanationEn": "Earth's magnetosphere deflects the solar wind, protecting the atmosphere and surface life from high-energy particles."
   },
   {
     "id": "q056",
     "level": "intermediate",
     "type": "choice",
     "question": "木星磁层的强度约为地球的多少倍？",
-    "options": ["1 倍", "10 倍", "1000 倍", "10000 倍"],
+    "options": [
+      "1 倍",
+      "10 倍",
+      "1000 倍",
+      "10000 倍"
+    ],
     "answer": 2,
     "explanation": "木星磁层强度约是地球的 10000 倍，是太阳系中最强的磁场。",
-    "relatedBody": "jupiter"
+    "relatedBody": "jupiter",
+    "questionEn": "How many times stronger is Jupiter's magnetosphere compared to Earth's?",
+    "optionsEn": [
+      "1×",
+      "10×",
+      "1,000×",
+      "10,000×"
+    ],
+    "explanationEn": "Jupiter's magnetosphere is about 10,000 times stronger than Earth's — the strongest magnetic field in the solar system."
   },
   {
     "id": "q057",
     "level": "intermediate",
     "type": "choice",
     "question": "土星环的宽度约为多少公里？",
-    "options": ["1000 km", "280000 km", "1000000 km", "5000 km"],
+    "options": [
+      "1000 km",
+      "280000 km",
+      "1000000 km",
+      "5000 km"
+    ],
     "answer": 1,
     "explanation": "土星环宽度约 28 万公里，但厚度仅 10~100 米。",
-    "relatedBody": "saturn"
+    "relatedBody": "saturn",
+    "questionEn": "How wide are Saturn's rings in kilometers?",
+    "optionsEn": [
+      "1,000 km",
+      "280,000 km",
+      "1,000,000 km",
+      "5,000 km"
+    ],
+    "explanationEn": "Saturn's rings span about 280,000 km but are only 10~100 meters thick."
   },
   {
     "id": "q058",
     "level": "intermediate",
     "type": "choice",
     "question": "小行星带中最大的小行星叫什么？",
-    "options": ["谷神星", "智神星", "婚神星", "灶神星"],
+    "options": [
+      "谷神星",
+      "智神星",
+      "婚神星",
+      "灶神星"
+    ],
     "answer": 0,
     "explanation": "谷神星（Ceres）直径约 940 km，是小行星带中最大的天体，也是唯一的小行星矮行星。",
-    "relatedBody": "mars"
+    "relatedBody": "mars",
+    "questionEn": "What is the largest asteroid in the main belt?",
+    "optionsEn": [
+      "Ceres",
+      "Pallas",
+      "Juno",
+      "Vesta"
+    ],
+    "explanationEn": "Ceres, about 940 km in diameter, is the largest object in the asteroid belt and the only dwarf planet there."
   },
   {
     "id": "q059",
     "level": "intermediate",
     "type": "choice",
     "question": "彗星彗发主要由什么组成？",
-    "options": ["冰和尘埃", "岩石和金属", "气体和等离子体", "水和冰"],
+    "options": [
+      "冰和尘埃",
+      "岩石和金属",
+      "气体和等离子体",
+      "水和冰"
+    ],
     "answer": 0,
     "explanation": "彗发由彗核升华的冰、尘埃和气体组成，形成云雾状外层。",
-    "relatedBody": "sun"
+    "relatedBody": "sun",
+    "questionEn": "What is a comet's coma primarily made of?",
+    "optionsEn": [
+      "Ice and dust",
+      "Rock and metal",
+      "Gas and plasma",
+      "Water and ice"
+    ],
+    "explanationEn": "A coma forms when a comet's nucleus sublimates — releasing ice, dust, and gas into a cloudy outer layer."
   },
   {
     "id": "q060",
     "level": "intermediate",
     "type": "choice",
     "question": "哈雷彗星的公转周期约为多少年？",
-    "options": ["76 年", "120 年", "200 年", "1000 年"],
+    "options": [
+      "76 年",
+      "120 年",
+      "200 年",
+      "1000 年"
+    ],
     "answer": 0,
     "explanation": "哈雷彗星公转周期约 76 年，是著名的短周期彗星。",
-    "relatedBody": "sun"
+    "relatedBody": "sun",
+    "questionEn": "About how many years is Halley's Comet orbital period?",
+    "optionsEn": [
+      "76 years",
+      "120 years",
+      "200 years",
+      "1,000 years"
+    ],
+    "explanationEn": "Halley's Comet orbits the Sun every ~76 years, making it a famous short-period comet."
   },
   {
     "id": "q061",
     "level": "intermediate",
     "type": "choice",
     "question": "柯伊伯带位于哪里？",
-    "options": ["海王星轨道外", "木星轨道外", "火星轨道外", "地球轨道外"],
+    "options": [
+      "海王星轨道外",
+      "木星轨道外",
+      "火星轨道外",
+      "地球轨道外"
+    ],
     "answer": 0,
     "explanation": "柯伊伯带位于海王星轨道外（30~50 AU），是短周期彗星的来源地。",
-    "relatedBody": "neptune"
+    "relatedBody": "neptune",
+    "questionEn": "Where is the Kuiper Belt located?",
+    "optionsEn": [
+      "Beyond Neptune's orbit",
+      "Beyond Jupiter's orbit",
+      "Beyond Mars' orbit",
+      "Beyond Earth's orbit"
+    ],
+    "explanationEn": "The Kuiper Belt lies beyond Neptune's orbit (30~50 AU) and is the source of short-period comets."
   },
   {
     "id": "q062",
     "level": "intermediate",
     "type": "choice",
     "question": "奥尔特云位于哪里？",
-    "options": ["距离太阳约 2000~100000 AU", "距离太阳约 30~50 AU", "距离太阳约 1~3 AU", "不存在"],
+    "options": [
+      "距离太阳约 2000~100000 AU",
+      "距离太阳约 30~50 AU",
+      "距离太阳约 1~3 AU",
+      "不存在"
+    ],
     "answer": 0,
     "explanation": "奥尔特云是长周期彗星的来源地，距离太阳约 2000~100000 AU。",
-    "relatedBody": "sun"
+    "relatedBody": "sun",
+    "questionEn": "Where is the Oort Cloud located?",
+    "optionsEn": [
+      "About 2,000~100,000 AU from the Sun",
+      "About 30~50 AU from the Sun",
+      "About 1~3 AU from the Sun",
+      "It doesn't exist"
+    ],
+    "explanationEn": "The Oort Cloud, source of long-period comets, extends from about 2,000 to 100,000 AU from the Sun."
   },
   {
     "id": "q063",
     "level": "advanced",
     "type": "choice",
     "question": "冥王星被重新分类的原因是什么？",
-    "options": ["不符合行星定义（未清空轨道附近区域）", "太小", "轨道倾斜", "没有卫星"],
+    "options": [
+      "不符合行星定义（未清空轨道附近区域）",
+      "太小",
+      "轨道倾斜",
+      "没有卫星"
+    ],
     "answer": 0,
     "explanation": "2006 年冥王星被重新分类为矮行星，因为它未清空轨道附近区域（海王星轨道共振区）。",
-    "relatedBody": "sun"
+    "relatedBody": "sun",
+    "questionEn": "Why was Pluto reclassified from planet to dwarf planet?",
+    "optionsEn": [
+      "It hasn't cleared its orbital neighborhood",
+      "It's too small",
+      "Its orbit is too inclined",
+      "It has no moons"
+    ],
+    "explanationEn": "In 2006, Pluto was reclassified as a dwarf planet because it hasn't cleared its orbital neighborhood (Neptune resonance zone)."
   },
   {
     "id": "q064",
     "level": "advanced",
     "type": "choice",
     "question": "洛希极限是指什么？",
-    "options": ["卫星被行星潮汐力撕裂的距离", "行星轨道共振点", "行星大气层边界", "彗星轨道交点"],
+    "options": [
+      "卫星被行星潮汐力撕裂的距离",
+      "行星轨道共振点",
+      "行星大气层边界",
+      "彗星轨道交点"
+    ],
     "answer": 0,
     "explanation": "洛希极限是卫星靠近行星时，潮汐力超过卫星自身引力的临界距离，卫星会被撕裂。",
-    "relatedBody": "earth"
+    "relatedBody": "earth",
+    "questionEn": "What is the Roche limit?",
+    "optionsEn": [
+      "Distance at which tidal forces tear a moon apart",
+      "Planetary orbital resonance point",
+      "Atmospheric boundary",
+      "Comet orbital intersection"
+    ],
+    "explanationEn": "The Roche limit is the distance at which tidal forces from a planet exceed a moon's self-gravity, tearing it apart."
   },
   {
     "id": "q065",
     "level": "advanced",
     "type": "choice",
     "question": "希尔球是指什么？",
-    "options": ["行星引力主导的区域", "行星轨道共振区", "行星大气层范围", "行星磁场范围"],
+    "options": [
+      "行星引力主导的区域",
+      "行星轨道共振区",
+      "行星大气层范围",
+      "行星磁场范围"
+    ],
     "answer": 0,
     "explanation": "希尔球是行星引力主导的空间范围，卫星必须在其内才能稳定绕行星运行。",
-    "relatedBody": "earth"
+    "relatedBody": "earth",
+    "questionEn": "What is the Hill sphere?",
+    "optionsEn": [
+      "Region where a planet's gravity dominates",
+      "Planetary orbital resonance zone",
+      "Planetary atmosphere boundary",
+      "Planetary magnetic field range"
+    ],
+    "explanationEn": "The Hill sphere is the region where a planet's gravity dominates. Moons must orbit within it to remain stable."
   },
   {
     "id": "q066",
     "level": "advanced",
     "type": "choice",
     "question": "轨道共振是指什么？",
-    "options": ["两个天体公转周期成简单整数比", "两个天体轨道交叉", "两个天体自转同步", "两个天体距离相等"],
+    "options": [
+      "两个天体公转周期成简单整数比",
+      "两个天体轨道交叉",
+      "两个天体自转同步",
+      "两个天体距离相等"
+    ],
     "answer": 0,
     "explanation": "轨道共振是两个天体公转周期成简单整数比（如 1:2、2:3），导致引力相互作用稳定化。",
-    "relatedBody": "jupiter"
+    "relatedBody": "jupiter",
+    "questionEn": "What is orbital resonance?",
+    "optionsEn": [
+      "Two bodies' orbital periods form a simple integer ratio",
+      "Two bodies' orbits cross",
+      "Two bodies rotate synchronously",
+      "Two bodies have equal distances"
+    ],
+    "explanationEn": "Orbital resonance occurs when two bodies' orbital periods form a simple integer ratio (e.g., 1:2, 2:3), stabilizing their gravitational interaction."
   },
   {
     "id": "q067",
     "level": "advanced",
     "type": "choice",
     "question": "柯伊伯带中的天体主要是什么？",
-    "options": ["冰质小天体", "岩石小行星", "气态巨行星", "恒星"],
+    "options": [
+      "冰质小天体",
+      "岩石小行星",
+      "气态巨行星",
+      "恒星"
+    ],
     "answer": 0,
     "explanation": "柯伊伯带主要由冰质小天体组成，包括短周期彗星和冥王星等矮行星。",
-    "relatedBody": "neptune"
+    "relatedBody": "neptune",
+    "questionEn": "What are Kuiper Belt objects primarily made of?",
+    "optionsEn": [
+      "Icy bodies",
+      "Rocky asteroids",
+      "Gas giants",
+      "Stars"
+    ],
+    "explanationEn": "The Kuiper Belt consists mainly of icy bodies, including short-period comets and dwarf planets like Pluto."
   },
   {
     "id": "q068",
     "level": "advanced",
     "type": "choice",
     "question": "太阳风对地球的影响是什么？",
-    "options": ["产生极光", "改变气候", "产生地震", "产生火山"],
+    "options": [
+      "产生极光",
+      "改变气候",
+      "产生地震",
+      "产生火山"
+    ],
     "answer": 0,
     "explanation": "太阳风与地球磁层相互作用，产生极光现象。",
-    "relatedBody": "earth"
+    "relatedBody": "earth",
+    "questionEn": "What visible effect does the solar wind have on Earth?",
+    "optionsEn": [
+      "Creates auroras",
+      "Changes climate",
+      "Causes earthquakes",
+      "Causes volcanoes"
+    ],
+    "explanationEn": "The solar wind interacts with Earth's magnetosphere to create auroral displays."
   }
 ]

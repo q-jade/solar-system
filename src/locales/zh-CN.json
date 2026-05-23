@@ -153,6 +153,7 @@
     "wrong": "❌ 答错了",
     "explanation": "💡 解析",
     "next": "下一题",
+    "finish": "完成",
     "result": "答题结果",
     "score": "答对 {{correct}}/{{total}} 题",
     "random": "随机知识挑战"
@@ -174,6 +175,12 @@
     "title": "📏 行星大小比较",
     "realScale": "✅ 真实比例",
     "clickToExit": "点击关闭"
+  },
+  "unit": {
+    "days": "天",
+    "daysRetro": "天（逆向）",
+    "hours": "小时",
+    "km": "km"
   },
   "cometQuest": {
     "clickComet": "点击彗星开始观测",

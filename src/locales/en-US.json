@@ -153,6 +153,7 @@
     "wrong": "❌ Wrong!",
     "explanation": "💡 Explanation",
     "next": "Next Question",
+    "finish": "Finish",
     "result": "Results",
     "score": "{{correct}}/{{total}} correct",
     "random": "Random Quiz"
@@ -174,6 +175,12 @@
     "title": "📏 Planet Size Comparison",
     "realScale": "✅ Real Scale",
     "clickToExit": "Click to close"
+  },
+  "unit": {
+    "days": " days",
+    "daysRetro": " days (retrograde)",
+    "hours": " h",
+    "km": "km"
   },
   "cometQuest": {
     "clickComet": "Click comet to observe",

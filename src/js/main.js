@@ -52,7 +52,7 @@ ambientMusic.start();
 
 // ── Clickable body meshes ─────────────────────────
 const clickables = [
-    { mesh: sys.sun, bodyId: 'sun' },
+    { mesh: sys.sunMesh, bodyId: 'sun' },
     ...sys.planets.map(p => ({
         mesh: p.mesh,
         bodyId: (p.data.english || '').toLowerCase(),
@@ -102,7 +102,7 @@ renderer.domElement.addEventListener('pointerup', (e) => {
                 // Right-click: focus camera on planet or sun
                 if (getFocusedId() === entry.bodyId) return; // already focused
                 if (entry.bodyId === 'sun') {
-                    setFocus(sys.sun, '太阳', 'sun');
+                    setFocus(sys.sunMesh, '太阳', 'sun');
                 } else {
                     const pMatch = sys.planets.find(p =>
                         (p.data.english || '').toLowerCase() === entry.bodyId

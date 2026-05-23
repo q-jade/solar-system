@@ -262,7 +262,11 @@ export function initSolarSystem(textures) {
     const sunMat = tex.sun
         ? new THREE.MeshBasicMaterial({ map: tex.sun })
         : new THREE.MeshBasicMaterial({ color: 0xffcc44 });
-    const sun = new THREE.Mesh(sunGeo, sunMat);
+    const sunMesh = new THREE.Mesh(sunGeo, sunMat);
+    // Group wraps mesh so tilt applies before self-rotation
+    const sun = new THREE.Group();
+    sun.add(sunMesh);
+    sun.rotation.x = 7.25 * Math.PI / 180; // axial tilt relative to ecliptic
     scene.add(sun);
 
     const glowMat = new THREE.SpriteMaterial({
@@ -906,6 +910,9 @@ export function initSolarSystem(textures) {
             }
         }
 
+        // Sun self-rotation (period ~25.38 Earth days at equator)
+        sunMesh.rotation.y += 2 * Math.PI / 25.38 * days * currentSpeedMul;
+
         // Moon around Earth — elliptical orbit with real orbital elements
         moonObj.meanAnomaly += moonObj.angularSpeed * days;
         const effMoonE = Math.min(moonObj.orbitalE * eMultiplier, 0.99);
@@ -996,7 +1003,7 @@ export function initSolarSystem(textures) {
 
     return {
         scene, camera, renderer, labelRenderer,
-        planets, moon: moonObj, comets, sun, asteroidBelt, eclipticDisc,
+        planets, moon: moonObj, comets, sun, sunMesh, asteroidBelt, eclipticDisc,
         setScale, setSpeed, setLabelsVisible, setLabelLanguage, setEccentricityMultiplier,
         update: updateOrbits,
         SUN_RADIUS, MAX_SCALE,

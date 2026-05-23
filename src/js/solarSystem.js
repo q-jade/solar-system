@@ -972,7 +972,7 @@ export function initSolarSystem(textures) {
 
     // ── Label occlusion check ───────────────────────────────────────
     occluders = [
-        sun,
+        sunMesh,
         ...planets.map(p => p.mesh),
         ...comets.map(c => c.mesh),
     ];

@@ -169,7 +169,8 @@
     "quizCorrectRate": "Correct Rate",
     "questCompleted": "Quests Done",
     "achUnlocked": "Achievements",
-    "reset": "Reset Profile"
+    "reset": "Reset Profile",
+    "resetConfirm": "Reset all exploration, quiz, and quest data? This cannot be undone."
   },
   "sort": {
     "title": "📏 Planet Size Comparison",

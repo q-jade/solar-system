@@ -198,7 +198,7 @@ document.getElementById('stats-overlay').addEventListener('click', (e) => {
 // Delegate reset button click (button is dynamically created)
 document.getElementById('stats-overlay').addEventListener('click', (e) => {
     if (e.target.id === 'stats-reset-btn') {
-        if (confirm('确认重置所有探索、答题和任务记录？此操作不可撤销。')) {
+        if (confirm(t('stats.resetConfirm'))) {
             resetData();
             quest.resetQuests();
             document.getElementById('stats-overlay').style.display = 'none';

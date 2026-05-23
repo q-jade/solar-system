@@ -169,7 +169,8 @@
     "quizCorrectRate": "正确率",
     "questCompleted": "任务完成",
     "achUnlocked": "成就解锁",
-    "reset": "重置档案"
+    "reset": "重置档案",
+    "resetConfirm": "确认重置所有探索、答题和任务记录？此操作不可撤销。"
   },
   "sort": {
     "title": "📏 行星大小比较",

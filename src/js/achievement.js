@@ -198,7 +198,7 @@ export function createAchievement() {
                 ${t('achievement.descs.' + ach.descKey)}
             </div>
             <div style="text-align:center;color:#4ade80;font-weight:600;font-size:14px;">
-                +${xp} XP
+                +${xp}${t('unit.xp')}
             </div>
         `;
 
@@ -389,7 +389,7 @@ function renderAchievementCard(ach, unlocked) {
                 <div class="ach-card-info">
                     <div class="ach-card-name">${t('achievement.names.' + ach.nameKey)}</div>
                     <div class="ach-card-desc">${t('achievement.descs.' + ach.descKey)}</div>
-                    <div class="ach-card-xp">+${ach.xp} XP</div>
+                    <div class="ach-card-xp">+${ach.xp}${t('unit.xp')}</div>
                 </div>
             </div>
         `;

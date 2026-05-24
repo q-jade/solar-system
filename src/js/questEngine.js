@@ -416,7 +416,7 @@ export function createQuestEngine() {
     function showCompletion(q, xp, level) {
         // First show a compact toast
         sfx.questDone();
-        showNotification('✅ ' + t('quest.names.' + q.nameKey) + ' +' + xp + ' XP', 'complete');
+        showNotification('✅ ' + t('quest.names.' + q.nameKey) + ' +' + xp + t('unit.xp'), 'complete');
 
         // If there's a completion message, schedule the expanded info panel
         if (t('quest.msgs.' + q.nameKey)) {
@@ -449,7 +449,7 @@ export function createQuestEngine() {
             <div style="font-weight:600;font-size:14px;margin-bottom:6px;">${title}</div>
             <div style="color:#aab4d0;font-size:12.5px;margin-bottom:12px;">${body}</div>
             <div style="display:flex;justify-content:space-between;align-items:center;">
-                <span style="color:#4ade80;font-weight:600;font-size:13px;">+${xp} XP</span>
+                <span style="color:#4ade80;font-weight:600;font-size:13px;">+${xp}${t('unit.xp')}</span>
                 <button class="qt-dismiss" style="
                     background:rgba(100,150,255,0.12);border:1px solid rgba(100,150,255,0.25);
                     color:#8ab4ff;border-radius:6px;padding:4px 14px;font-size:12px;

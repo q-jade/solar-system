@@ -37,9 +37,9 @@ function fmtMass(m) {
     return m.toExponential(3) + ' kg';
 }
 
-function fmtTemp(t) {
-    if (t.min === t.max) return t.mean + '°C';
-    return t.min + ' ~ ' + t.max + '°C';
+function fmtTemp(temp) {
+    if (temp.min === temp.max) return temp.mean + t('unit.temp');
+    return temp.min + ' ~ ' + temp.max + t('unit.temp');
 }
 
 function fmtAU(au) {

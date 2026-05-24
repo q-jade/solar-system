@@ -159,7 +159,9 @@
     "finish": "完成",
     "result": "答题结果",
     "score": "答对 {{correct}}/{{total}} 题",
-    "random": "随机知识挑战"
+    "random": "随机知识挑战",
+    "noQuestions": "暂无可用题目",
+    "noQuestionsBody": "该天体暂无相关题目"
   },
   "stats": {
     "title": "📊 我的档案",
@@ -185,6 +187,8 @@
     "daysRetro": "天（逆向）",
     "hours": "小时",
     "seconds": "秒",
+    "temp": "°C",
+    "xp": " XP",
     "km": "km"
   },
   "cometQuest": {

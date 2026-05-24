@@ -1,13 +1,14 @@
 import { getRandomQuestion, getQuestions } from './knowledge.js';
 import { recordAnswer } from './storage.js';
 import { sfx } from './sfx.js';
-import { t, getLang } from './i18n.js';
+import { t, getLang, onLangChange } from './i18n.js';
 
 let activeQuestions = [];
 let currentIndex = 0;
 let correctCount = 0;
 let answeredCount = 0;
 let isAnswered = false;
+let quizTitleMode = 'title';
 
 // ── HTML template (函数式，每次打开时取当前语言) ───────────────────
 function buildQuizHTML() {
@@ -44,6 +45,14 @@ function ensureQuizDOM() {
     document.getElementById('qz-close').addEventListener('click', closeQuiz);
     document.getElementById('qz-overlay').addEventListener('click', closeQuiz);
     document.getElementById('qz-next-btn').addEventListener('click', nextQuestion);
+
+    // 语言切换时更新UI
+    const updateQuizTexts = () => {
+        const title = document.getElementById('qz-title');
+        title.textContent = quizTitleMode === 'random' ? t('quiz.random') : t('quiz.title');
+        document.getElementById('qz-next-btn').textContent = currentIndex >= activeQuestions.length - 1 ? t('quiz.finish') : t('quiz.next');
+    };
+    onLangChange(updateQuizTexts);
 }
 
 // ── Show current question ──────────────────────────────────────────────
@@ -178,9 +187,9 @@ export function startQuiz(opts = {}) {
 
     if (pool.length === 0) {
         if (opts.bodyId) {
-            alert('该天体暂无相关题目');
+            alert(t('quiz.noQuestionsBody'));
         } else {
-            alert('暂无可用题目');
+            alert(t('quiz.noQuestions'));
         }
         return;
     }
@@ -195,10 +204,13 @@ export function startQuiz(opts = {}) {
 
     if (opts.title) {
         document.getElementById('qz-title').textContent = opts.title;
+        quizTitleMode = 'title';
     } else if (opts.bodyId) {
         document.getElementById('qz-title').textContent = t('quiz.title');
+        quizTitleMode = 'title';
     } else {
         document.getElementById('qz-title').textContent = t('quiz.random');
+        quizTitleMode = 'random';
     }
 
     renderQuestion();

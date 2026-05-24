@@ -159,7 +159,9 @@
     "finish": "Finish",
     "result": "Results",
     "score": "{{correct}}/{{total}} correct",
-    "random": "Random Quiz"
+    "random": "Random Quiz",
+    "noQuestions": "No questions available",
+    "noQuestionsBody": "No questions available for this body"
   },
   "stats": {
     "title": "📊 Profile",
@@ -185,6 +187,8 @@
     "daysRetro": " days (retrograde)",
     "hours": " h",
     "seconds": "s",
+    "temp": "°C",
+    "xp": " XP",
     "km": "km"
   },
   "cometQuest": {

@@ -320,6 +320,11 @@ onLangChange((lang) => {
     updateUI();
     if (typeof sys.setLabelLanguage === "function") sys.setLabelLanguage(lang);
     rebuildDistancePanel();
+    // 如果统计面板当前可见则刷新
+    const statsOverlay = document.getElementById('stats-overlay');
+    if (statsOverlay && statsOverlay.style.display !== 'none') {
+        showStats();
+    }
   });
 
 /** 重新翻译所有 data-i18n 元素和动态 UI */

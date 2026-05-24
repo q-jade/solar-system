@@ -340,7 +340,7 @@ export function createQuestEngine() {
                 s.status = STATUS.ACTIVE;
                 s.progress = null;
                 save();
-                showNotification('🔓 ' + t('quest.names.' + q.nameKey));
+                showNotification(t('quest.newUnlock', { name: t('quest.names.' + q.nameKey) }));
             }
         }
     }
@@ -355,7 +355,7 @@ export function createQuestEngine() {
         if (ns && ns.status === STATUS.LOCKED) {
             ns.status = STATUS.ACTIVE;
             save();
-            showNotification('🔓 新任务解锁：' + next.name);
+            showNotification(t('quest.newUnlock', { name: t('quest.names.' + next.nameKey) }));
         }
     }
 
@@ -802,7 +802,7 @@ function renderQuestItem(q, state) {
             <div class="qt-progress-bar">
                 <div class="qt-progress-fill" style="width:${pct}%"></div>
             </div>
-            <div class="qt-progress-text">${p.holdTime.toFixed(1)}/${p.target}秒</div>
+            <div class="qt-progress-text">${p.holdTime.toFixed(1)}/${p.target}${t('unit.seconds')}</div>
         `;
     } else if (p && p.clicked) {
         const pct = Math.min(100, Math.round(p.clicked.length / p.total * 100));

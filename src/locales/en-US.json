@@ -184,6 +184,7 @@
     "days": " days",
     "daysRetro": " days (retrograde)",
     "hours": " h",
+    "seconds": "s",
     "km": "km"
   },
   "cometQuest": {

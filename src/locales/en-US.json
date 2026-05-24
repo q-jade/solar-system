@@ -6,7 +6,8 @@
     "btnQuiz": "❓ Quiz",
     "btnQuest": "📋 Quests",
     "btnAch": "🏆 Achievements",
-    "btnStats": "📊 Profile"
+    "btnStats": "📊 Profile",
+    "ready": "Ready"
   },
   "control": {
     "scale": "Scale",

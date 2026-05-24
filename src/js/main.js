@@ -28,7 +28,7 @@ setOnProgress((ratio) => {
 const textures = await loadTextures();
 fillEL.style.width = '100%';
 pctEL.textContent = '100%';
-txtEL.textContent = '准备就绪';
+txtEL.textContent = t('app.ready');
 // Brief delay so user sees 100%
 await new Promise(r => setTimeout(r, 400));
 loadingEL.style.opacity = '0';

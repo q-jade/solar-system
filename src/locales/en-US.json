@@ -7,7 +7,8 @@
     "btnQuest": "📋 Quests",
     "btnAch": "🏆 Achievements",
     "btnStats": "📊 Profile",
-    "ready": "Ready"
+    "ready": "Ready",
+    "description": "An interactive 3D solar system — explore planetary orbits, browse astronomical data, and challenge yourself with quizzes"
   },
   "control": {
     "scale": "Scale",

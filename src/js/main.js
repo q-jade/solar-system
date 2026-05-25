@@ -338,6 +338,15 @@ function updateUI() {
 
     // 控制面板提示文字
     document.querySelector('#ctrl-hint').textContent = t('app.hint');
+
+    // Meta 标签
+    const desc = t('app.description');
+    const m = document.querySelector('meta[name="description"]');
+    if (m) m.content = desc;
+    const og = document.querySelector('meta[property="og:description"]');
+    if (og) og.content = desc;
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.content = t('app.title');
 }
 
 })();

@@ -33,6 +33,11 @@ module.exports = {
           to: path.resolve(__dirname, 'dist/textures'),
           noErrorOnMissing: true,
         },
+        {
+          from: path.resolve(__dirname, 'src/favicon.svg'),
+          to: path.resolve(__dirname, 'dist/favicon.svg'),
+          noErrorOnMissing: true,
+        },
       ],
     }),
   ],

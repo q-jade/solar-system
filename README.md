@@ -19,6 +19,11 @@
 
 ## ✨ 功能
 
+| 截图 | 说明 |
+|------|------|
+| ![](docs/images/main-view.png) | 默认场景 — 8 大行星沿轨道公转 |
+| ![](docs/images/main-view-en.png) | 一键切换英文界面 |
+
 - **8 大行星 + 太阳** — 精确轨道模拟（基于 JPL HORIZONS 数据），包含真实偏心率、倾角、轴倾角
 - **NASA 纹理** — 行星表面、土星环、月球均使用真实纹理贴图
 - **大气效果** — 地球有半透明大气光晕，太阳有脉冲光晕
@@ -65,9 +70,17 @@ solar-system/
 │   ├── locales/     # 语言包
 │   ├── textures/    # 纹理贴图
 │   └── css/         # 样式
+├── docs/images/     # 截图
 ├── dist/            # 构建产物（生成）
 └── webpack.config.js
 ```
+
+## 📷 更多截图
+
+| | |
+|---|---|
+| ![](docs/images/quiz-panel.png) 知识问答（68 题） | ![](docs/images/quest-panel.png) 探索任务（13 个） |
+| ![](docs/images/achievement-panel.png) 成就系统（10 个） | ![](docs/images/stats-panel.png) 个人档案 |
 
 ## 📄 许可证
 

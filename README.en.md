@@ -19,6 +19,11 @@ An interactive 3D solar system web application built with **Three.js**. Freely e
 
 ## ✨ Features
 
+| Screenshot | Description |
+|---|---|
+| ![](docs/images/main-view-en.png) | Default view — 8 planets orbiting the Sun |
+| ![](docs/images/main-view.png) | Switch to Chinese interface with one click |
+
 - **8 Planets + Sun** — Precise orbital simulation based on JPL HORIZONS data, with real eccentricity, inclination, and axial tilt
 - **NASA Textures** — Real surface textures for planets, Saturn's rings, and the Moon
 - **Atmospheric Effects** — Semi-transparent atmospheric glow for Earth, pulsing glow for the Sun
@@ -65,9 +70,17 @@ solar-system/
 │   ├── locales/     # Language packs
 │   ├── textures/    # Texture images
 │   └── css/         # Styles
+├── docs/images/     # Screenshots
 ├── dist/            # Build output (generated)
 └── webpack.config.js
 ```
+
+## 📷 More Screenshots
+
+| | |
+|---|---|
+| ![](docs/images/quiz-panel.png) Quiz (68 questions) | ![](docs/images/quest-panel.png) Quest system (13 quests) |
+| ![](docs/images/achievement-panel.png) Achievements (10) | ![](docs/images/stats-panel.png) Profile panel |
 
 ## 📄 License
 

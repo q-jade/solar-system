@@ -7,7 +7,7 @@
 
 *An explorable 3D solar system — wander through space and learn astronomy in your browser*
 
-[🇨🇳 中文版](README.md)
+[🇨🇳 中文版](README.md) · [⭐ Upgrade to Pro](#)
 
 </div>
 

@@ -7,7 +7,7 @@
 
 *一个可探索的 3D 太阳系 —— 在浏览器中漫游宇宙，学习天文知识*
 
-[🇬🇧 English version](README.en.md)
+[🇬🇧 English version](README.en.md) · [⭐ 升级高级版](#)
 
 </div>
 

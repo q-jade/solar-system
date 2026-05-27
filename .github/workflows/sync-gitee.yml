@@ -1,0 +1,13 @@
+name: Sync to Gitee
+on:
+  push:
+    branches: [main]
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Push mirror to Gitee
+        run: |
+          git remote add gitee https://q-jade:${{ secrets.GITEE_TOKEN }}@gitee.com/q-jade/solar-system.git
+          git push -f gitee main

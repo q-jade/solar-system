@@ -7,11 +7,29 @@
 
 *一个可探索的 3D 太阳系 —— 在浏览器中漫游宇宙，学习天文知识*
 
-[🇬🇧 English version](README.en.md) · [⭐ 升级高级版](#)
+[🌐 在线体验](https://q-jade.github.io/solar-system/) · [🇬🇧 English version](README.en.md) · [⭐ 升级高级版](#)
 
 </div>
 
 ---
+
+## 🌐 在线体验
+
+**无需安装，打开浏览器即可使用：**
+
+👉 **[https://q-jade.github.io/solar-system/](https://q-jade.github.io/solar-system/)**
+
+项目已通过 GitHub Actions 自动部署至 GitHub Pages（`main` 分支推送后更新）。建议使用 Chrome、Firefox、Edge 或 Safari，首次进入需等待纹理加载完成。
+
+| 操作 | 说明 |
+|------|------|
+| 左键拖拽 | 旋转视角 |
+| 左键双击 | 重置相机 |
+| 滚轮 | 缩放 |
+| 右键单击行星 | 聚焦该天体 |
+| 左键单击天体 | 打开信息卡片 |
+
+底部控制面板可调节星体缩放、时间流速与轨道偏心率，并切换 **中文 / English** 界面。
 
 ## 📖 简介
 
@@ -49,7 +67,10 @@
 ## 🚀 快速开始
 
 ```bash
+# GitHub
 git clone https://github.com/q-jade/solar-system.git
+# 或 Gitee 镜像
+git clone https://gitee.com/q-jade/solar-system.git
 cd solar-system
 npm install
 npm start          # 开发模式，热更新

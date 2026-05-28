@@ -32,6 +32,10 @@ function updateUI() {
     if (og) og.content = desc;
     const ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) ogTitle.content = t('app.title');
+
+    // Version badge
+    const verEl = document.getElementById('version-badge');
+    if (verEl) verEl.textContent = 'v' + APP_VERSION;
 }
 
 updateUI();

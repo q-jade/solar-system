@@ -1106,3 +1106,16 @@ input[type="range"]::-moz-range-thumb {
   background: rgba(200, 60, 60, 0.3);
   border-color: rgba(220, 80, 80, 0.5);
 }
+
+/* ── Version badge ──────────────────────────── */
+#version-badge {
+  position: fixed;
+  right: 12px;
+  bottom: 8px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.2);
+  font-family: "SF Mono",Menlo,monospace;
+  pointer-events: none;
+  user-select: none;
+  z-index: 10;
+}

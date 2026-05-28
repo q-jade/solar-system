@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -22,6 +23,9 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.DefinePlugin({
+      APP_VERSION: JSON.stringify(require('./package.json').version),
+    }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),

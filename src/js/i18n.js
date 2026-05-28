@@ -18,7 +18,31 @@ const LOCALES = { 'zh-CN': zh, 'en-US': en };
 const STORAGE_KEY = 'solar-system-lang';
 const DEFAULT_LANG = 'zh-CN';
 
-let currentLang = localStorage.getItem(STORAGE_KEY) || DEFAULT_LANG;
+function resolveLang(code) {
+    const base = (code || '').toLowerCase();
+    if (base.startsWith('zh')) return 'zh-CN';
+    if (base.startsWith('en')) return 'en-US';
+    return null;
+}
+
+/** 跟随系统语言；非中英文时回退中文 */
+function detectSystemLang() {
+    const candidates = navigator.languages?.length
+        ? navigator.languages
+        : [navigator.language];
+    for (const code of candidates) {
+        const resolved = resolveLang(code);
+        if (resolved) return resolved;
+    }
+    return DEFAULT_LANG;
+}
+
+function applyDocumentLang(lang) {
+    document.documentElement.lang = lang === 'en-US' ? 'en' : 'zh-Hans';
+}
+
+let currentLang = localStorage.getItem(STORAGE_KEY) || detectSystemLang();
+applyDocumentLang(currentLang);
 const listeners = [];
 
 /** 翻译函数 */
@@ -40,6 +64,7 @@ export function setLang(lang) {
     if (!LOCALES[lang]) return;
     currentLang = lang;
     localStorage.setItem(STORAGE_KEY, lang);
+    applyDocumentLang(lang);
     listeners.forEach(fn => fn(lang));
 }
 

@@ -15,11 +15,33 @@ import { ambientMusic } from './ambientMusic.js';
 import { t, setLang, getLang, onLangChange } from './i18n.js';
 
 (async () => {
+/** 重新翻译所有 data-i18n 元素和动态 UI */
+function updateUI() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        const val = el.tagName === 'INPUT' ? 'placeholder' : 'textContent';
+        el[val] = t(key);
+    });
+
+    document.querySelector('#ctrl-hint').textContent = t('app.hint');
+
+    const desc = t('app.description');
+    const m = document.querySelector('meta[name="description"]');
+    if (m) m.content = desc;
+    const og = document.querySelector('meta[property="og:description"]');
+    if (og) og.content = desc;
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.content = t('app.title');
+}
+
+updateUI();
+
 // ── Loading screen ────────────────────────────────
 const loadingEL = document.getElementById('loading-overlay');
 const fillEL = document.getElementById('loading-bar-fill');
 const pctEL = document.getElementById('loading-percent');
 const txtEL = document.getElementById('loading-text');
+txtEL.textContent = t('app.loading');
 setOnProgress((ratio) => {
     const pct = Math.round(ratio * 100);
     fillEL.style.width = pct + '%';
@@ -326,27 +348,5 @@ onLangChange((lang) => {
         showStats();
     }
   });
-
-/** 重新翻译所有 data-i18n 元素和动态 UI */
-function updateUI() {
-    // 更新 data-i18n 元素
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.dataset.i18n;
-        const val = el.tagName === 'INPUT' ? 'placeholder' : 'textContent';
-        el[val] = t(key);
-    });
-
-    // 控制面板提示文字
-    document.querySelector('#ctrl-hint').textContent = t('app.hint');
-
-    // Meta 标签
-    const desc = t('app.description');
-    const m = document.querySelector('meta[name="description"]');
-    if (m) m.content = desc;
-    const og = document.querySelector('meta[property="og:description"]');
-    if (og) og.content = desc;
-    const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) ogTitle.content = t('app.title');
-}
 
 })();

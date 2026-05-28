@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { CSS2DRenderer, CSS2DObject }
     from 'three/examples/jsm/renderers/CSS2DRenderer.js';
+import { getLang } from './i18n.js';
 
 // ── Scene scale constants ──────────────────────────────────────────────
 const AU = 40;                      // 1 AU in scene units
@@ -298,6 +299,10 @@ export function initSolarSystem(textures) {
     let labelsEnabled = true; // controlled by label toggle
 
     // ── Helper: create a label div ──────────────────────────────────
+    function labelText(data, lang) {
+        return lang === 'en-US' ? data.english : data.name;
+    }
+
     function makeLabel(text, fontSize) {
         const div = document.createElement('div');
         div.textContent = text;
@@ -531,7 +536,8 @@ export function initSolarSystem(textures) {
         }
 
         // ── Label (sibling of scale-wrapper, above planet) ──
-        const label = makeLabel(d.name, d.name.length <= 2 ? 15 : 13);
+        const displayName = labelText(d, getLang());
+        const label = makeLabel(displayName, displayName.length <= 2 ? 15 : 13);
         label.position.set(0, pRadius * 2 + 3, 0);
         posGroup.add(label);
         allLabels.push(label);
@@ -724,7 +730,8 @@ export function initSolarSystem(textures) {
         scene.add(tailMesh);
 
         // Comet label
-        const label = makeLabel(cd.name, 12);
+        const displayName = labelText(cd, getLang());
+        const label = makeLabel(displayName, 12);
         label.position.set(0, 4, 0);
         posGroup.add(label);
         cometLabels.push(label);
@@ -824,11 +831,11 @@ export function initSolarSystem(textures) {
         for (const { element, bodyId } of labelData) {
             const data = PLANET_DATA.find(d => d.english.toLowerCase() === bodyId);
             if (data) {
-                element.textContent = lang === "en-US" ? data.english : data.name;
+                element.textContent = labelText(data, lang);
             } else {
                 const c_data = COMET_DATA.find(d => d.english.toLowerCase() === bodyId);
                 if (c_data) {
-                    element.textContent = lang === "en-US" ? c_data.english : c_data.name;
+                    element.textContent = labelText(c_data, lang);
                 }
             }
         }

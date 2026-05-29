@@ -31,6 +31,7 @@
 
   <!-- ── Top-right buttons ─────────────────── -->
   <div id="top-buttons">
+    <button id="help-btn" title="帮助 / Help">ℹ️</button>
     <button id="global-quiz-btn" data-i18n="app.btnQuiz">❓ 知识挑战</button>
     <button id="quest-btn" data-i18n="app.btnQuest">📋 任务</button>
     <button id="ach-btn" data-i18n="app.btnAch">🏆 成就</button>
@@ -132,6 +133,14 @@
     <div class="sp-title" data-i18n="control.radiusCompare">半径对比</div>
     <div id="size-list"></div>
   </div>
+  <!-- ── Help panel ────────────────────────── -->
+  <div id="help-overlay" style="display:none">
+    <div id="help-panel">
+      <button class="sp-close" id="help-close">✕</button>
+      <div id="help-content"></div>
+    </div>
+  </div>
+
   <!-- ── Stats panel ────────────────────────── -->
   <div id="stats-overlay" style="display:none">
     <div id="stats-panel">

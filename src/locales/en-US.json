@@ -8,7 +8,8 @@
     "btnAch": "🏆 Achievements",
     "btnStats": "📊 Profile",
     "ready": "Ready",
-    "description": "An interactive 3D solar system — explore planetary orbits, browse astronomical data, and challenge yourself with quizzes"
+    "description": "An interactive 3D solar system — explore planetary orbits, browse astronomical data, and challenge yourself with quizzes",
+    "btnHelp": "Help"
   },
   "control": {
     "scale": "Scale",
@@ -195,5 +196,23 @@
   "cometQuest": {
     "clickComet": "Click comet to observe",
     "clicked": "Observed"
+  },
+  "help": {
+    "title": "Help",
+    "description": "Interactive 3D solar system encyclopedia built from NASA JPL orbital data — planet size, distance, orbit, and rotation are all proportionally scaled",
+    "version": "Version",
+    "author": "Author",
+    "controls": "Controls",
+    "controlsList": [
+      "Left-drag to rotate the view",
+      "Double-click to reset camera",
+      "Scroll to zoom",
+      "Right-click a planet to focus",
+      "Left-click a body to open info card"
+    ],
+    "links": "Links",
+    "github": "GitHub Repository",
+    "readme": "README",
+    "license": "MIT Open Source License"
   }
 }

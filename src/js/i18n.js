@@ -74,6 +74,9 @@ export function getLang() {
 }
 
 /** 监听语言变更：注册后立即用当前语言调用一次 fn */
+/** 获取当前语言原始 locale 数据 */
+export function getLocale() { return LOCALES[currentLang]; }
+
 export function onLangChange(fn) {
     fn(currentLang);
     listeners.push(fn);

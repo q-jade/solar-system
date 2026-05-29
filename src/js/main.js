@@ -12,7 +12,7 @@ import { createAchievement } from './achievement.js';
 import { loadTextures, setOnProgress } from './textureLoader.js';
 import { sfx } from './sfx.js';
 import { ambientMusic } from './ambientMusic.js';
-import { t, setLang, getLang, onLangChange } from './i18n.js';
+import { t, setLang, getLang, onLangChange, getLocale } from './i18n.js';
 
 (async () => {
 /** 重新翻译所有 data-i18n 元素和动态 UI */
@@ -194,6 +194,50 @@ createAsteroidBeltClickArea();
 
 // Extend clickable meshes to include asteroid belt
 clickables.push({ mesh: asteroidBeltMesh, bodyId: '__asteroid_belt__' });
+
+// ── Help panel button ────────────────────────────
+document.getElementById('help-btn').addEventListener('click', showHelp);
+
+function showHelp() {
+    const overlay = document.getElementById('help-overlay');
+    const content = document.getElementById('help-content');
+    const controls = getLocale().help.controlsList;
+    const ctrlHtml = controls.map(c => '<li>' + c + '</li>').join('');
+    content.innerHTML = '<h2>' + t('help.title') + '</h2>'
+        + '<div class="hp-section">'
+        + '<p>' + t('help.description') + '</p>'
+        + '</div>'
+        + '<div class="hp-section">'
+        + '<h3>' + t('help.version') + '</h3>'
+        + '<p>v' + APP_VERSION + '</p>'
+        + '</div>'
+        + '<div class="hp-section">'
+        + '<h3>' + t('help.author') + '</h3>'
+        + '<p>q-jade (gavin_qw@126.com)</p>'
+        + '</div>'
+        + '<div class="hp-section">'
+        + '<h3>' + t('help.links') + '</h3>'
+        + '<div class="hp-links">'
+        + '<a href="' + (getLang() === 'zh-CN' ? 'https://gitee.com/q-jade/solar-system' : 'https://github.com/q-jade/solar-system') + '" target="_blank" rel="noopener">' + t('help.github') + '</a>'
+        + '<a href="' + (getLang() === 'zh-CN' ? 'https://gitee.com/q-jade/solar-system#readme' : 'https://github.com/q-jade/solar-system#readme') + '" target="_blank" rel="noopener">' + t('help.readme') + '</a>'
+        + '</div>'
+        + '</div>'
+        + '<div class="hp-section">'
+        + '<h3>' + t('help.controls') + '</h3>'
+        + '<ul class="hp-controls">' + ctrlHtml + '</ul>'
+        + '</div>'
+        + '<div class="hp-section">'
+        + '<p class="hp-meta">' + t('help.license') + '</p>'
+        + '</div>';
+    overlay.style.display = '';
+}
+
+document.getElementById('help-close').addEventListener('click', () => {
+    document.getElementById('help-overlay').style.display = 'none';
+});
+document.getElementById('help-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'help-overlay') e.target.style.display = 'none';
+});
 
 // ── Stats panel button ────────────────────────────
 const statsBtn = document.getElementById('stats-btn');

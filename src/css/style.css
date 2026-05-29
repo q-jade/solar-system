@@ -1013,7 +1013,7 @@ input[type="range"]::-moz-range-thumb {
 /* #stats-btn positioning is now handled by #top-buttons flexbox */
 
 /* ── Stats panel ─────────────────────────── */
-#stats-overlay {
+#stats-overlay, #help-overlay {
   position: fixed;
   inset: 0;
   z-index: 29;
@@ -1023,8 +1023,7 @@ input[type="range"]::-moz-range-thumb {
   justify-content: center;
 }
 
-#stats-panel {
-  width: 300px;
+#stats-panel, #help-panel {
   padding: 24px;
   background: rgba(12, 12, 40, 0.95);
   backdrop-filter: blur(16px);
@@ -1033,6 +1032,14 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 14px;
   position: relative;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+#stats-panel {
+  width: 300px;
+}
+
+#help-panel {
+  width: 400px;
 }
 
 .sp-close {
@@ -1085,6 +1092,72 @@ input[type="range"]::-moz-range-thumb {
 #stats-content .sp-row span:last-child {
   color: #8cf;
   font-weight: 600;
+}
+
+/* ── Help panel ──────────────────────────── */
+#help-content {
+  line-height: 1.7;
+  font-size: 14px;
+  color: #ccc;
+}
+#help-content h2 {
+  font-size: 18px;
+  color: #cef;
+  margin-bottom: 6px;
+}
+#help-content .hp-section {
+  margin-bottom: 18px;
+}
+#help-content .hp-section:last-child {
+  margin-bottom: 0;
+}
+#help-content .hp-section h3 {
+  font-size: 13px;
+  color: #8af;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+#help-content .hp-section p {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 4px;
+}
+#help-content .hp-controls {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#help-content .hp-controls li {
+  font-size: 13px;
+  color: #999;
+  padding: 3px 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+#help-content .hp-controls li::before {
+  content: "•";
+  color: #668;
+  font-size: 10px;
+}
+#help-content .hp-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+#help-content .hp-links a {
+  color: #6af;
+  text-decoration: none;
+  font-size: 13px;
+}
+#help-content .hp-links a:hover {
+  text-decoration: underline;
+  color: #8cf;
+}
+#help-content .hp-meta {
+  font-size: 12px;
+  color: #667;
+  margin-top: 4px;
 }
 
 .sp-actions {

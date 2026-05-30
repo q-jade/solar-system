@@ -774,10 +774,60 @@ export function initSolarSystem(textures) {
     }
 
     const astPos = new Float32Array(ASTEROID_COUNT * 3);
+    const astColors = new Float32Array(ASTEROID_COUNT * 3);
+    const astSizes = new Float32Array(ASTEROID_COUNT);
+    for (let i = 0; i < ASTEROID_COUNT; i++) {
+        // Color mix: C-type (gray/brown), S-type (reddish), M-type (lighter)
+        const type = Math.random();
+        let r, g, b;
+        if (type < 0.5) {
+            const v = 0.3 + Math.random() * 0.35;
+            r = v; g = v * 0.9; b = v * 0.85;
+        } else if (type < 0.8) {
+            r = 0.5 + Math.random() * 0.3;
+            g = 0.35 + Math.random() * 0.25;
+            b = 0.2 + Math.random() * 0.2;
+        } else {
+            const v = 0.5 + Math.random() * 0.3;
+            r = v; g = v; b = v;
+        }
+        astColors[i * 3] = r;
+        astColors[i * 3 + 1] = g;
+        astColors[i * 3 + 2] = b;
+        astSizes[i] = 0.15 + Math.random() * 0.4;
+    }
     const astGeo = new THREE.BufferGeometry();
     astGeo.setAttribute('position', new THREE.BufferAttribute(astPos, 3));
-    const astMat = new THREE.PointsMaterial({
-        color: 0x888877, size: 0.4, sizeAttenuation:true, transparent: true, opacity: 0.82,
+    astGeo.setAttribute('customColor', new THREE.BufferAttribute(astColors, 3));
+    astGeo.setAttribute('size', new THREE.BufferAttribute(astSizes, 1));
+    const astMat = new THREE.ShaderMaterial({
+        uniforms: {
+            uPixelRatio: { value: window.devicePixelRatio || 1 },
+        },
+        vertexShader: `
+            attribute float size;
+            attribute vec3 customColor;
+            varying vec3 vColor;
+            uniform float uPixelRatio;
+            void main() {
+                vColor = customColor;
+                vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+                gl_PointSize = size * uPixelRatio * (300.0 / -mvPosition.z);
+                gl_Position = projectionMatrix * mvPosition;
+            }
+        `,
+        fragmentShader: `
+            varying vec3 vColor;
+            void main() {
+                vec2 center = gl_PointCoord - vec2(0.5);
+                float dist = length(center);
+                if (dist > 0.5) discard;
+                float alpha = 1.0 - smoothstep(0.25, 0.5, dist);
+                gl_FragColor = vec4(vColor, alpha);
+            }
+        `,
+        transparent: true,
+        depthWrite: false,
     });
     const astPoints = new THREE.Points(astGeo, astMat);
     scene.add(astPoints);

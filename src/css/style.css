@@ -802,16 +802,21 @@ input[type="range"]::-moz-range-thumb {
 }
 
 #top-buttons button {
-  padding: 7px 14px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
   background: rgba(10, 10, 30, 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(100, 160, 255, 0.2);
   border-radius: 8px;
   color: #acf;
-  font-size: 13px;
+  font-size: 17px;
   cursor: pointer;
   transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
   white-space: nowrap;
 }
@@ -1191,4 +1196,16 @@ input[type="range"]::-moz-range-thumb {
   pointer-events: none;
   user-select: none;
   z-index: 10;
+}
+
+/* ── Showcase mode ──────────────────────────── */
+body.showcase-active #top-buttons,
+body.showcase-active #help-text,
+body.showcase-active #controls-panel,
+body.showcase-active #distance-panel,
+body.showcase-active #size-panel,
+body.showcase-active #version-badge,
+body.showcase-active #stats-overlay,
+body.showcase-active #help-overlay {
+  display: none !important;
 }

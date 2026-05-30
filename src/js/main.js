@@ -23,6 +23,10 @@ function updateUI() {
         el[val] = t(key);
     });
 
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        el.title = t(el.dataset.i18nTitle);
+    });
+
     document.querySelector('#ctrl-hint').textContent = t('app.hint');
 
     const desc = t('app.description');
@@ -396,5 +400,24 @@ onLangChange((lang) => {
         showStats();
     }
   });
+
+// ── Showcase mode ────────────────────────────
+const showcaseBtn = document.getElementById('showcase-btn');
+showcaseBtn.addEventListener('click', toggleShowcase);
+
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+        document.body.classList.remove('showcase-active');
+    }
+});
+
+function toggleShowcase() {
+    const active = document.body.classList.toggle('showcase-active');
+    if (active) {
+        document.documentElement.requestFullscreen();
+    } else if (document.fullscreenElement) {
+        document.exitFullscreen();
+    }
+}
 
 })();

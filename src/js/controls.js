@@ -207,6 +207,7 @@ export function initControls(sys, camera, renderer) {
         if (window.__questEngine) {
             window.__questEngine.trigger('scale_change', { value: s });
         }
+        saveSettings();
     });
 
     // ── Speed slider ───────────────────────────────────────────────
@@ -242,6 +243,7 @@ export function initControls(sys, camera, renderer) {
         if (window.__achievement) {
             window.__achievement.evaluate();
         }
+        saveSettings();
     });
 
     // ── Eccentricity slider (linear 0x..4x) ─────────────────────────
@@ -272,16 +274,62 @@ export function initControls(sys, camera, renderer) {
         if (window.__achievement) {
             window.__achievement.evaluate();
         }
+        saveSettings();
     });
 
-    // ── Set defaults ───────────────────────────────────────────────
-    function setDefaults() {
-        scaleSlider.value = String(Math.round(scaleToSlider(DEFAULT_SCALE)));
-        speedSlider.value = String(Math.round(speedToSlider(DEFAULT_SPEED)));
-        eccSlider.value = String(Math.round(eccToSlider(DEFAULT_ECC)));
+    // ── Settings persistence ──────────────────────────────────────
+    const SETTINGS_KEY = 'solar-system-settings';
+
+    function saveSettings() {
+        const settings = {
+            scale: parseFloat(scaleSlider.value),
+            speed: parseFloat(speedSlider.value),
+            ecc: parseFloat(eccSlider.value),
+            labels: $('#labels-toggle').checked,
+            orbits: $('#orbits-toggle').checked,
+            distance: $('#distance-toggle').checked,
+            size: $('#size-toggle').checked,
+            ecliptic: $('#ecliptic-toggle').checked,
+            music: $('#music-toggle').checked,
+        };
+        try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) {}
+    }
+
+    function loadSettings() {
+        try {
+            const raw = localStorage.getItem(SETTINGS_KEY);
+            if (!raw) return false;
+            const s = JSON.parse(raw);
+            if (typeof s.scale === 'number') scaleSlider.value = String(Math.round(s.scale));
+            if (typeof s.speed === 'number') speedSlider.value = String(Math.round(s.speed));
+            if (typeof s.ecc === 'number') eccSlider.value = String(Math.round(s.ecc));
+            if (typeof s.labels === 'boolean') $('#labels-toggle').checked = s.labels;
+            if (typeof s.orbits === 'boolean') $('#orbits-toggle').checked = s.orbits;
+            if (typeof s.distance === 'boolean') $('#distance-toggle').checked = s.distance;
+            if (typeof s.size === 'boolean') $('#size-toggle').checked = s.size;
+            if (typeof s.ecliptic === 'boolean') $('#ecliptic-toggle').checked = s.ecliptic;
+            if (typeof s.music === 'boolean') $('#music-toggle').checked = s.music;
+            return true;
+        } catch (e) { return false; }
+    }
+
+    function initSettings() {
+        const restored = loadSettings();
+        if (!restored) {
+            scaleSlider.value = String(Math.round(scaleToSlider(DEFAULT_SCALE)));
+            speedSlider.value = String(Math.round(speedToSlider(DEFAULT_SPEED)));
+            eccSlider.value = String(Math.round(eccToSlider(DEFAULT_ECC)));
+        }
         updateScale();
         updateSpeed();
         updateEcc();
+        // Dispatch change events to trigger registered toggle handlers
+        labelToggle.dispatchEvent(new Event('change'));
+        orbitToggle.dispatchEvent(new Event('change'));
+        distToggle.dispatchEvent(new Event('change'));
+        sizeToggle.dispatchEvent(new Event('change'));
+        eclipticToggle.dispatchEvent(new Event('change'));
+        musicToggle.dispatchEvent(new Event('change'));
         // Smoothly fly back to sun if focused, otherwise snap
         if (focusedBody) {
             flyBack();
@@ -289,16 +337,14 @@ export function initControls(sys, camera, renderer) {
             camera.position.set(0, 120, 200);
             clearFocus();
         }
+        saveSettings();
     }
-    setDefaults(); // initialise with default values
-
-    // ── Double-click to reset ──────────────────────────────────────
-    renderer.domElement.addEventListener('dblclick', setDefaults);
 
     // ── Toggles ────────────────────────────────────────────────────
     const labelToggle = $('#labels-toggle');
     labelToggle.addEventListener('change', () => {
         sys.setLabelsVisible(labelToggle.checked);
+        saveSettings();
     });
 
     const orbitToggle = $('#orbits-toggle');
@@ -323,23 +369,27 @@ export function initControls(sys, camera, renderer) {
         sys.planets.forEach((p) => {
             if (p.nodeLine) p.nodeLine.visible = orbitToggle.checked;
         });
+        saveSettings();
     });
 
     const distToggle = $('#distance-toggle');
     distToggle.addEventListener('change', () => {
         document.getElementById('distance-panel').style.display =
             distToggle.checked ? '' : 'none';
+        saveSettings();
     });
 
     const sizeToggle = $('#size-toggle');
     sizeToggle.addEventListener('change', () => {
         document.getElementById('size-panel').style.display =
             sizeToggle.checked ? '' : 'none';
+        saveSettings();
     });
 
     const eclipticToggle = $('#ecliptic-toggle');
     eclipticToggle.addEventListener('change', () => {
         sys.eclipticDisc.visible = eclipticToggle.checked;
+        saveSettings();
     });
 
     // ── Ambient music toggle ───────────────────────────────────────
@@ -350,6 +400,23 @@ export function initControls(sys, camera, renderer) {
         } else {
             ambientMusic.stop();
         }
+        saveSettings();
+    });
+
+    initSettings();
+
+    // ── Double-click to reset ──────────────────────────────────────
+    renderer.domElement.addEventListener('dblclick', () => {
+        // Reset sliders + camera; keep toggle preferences untouched
+        scaleSlider.value = String(Math.round(scaleToSlider(DEFAULT_SCALE)));
+        speedSlider.value = String(Math.round(speedToSlider(DEFAULT_SPEED)));
+        eccSlider.value = String(Math.round(eccToSlider(DEFAULT_ECC)));
+        updateScale();
+        updateSpeed();
+        updateEcc();
+        saveSettings();
+        if (focusedBody) { flyBack(); }
+        else { camera.position.set(0, 120, 200); clearFocus(); }
     });
 
     // ── Build size comparison panel (radius circles) ────────────────

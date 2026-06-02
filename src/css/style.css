@@ -1185,6 +1185,26 @@ input[type="range"]::-moz-range-thumb {
   border-color: rgba(220, 80, 80, 0.5);
 }
 
+/* ── Date display ──────────────────────────── */
+#date-display {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  padding: 6px 14px;
+  background: rgba(10, 10, 30, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(100, 160, 255, 0.12);
+  border-radius: 8px;
+  font-size: 12px;
+  color: rgba(180, 200, 255, 0.5);
+  font-family: "SF Mono",Menlo,Consolas,monospace;
+  pointer-events: none;
+  user-select: none;
+  z-index: 4;
+  letter-spacing: 1px;
+}
+
 /* ── Version badge ──────────────────────────── */
 #version-badge {
   position: fixed;
@@ -1201,6 +1221,7 @@ input[type="range"]::-moz-range-thumb {
 /* ── Showcase mode ──────────────────────────── */
 body.showcase-active #top-buttons,
 body.showcase-active #help-text,
+body.showcase-active #date-display,
 body.showcase-active #controls-panel,
 body.showcase-active #distance-panel,
 body.showcase-active #size-panel,

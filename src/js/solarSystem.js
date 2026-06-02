@@ -1064,5 +1064,6 @@ export function initSolarSystem(textures) {
         setScale, setSpeed, setLabelsVisible, setLabelLanguage, setEccentricityMultiplier,
         update: updateOrbits,
         SUN_RADIUS, MAX_SCALE,
+        get currentSpeedMul() { return currentSpeedMul; },
     };
 }

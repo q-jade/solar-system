@@ -15,6 +15,25 @@ import { ambientMusic } from './ambientMusic.js';
 import { t, setLang, getLang, onLangChange, getLocale } from './i18n.js';
 
 (async () => {
+// ── Simulated date tracking ────────────────────
+const J2000 = new Date(Date.UTC(2000, 0, 1, 12, 0, 0));
+const DAY_MS = 86400000;
+let simulatedDays = 0;
+const dateEl = document.getElementById('date-display');
+
+function formatDate(days, showHours) {
+    const d = new Date(J2000.getTime() + days * DAY_MS);
+    const y = d.getUTCFullYear();
+    const mo = String(d.getUTCMonth() + 1).padStart(2, '0');
+    const da = String(d.getUTCDate()).padStart(2, '0');
+    let s = y + '-' + mo + '-' + da;
+    if (showHours) {
+        s += ' ' + String(d.getUTCHours()).padStart(2, '0');
+        s += ':' + String(d.getUTCMinutes()).padStart(2, '0');
+    }
+    return s;
+}
+
 /** 重新翻译所有 data-i18n 元素和动态 UI */
 function updateUI() {
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -40,6 +59,9 @@ function updateUI() {
     // Version badge
     const verEl = document.getElementById('version-badge');
     if (verEl) verEl.textContent = 'v' + APP_VERSION;
+
+    // Date display (refresh locale format)
+    if (dateEl) dateEl.textContent = formatDate(simulatedDays, false);
 }
 
 updateUI();
@@ -340,6 +362,10 @@ function animate() {
     sys.sun.scale.setScalar(pulse);
 
     sys.update(dt);
+
+    // Update simulated date
+    simulatedDays += sys.currentSpeedMul * dt;
+    if (dateEl) dateEl.textContent = formatDate(simulatedDays, sys.currentSpeedMul < 1);
 
     // Proximity check + quest poll + hidden achiev every 15 frames (~4 times/sec)
     proxFrame++;

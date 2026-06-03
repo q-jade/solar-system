@@ -1,0 +1,61 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [1.1.0] - 2026-06-03
+
+### Added
+- 帮助面板 — 版本、作者、项目链接、操作指引，链接根据语言自动切换 GitHub/Gitee
+- 展示模式 — 一键隐藏所有 UI，全屏沉浸式观察太阳系（🎬 按钮）
+- 日期显示 — 左上角 HUD，J2000 历元基准，实时跟随运转更新（低速模式显示时分）
+- 设置持久化 — 缩放/时间/偏心率滑杆及 6 个开关状态自动保存到 localStorage
+- 小行星带随机化 — C/S/M 型颜色混合 + 独立大小属性 + ShaderMaterial 柔边粒子
+
+### Changed
+- 右上角按钮全部纯图标化（34×34 方按钮），hover tooltip 双语自适应
+- 按钮顺序：❓ Quiz → 📋 Quest → 🏆 Ach → 📊 Stats → 🎬 Showcase → ℹ️ Help
+- 双击重置仅复位滑杆和相机，不再重置开关偏好
+- `data-i18n-title` 属性统一管理 hover 提示翻译
+
+## [1.0.0] - 2026-05-28
+
+### Added
+- 3D 太阳系场景 — 8 大行星 + 太阳，基于 JPL HORIZONS 轨道数据
+- 行星纹理（NASA 纹理贴图、土星环、月球）
+- 大气辉光效果（地球、金星、火星）
+- 太阳脉冲光晕 + 自转 + 轴倾角（7.25°）
+- 行星轴倾角渲染（使用 tiltGroup）
+- 光照调优 + 阴影
+- 恒星背景（8000 颗） + 银河带（2000 颗）
+- 精确开普勒轨道（牛顿法解偏近点角）
+- 彗星系统（哈雷彗星、海尔波普彗星） + 实心圆台彗尾
+- 月球高精度轨道 + 纹理
+- 小行星带（5000 颗）
+- 黄道面参考盘
+- 控制面板 — 星体缩放、时间流速、偏心率滑杆
+- 开关 — 名称/轨道/距离/半径/黄道面/音乐
+- 半径对比面板 + 距离数据面板
+- 相机聚焦（右键行星飞近 + 双击复位）
+- 标签遮挡检测（被行星遮挡的天体名称自动隐藏）
+- 天体信息卡 — 图文混排 + 高亮标签 + 跨天体比较
+- 知识问答 — 68 道选择题，支持按天体筛选
+- 探索任务 — 13 个主线+支线任务（任务链、拖拽排序、事件流）
+- 成就系统 — 10 个成就（含 2 个隐藏成就）
+- 音效系统 — 点击/面板/任务/成就/答题/聚焦 音效
+- 环境太空背景音乐（Web Audio API 合成）
+- 数据持久化（localStorage 保存探索记录、答题进度）
+- 多语言支持 — 中文 / English 双语切换（国际化框架 + 完整翻译）
+- 纹理加载进度条
+
+### Infrastructure
+- 构建工具：Webpack 5
+- GitHub Actions 自动部署至 GitHub Pages
+- GitHub → Gitee 自动同步工作流
+- MIT 开源许可
+- 双语 README（中文为主，英文为辅）
+- 页面 meta 标签（OG / Twitter Card）
+- Favicon SVG
+- 页面版本号显示
+
+[1.1.0]: https://github.com/q-jade/solar-system/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/q-jade/solar-system/releases/tag/v1.0.0

@@ -134,6 +134,42 @@ body {
   z-index: 3;
 }
 
+/* ── Control panel collapse handle ─────── */
+#ctrl-handle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 2px 0 4px 0;
+  color: rgba(180, 200, 255, 0.4);
+  font-size: 11px;
+  transition: color 0.15s;
+  margin-bottom: -2px;
+}
+#ctrl-handle:hover {
+  color: rgba(180, 200, 255, 0.7);
+}
+#ctrl-arrow {
+  font-size: 10px;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+.ctrl-handle-label {
+  font-family: "SF Mono",Menlo,monospace;
+  letter-spacing: 1px;
+}
+#controls-panel.ctrl-collapsed {
+  padding: 6px 24px;
+  gap: 0;
+}
+#controls-panel.ctrl-collapsed > .ctrl-row,
+#controls-panel.ctrl-collapsed > .ctrl-divider {
+  display: none;
+}
+#controls-panel.ctrl-collapsed #ctrl-arrow {
+  transform: rotate(180deg);
+}
+
 /* ── Row ──────────────────────────────────── */
 .ctrl-row {
   display: flex;

@@ -291,6 +291,7 @@ export function initControls(sys, camera, renderer) {
             size: $('#size-toggle').checked,
             ecliptic: $('#ecliptic-toggle').checked,
             music: $('#music-toggle').checked,
+            collapsed: $('#controls-panel').classList.contains('ctrl-collapsed'),
         };
         try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) {}
     }
@@ -309,6 +310,7 @@ export function initControls(sys, camera, renderer) {
             if (typeof s.size === 'boolean') $('#size-toggle').checked = s.size;
             if (typeof s.ecliptic === 'boolean') $('#ecliptic-toggle').checked = s.ecliptic;
             if (typeof s.music === 'boolean') $('#music-toggle').checked = s.music;
+            if (s.collapsed) $('#controls-panel').classList.add('ctrl-collapsed');
             return true;
         } catch (e) { return false; }
     }
@@ -417,6 +419,14 @@ export function initControls(sys, camera, renderer) {
         saveSettings();
         if (focusedBody) { flyBack(); }
         else { camera.position.set(0, 120, 200); clearFocus(); }
+    });
+
+    // ── Control panel collapse ──────────────────────────────────────
+    const ctrlPanel = $('#controls-panel');
+    const ctrlHandle = $('#ctrl-handle');
+    ctrlHandle.addEventListener('click', () => {
+        ctrlPanel.classList.toggle('ctrl-collapsed');
+        saveSettings();
     });
 
     // ── Build size comparison panel (radius circles) ────────────────

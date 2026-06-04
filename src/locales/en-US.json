@@ -10,7 +10,9 @@
     "ready": "Ready",
     "description": "An interactive 3D solar system — explore planetary orbits, browse astronomical data, and challenge yourself with quizzes",
     "btnHelp": "Help",
-    "btnShowcase": "Showcase"
+    "btnShowcase": "Showcase",
+    "controls": "Controls",
+    "collapseTip": "Collapse"
   },
   "control": {
     "scale": "Scale",

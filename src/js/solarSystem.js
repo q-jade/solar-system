@@ -7,7 +7,7 @@ import { getLang } from './i18n.js';
 const AU = 40;                      // 1 AU in scene units
 const KM_PER_U = 149597870.7 / AU;  // km per scene unit
 const SUN_RADIUS = 8;               // fixed sun size
-const MAX_SCALE = 3000;             // max planet size multiplier
+const MAX_SCALE = 2000;             // max planet size multiplier
 
 // ── Real planetary data (JPL HORIZONS, epoch J2000) ────────────────────
 // radius: km | orbitA: AU | e: eccentricity | incl: ° |
@@ -72,11 +72,122 @@ const AXIAL_TILTS = {
     venus: 177.4,  mercury: 0.034,
 };
 
-const MOON = {
-    name: '月球', color: 0xcccccc,
-    radius: 1737.4, orbitKm: 384400, period: 27.322,
-    e: 0.0549, incl: 5.145, node: 125.08, argPeri: 0, m0: 0,
-};
+const MOON_DATA = [
+    // ── Earth ──
+    {
+        id: 'moon', name: '月球', english: 'Moon', parent: 'earth',
+        radius: 1737.4, orbitKm: 384400, period: 27.322,
+        e: 0.0549, incl: 5.145, node: 125.08, argPeri: 0, m0: 0,
+        visualFactor: 1.5, color: 0xcccccc,
+    },
+    // ── Mars ──
+    {
+        id: 'phobos', name: '火卫一', english: 'Phobos', parent: 'mars',
+        radius: 11.2, renderKm: 60, orbitKm: 9377, period: 0.319,
+        e: 0.0151, incl: 1.075, node: 0, argPeri: 0,
+        visualFactor: 2.0, color: 0x888888,
+    },
+    {
+        id: 'deimos', name: '火卫二', english: 'Deimos', parent: 'mars',
+        radius: 6.2, renderKm: 50, orbitKm: 23460, period: 1.262,
+        e: 0.0002, incl: 0.93, node: 0, argPeri: 0,
+        visualFactor: 3.0, color: 0x999999,
+    },
+    // ── Jupiter (Galilean moons) ──
+    {
+        id: 'io', name: '木卫一', english: 'Io', parent: 'jupiter',
+        radius: 1821.6, orbitKm: 421800, period: 1.769,
+        e: 0.0041, incl: 0.036, node: 43, argPeri: 84,
+        visualFactor: 1.3, color: 0xddcc44,
+    },
+    {
+        id: 'europa', name: '木卫二', english: 'Europa', parent: 'jupiter',
+        radius: 1560.8, orbitKm: 671100, period: 3.551,
+        e: 0.0094, incl: 0.466, node: 220, argPeri: 129,
+        visualFactor: 1.5, color: 0xccbb88,
+    },
+    {
+        id: 'ganymede', name: '木卫三', english: 'Ganymede', parent: 'jupiter',
+        radius: 2634.1, orbitKm: 1070400, period: 7.155,
+        e: 0.0013, incl: 0.177, node: 63, argPeri: 192,
+        visualFactor: 2.1, color: 0xbbaa88,
+    },
+    {
+        id: 'callisto', name: '木卫四', english: 'Callisto', parent: 'jupiter',
+        radius: 2410.3, orbitKm: 1882700, period: 16.689,
+        e: 0.0074, incl: 0.192, node: 298, argPeri: 52,
+        visualFactor: 2.5, color: 0x886644,
+    },
+    // ── Saturn ──
+    {
+        id: 'titan', name: '土卫六', english: 'Titan', parent: 'saturn',
+        radius: 2574.7, orbitKm: 1221870, period: 15.945,
+        e: 0.0288, incl: 0.306, node: 0, argPeri: 0,
+        visualFactor: 3.3, color: 0xdd8844,
+    },
+    {
+        id: 'rhea', name: '土卫五', english: 'Rhea', parent: 'saturn',
+        radius: 763.5, orbitKm: 527108, period: 4.518,
+        e: 0.001, incl: 0.345, node: 0, argPeri: 0,
+        visualFactor: 2.7, color: 0xaaaaaa,
+    },
+    {
+        id: 'tethys', name: '土卫三', english: 'Tethys', parent: 'saturn',
+        radius: 531.1, orbitKm: 294619, period: 1.888,
+        e: 0.001, incl: 1.091, node: 0, argPeri: 0,
+        visualFactor: 2.4, color: 0xbbbbbb,
+    },
+    {
+        id: 'enceladus', name: '土卫二', english: 'Enceladus', parent: 'saturn',
+        radius: 252.1, renderKm: 350, orbitKm: 237950, period: 1.370,
+        e: 0.0047, incl: 0.003, node: 0, argPeri: 0,
+        visualFactor: 2.3, color: 0xccccdd,
+    },
+    // ── Uranus ──
+    {
+        id: 'titania', name: '泰坦尼亚', english: 'Titania', parent: 'uranus',
+        radius: 788.9, orbitKm: 435910, period: 8.706,
+        e: 0.0011, incl: 0.340, node: 0, argPeri: 0,
+        visualFactor: 3.0, color: 0xbbbbcc,
+    },
+    {
+        id: 'oberon', name: '奥伯隆', english: 'Oberon', parent: 'uranus',
+        radius: 761.4, orbitKm: 583520, period: 13.463,
+        e: 0.0014, incl: 0.058, node: 0, argPeri: 0,
+        visualFactor: 3.5, color: 0xaaaacc,
+    },
+    {
+        id: 'umbriel', name: '翁布里尔', english: 'Umbriel', parent: 'uranus',
+        radius: 584.7, orbitKm: 266300, period: 4.144,
+        e: 0.005, incl: 0.128, node: 0, argPeri: 0,
+        visualFactor: 2.2, color: 0x888888,
+    },
+    {
+        id: 'ariel', name: '艾瑞尔', english: 'Ariel', parent: 'uranus',
+        radius: 578.9, orbitKm: 190930, period: 2.520,
+        e: 0.0012, incl: 0.260, node: 0, argPeri: 0,
+        visualFactor: 2.0, color: 0xaaaaaa,
+    },
+    {
+        id: 'miranda', name: '米兰达', english: 'Miranda', parent: 'uranus',
+        radius: 235.8, renderKm: 300, orbitKm: 129390, period: 1.413,
+        e: 0.0013, incl: 4.338, node: 0, argPeri: 0,
+        visualFactor: 1.5, color: 0x999999,
+    },
+    // ── Neptune ──
+    {
+        id: 'triton', name: '海卫一', english: 'Triton', parent: 'neptune',
+        radius: 1353.4, orbitKm: 354759, period: 5.877,
+        e: 0.000016, incl: 156.865, node: 0, argPeri: 0,
+        visualFactor: 3.0, color: 0xccaaaa,
+    },
+    {
+        id: 'nereid', name: '海卫二', english: 'Nereid', parent: 'neptune',
+        radius: 170, renderKm: 250, orbitKm: 5513818, period: 360.16,
+        e: 0.7512, incl: 7.090, node: 0, argPeri: 0,
+        visualFactor: 6.0, color: 0x888888,
+    },
+];
 
 // ── Comet data (JPL HORIZONS orbital elements) ──────────────────────
 const COMET_DATA = [
@@ -567,74 +678,117 @@ export function initSolarSystem(textures) {
         });
     }
 
-    // ── Moon (orbits Earth, scaled with planet size) ───────────────
-    const earth = planets[2];
-    const moonRadius = MOON.radius / KM_PER_U;
-    // Semi-major axis (dynamic, keeps moon close at all scales)
-    const moonBaseDist = earth.pRadius * 1.1 + moonRadius;
-    const moonE = MOON.e;
-    const moonInclRad = MOON.incl * Math.PI / 180;
-    const moonOmegaRad = MOON.argPeri * Math.PI / 180;
-    const moonOmegaNodeRad = MOON.node * Math.PI / 180;
+    // ── Moons (factory for all satellites) ────────────────────────
+    const moons = [];
 
-    const moonSystem = new THREE.Group();  // scaled by currentScale
-    earth.posGroup.add(moonSystem);
+    function createMoon(data, parent, moonsTex) {
+        const renderKm = data.renderKm || data.radius;
+        const moonRadius = data.radius / KM_PER_U;       // real radius (unscaled)
+        const renderRadius = renderKm / KM_PER_U;         // visual radius (unscaled, >= moonRadius)
+        const baseDist = parent.pRadius * data.visualFactor + renderRadius;
+        const inclRad = data.incl * Math.PI / 180;
+        const omegaRad = data.argPeri * Math.PI / 180;
+        const omegaNodeRad = data.node * Math.PI / 180;
 
-    // Orbital element group hierarchy for the Moon:
-    //   moonSystem ── outerGroup (Ω) ── inclGroup (i) ── orbitGroup (ω)
-    const moonOuterGroup = new THREE.Group();
-    moonOuterGroup.rotation.y = moonOmegaNodeRad;
-    moonSystem.add(moonOuterGroup);
+        const system = new THREE.Group();
 
-    const moonInclGroup = new THREE.Group();
-    moonInclGroup.rotation.x = moonInclRad;
-    moonOuterGroup.add(moonInclGroup);
+        // For non-Earth planets, moon orbital data is referenced to the planet's
+        // equatorial plane, not the ecliptic. Apply the planet's axial tilt to
+        // align the moon's orbit with its parent's equator (e.g., Saturn's moons
+        // orbit in Saturn's ring plane, tilted ~26.73° from the ecliptic).
+        // Earth's Moon data (incl=5.145°) is ecliptic-referenced — skip tilt.
+        const parentId = parent.data.english.toLowerCase();
+        if (parentId !== 'earth') {
+            const tiltDeg = AXIAL_TILTS[parentId] || 0;
+            if (tiltDeg) {
+                const moonTiltGroup = new THREE.Group();
+                moonTiltGroup.rotation.x = tiltDeg * Math.PI / 180;
+                parent.posGroup.add(moonTiltGroup);
+                moonTiltGroup.add(system);
+            } else {
+                parent.posGroup.add(system);
+            }
+        } else {
+            parent.posGroup.add(system);
+        }
 
-    const moonOrbitGroup = new THREE.Group();
-    moonOrbitGroup.rotation.y = moonOmegaRad;
-    moonInclGroup.add(moonOrbitGroup);
+        // Orbital element hierarchy: system ── outerGroup(Ω) ── inclGroup(i) ── orbitGroup(ω)
+        const outerGroup = new THREE.Group();
+        outerGroup.rotation.y = omegaNodeRad;
+        system.add(outerGroup);
 
-    // Moon orbit line (elliptical, at base distance; scaled by moonSystem)
-    const moonOrbitPts = [];
-    for (let i = 0; i <= 64; i++) {
-        const a = (i / 64) * Math.PI * 2;
-        const r = moonBaseDist * (1 - moonE * moonE) / (1 + moonE * Math.cos(a));
-        moonOrbitPts.push(
-            new THREE.Vector3(r * Math.cos(a), 0, -r * Math.sin(a))
+        const inclGroup = new THREE.Group();
+        inclGroup.rotation.x = inclRad;
+        outerGroup.add(inclGroup);
+
+        const orbitGroup = new THREE.Group();
+        orbitGroup.rotation.y = omegaRad;
+        inclGroup.add(orbitGroup);
+
+        // Orbit line
+        const orbitPts = [];
+        for (let i = 0; i <= 64; i++) {
+            const a = (i / 64) * Math.PI * 2;
+            const r = baseDist * (1 - data.e * data.e) / (1 + data.e * Math.cos(a));
+            orbitPts.push(new THREE.Vector3(r * Math.cos(a), 0, -r * Math.sin(a)));
+        }
+        const orbitLine = new THREE.Line(
+            new THREE.BufferGeometry().setFromPoints(orbitPts),
+            new THREE.LineBasicMaterial({ color: 0x8cb8ce, transparent: true, opacity: 0.35 })
         );
+        orbitGroup.add(orbitLine);
+
+        // Position group (moves along elliptical orbit)
+        const posGroup = new THREE.Group();
+        orbitGroup.add(posGroup);
+
+        // Texture or fallback color
+        const moonMat = moonsTex[data.id]
+            ? new THREE.MeshStandardMaterial({ map: moonsTex[data.id], roughness: 0.8 })
+            : new THREE.MeshLambertMaterial({ color: data.color });
+        const mesh = new THREE.Mesh(
+            new THREE.SphereGeometry(renderRadius, moonMat ? 32 : 16, moonMat ? 32 : 16),
+            moonMat
+        );
+        posGroup.add(mesh);
+
+        // Label — NOT inside the scaled group (system gets scaled).
+        // Instead, add to parent.posGroup and reposition each frame
+        // in updateOrbits() via getWorldPosition.
+        const displayName = labelText(data, getLang());
+        const label = makeLabel(displayName, 12);
+        parent.posGroup.add(label);
+        allLabels.push(label);
+        occludePairs.push({ mesh, label });
+        labelData.push({ element: label.element, bodyId: data.id });
+
+        const moonObj = {
+            id: data.id,
+            data,
+            system,
+            orbitGroup,
+            posGroup,
+            mesh,
+            label,
+            radius: moonRadius,
+            renderRad: renderRadius,
+            baseDist,
+            e: data.e,
+            orbitalE: data.e,
+            orbitLine,
+            meanAnomaly: Math.random() * Math.PI * 2,
+            angularSpeed: 2 * Math.PI / data.period,
+        };
+
+        moons.push(moonObj);
+        return moonObj;
     }
-    const moonOrbitLine = new THREE.Line(
-        new THREE.BufferGeometry().setFromPoints(moonOrbitPts),
-        new THREE.LineBasicMaterial({ color: 0x8cb8ce, transparent: true, opacity: 0.35 })
-    );
-    moonOrbitGroup.add(moonOrbitLine);
 
-    // Moon position group (moves along elliptical orbit)
-    const moonPosGroup = new THREE.Group();
-    moonOrbitGroup.add(moonPosGroup);
-
-    const moonMat = tex.moon
-        ? new THREE.MeshStandardMaterial({ map: tex.moon, roughness: 0.8 })
-        : new THREE.MeshLambertMaterial({ color: MOON.color });
-    const moonMesh = new THREE.Mesh(
-        new THREE.SphereGeometry(moonRadius, moonMat ? 32 : 16, moonMat ? 32 : 16),
-        moonMat
-    );
-    moonPosGroup.add(moonMesh);
-
-    const moonObj = {
-        system: moonSystem,
-        orbitGroup: moonOrbitGroup,
-        posGroup: moonPosGroup,
-        mesh: moonMesh,
-        radius: moonRadius,
-        baseDist: moonBaseDist,
-        e: moonE,
-        orbitLine: moonOrbitLine,
-        meanAnomaly: Math.random() * Math.PI * 2,
-        angularSpeed: 2 * Math.PI / MOON.period,
-        orbitalE: moonE,
-    };
+    // Create all moons from MOON_DATA
+    for (const md of MOON_DATA) {
+        const parent = planets.find(p => (p.data.english || '').toLowerCase() === md.parent);
+        if (parent) createMoon(md, parent, tex);
+    }
 
     // ── Comets ─────────────────────────────────────────────────────
     const comets = [];
@@ -849,7 +1003,9 @@ export function initSolarSystem(textures) {
             const lbl = p.posGroup.children.find(c => c.isCSS2DObject);
             if (lbl) lbl.position.set(0, p.pRadius * currentScale * 2 + 3, 0);
         }
-        moonObj.system.scale.setScalar(currentScale);
+        for (const m of moons) {
+            m.system.scale.setScalar(currentScale);
+        }
     }
 
     /** @param {number} speedMul - multiplier (1 = 1 scene-second = 1 day) */
@@ -858,7 +1014,9 @@ export function initSolarSystem(textures) {
         for (const p of planets) {
             p.angularSpeed = 2 * Math.PI / p.data.period * speedMul;
         }
-        moonObj.angularSpeed = 2 * Math.PI / MOON.period * speedMul;
+        for (const m of moons) {
+            m.angularSpeed = 2 * Math.PI / m.data.period * speedMul;
+        }
         if (comets) {
             for (const c of comets) {
                 c.angularSpeed = 2 * Math.PI / c.data.period * speedMul;
@@ -882,11 +1040,16 @@ export function initSolarSystem(textures) {
             const data = PLANET_DATA.find(d => d.english.toLowerCase() === bodyId);
             if (data) {
                 element.textContent = labelText(data, lang);
-            } else {
-                const c_data = COMET_DATA.find(d => d.english.toLowerCase() === bodyId);
-                if (c_data) {
-                    element.textContent = labelText(c_data, lang);
-                }
+                continue;
+            }
+            const m_data = MOON_DATA.find(d => d.id === bodyId);
+            if (m_data) {
+                element.textContent = labelText(m_data, lang);
+                continue;
+            }
+            const c_data = COMET_DATA.find(d => d.english.toLowerCase() === bodyId);
+            if (c_data) {
+                element.textContent = labelText(c_data, lang);
             }
         }
     }
@@ -917,15 +1080,15 @@ export function initSolarSystem(textures) {
             p.orbitGroup.add(newLine);
             p.orbitLine = newLine;
         }
-        // Rebuild Moon orbit line
-        if (moonObj) {
-            const effE = Math.min(moonObj.orbitalE * mult, 0.99);
-            moonObj.orbitGroup.remove(moonObj.orbitLine);
+        // Rebuild moon orbit lines
+        for (const m of moons) {
+            const effE = Math.min(m.orbitalE * mult, 0.99);
+            m.orbitGroup.remove(m.orbitLine);
             const segs = 64;
             const pts = [];
             for (let i = 0; i <= segs; i++) {
                 const a = (i / segs) * Math.PI * 2;
-                const r = moonObj.baseDist * (1 - effE * effE) / (1 + effE * Math.cos(a));
+                const r = m.baseDist * (1 - effE * effE) / (1 + effE * Math.cos(a));
                 pts.push(new THREE.Vector3(r * Math.cos(a), 0, -r * Math.sin(a)));
             }
             const newLine = new THREE.Line(
@@ -934,8 +1097,8 @@ export function initSolarSystem(textures) {
             );
             const orbitToggle = document.getElementById('orbits-toggle');
             if (orbitToggle && !orbitToggle.checked) newLine.visible = false;
-            moonObj.orbitGroup.add(newLine);
-            moonObj.orbitLine = newLine;
+            m.orbitGroup.add(newLine);
+            m.orbitLine = newLine;
         }
     }
 
@@ -970,13 +1133,25 @@ export function initSolarSystem(textures) {
         // Sun self-rotation (period ~25.38 Earth days at equator)
         sunMesh.rotation.y += 2 * Math.PI / 25.38 * days * currentSpeedMul;
 
-        // Moon around Earth — elliptical orbit with real orbital elements
-        moonObj.meanAnomaly += moonObj.angularSpeed * days;
-        const effMoonE = Math.min(moonObj.orbitalE * eMultiplier, 0.99);
-        const ME = solveKepler(moonObj.meanAnomaly, effMoonE);
-        const mx = moonObj.baseDist * (Math.cos(ME) - effMoonE);
-        const mz = -moonObj.baseDist * Math.sqrt(1 - effMoonE * effMoonE) * Math.sin(ME);
-        moonObj.posGroup.position.set(mx, 0, mz);
+        // Moons — elliptical orbit with real orbital elements
+        for (const m of moons) {
+            m.meanAnomaly += m.angularSpeed * days;
+            const effMoonE = Math.min(m.orbitalE * eMultiplier, 0.99);
+            const ME = solveKepler(m.meanAnomaly, effMoonE);
+            const mx = m.baseDist * (Math.cos(ME) - effMoonE);
+            const mz = -m.baseDist * Math.sqrt(1 - effMoonE * effMoonE) * Math.sin(ME);
+            m.posGroup.position.set(mx, 0, mz);
+
+            // Track label: follow moon with offset above it
+            const _moonW = new THREE.Vector3();
+            m.mesh.getWorldPosition(_moonW);
+            // Label is in parent.posGroup local space; convert from world
+            // The parent planet's posGroup is the common parent
+            const moonParent = m.label.parent;
+            moonParent.worldToLocal(_moonW);
+            _moonW.y += m.renderRad * currentScale * 2 + 1.5;
+            m.label.position.copy(_moonW);
+        }
 
         // Comets — Kepler orbit with trail
         for (const c of comets) {
@@ -1033,7 +1208,9 @@ export function initSolarSystem(textures) {
         ...planets.map(p => p.mesh),
         ...comets.map(c => c.mesh),
     ];
-    if (moonObj) occluders.push(moonObj.mesh);
+    for (const m of moons) {
+        occluders.push(m.mesh);
+    }
 
     function updateLabelOcclusion() {
         if (!labelsEnabled) return;
@@ -1060,7 +1237,7 @@ export function initSolarSystem(textures) {
 
     return {
         scene, camera, renderer, labelRenderer,
-        planets, moon: moonObj, comets, sun, sunMesh, asteroidBelt, eclipticDisc,
+        planets, moons, comets, sun, sunMesh, asteroidBelt, eclipticDisc,
         setScale, setSpeed, setLabelsVisible, setLabelLanguage, setEccentricityMultiplier,
         update: updateOrbits,
         SUN_RADIUS, MAX_SCALE,

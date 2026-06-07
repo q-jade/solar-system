@@ -357,9 +357,11 @@ export function initControls(sys, camera, renderer) {
                 if (child.isLine) child.visible = orbitToggle.checked;
             });
         });
-        // Also toggle Moon orbit line
-        if (sys.moon && sys.moon.orbitLine) {
-            sys.moon.orbitLine.visible = orbitToggle.checked;
+        // Also toggle moon orbit lines
+        if (sys.moons) {
+            sys.moons.forEach((m) => {
+                if (m.orbitLine) m.orbitLine.visible = orbitToggle.checked;
+            });
         }
         // Also toggle comet orbit lines (keep trails visible — they're a visual effect)
         if (sys.comets) {

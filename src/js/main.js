@@ -109,6 +109,11 @@ const clickables = [
         mesh: p.mesh,
         bodyId: (p.data.english || '').toLowerCase(),
     })),
+    ...sys.moons.map(m => ({
+        mesh: m.mesh,
+        bodyId: m.id,
+        moon: true,
+    })),
 ];
 
 // ── Raycaster click detection ────────────────────────
@@ -147,14 +152,14 @@ renderer.domElement.addEventListener('pointerup', (e) => {
                 ach.evaluate();
                 return;
             }
-            const body = getPlanet(entry.bodyId);
-            if (!body) return;
-
             if (mouseDownBtn === 2) {
-                // Right-click: focus camera on planet or sun
-                if (getFocusedId() === entry.bodyId) return; // already focused
+                // Right-click: focus camera on planet, sun, or moon
+                if (getFocusedId() === entry.bodyId) return;
                 if (entry.bodyId === 'sun') {
                     setFocus(sys.sunMesh, '太阳', 'sun', 'Sun');
+                } else if (entry.moon) {
+                    const m = sys.moons.find(x => x.id === entry.bodyId);
+                    if (m) setFocus(m.mesh, m.data.name, m.id, m.data.english);
                 } else {
                     const pMatch = sys.planets.find(p =>
                         (p.data.english || '').toLowerCase() === entry.bodyId
@@ -164,17 +169,26 @@ renderer.domElement.addEventListener('pointerup', (e) => {
                 return;
             }
 
-            // Left-click: open info card + XP/quest
-            selectBody(entry.bodyId);
+            // Left-click: find body or moon, open parent planet card
+            const body = getPlanet(entry.bodyId);
+            let targetId = entry.bodyId;
+            if (!body && entry.moon) {
+                // Moon has no entry in bodies.json; open parent planet card
+                const m = sys.moons.find(x => x.id === entry.bodyId);
+                if (m) {
+                    targetId = m.data.parent;
+                }
+            }
+            selectBody(targetId);
             sfx.focus();
-            const wasExplored = markExplored(entry.bodyId);
+            const wasExplored = markExplored(targetId);
             if (wasExplored) {
-                const mult = entry.bodyId === 'sun' ? 1.5 : (
-                    ['earth', 'jupiter', 'saturn'].includes(entry.bodyId) ? 1.2 : 1
+                const mult = targetId === 'sun' ? 1.5 : (
+                    ['earth', 'jupiter', 'saturn'].includes(targetId) ? 1.2 : 1
                 );
                 addXp(Math.round(20 * mult));
             }
-            quest.trigger('click_body', { bodyId: entry.bodyId });
+            quest.trigger('click_body', { bodyId: targetId });
             ach.evaluate();
         }
     }
@@ -339,13 +353,13 @@ function checkProximity() {
             distance: dist,
         });
     }
-    // Check distance to moon
-    if (sys.moon) {
-        sys.moon.posGroup.getWorldPosition(tmpVec);
-        const moonDist = camera.position.distanceTo(tmpVec);
+    // Check distance to all moons
+    for (const m of sys.moons) {
+        m.posGroup.getWorldPosition(tmpVec);
+        const mDist = camera.position.distanceTo(tmpVec);
         quest.trigger('body_proximity', {
-            bodyId: 'moon',
-            distance: moonDist,
+            bodyId: m.id,
+            distance: mDist,
         });
     }
 }

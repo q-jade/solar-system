@@ -3,9 +3,9 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { ambientMusic } from './ambientMusic.js';
 import { t, onLangChange, getLang } from './i18n.js';
 
-const DEFAULT_SCALE = 1200;
+const DEFAULT_SCALE = 700;
 const MIN_SPEED = 1 / 24;  // 1 hour/sec
-const DEFAULT_SPEED = 20; // days/sec
+const DEFAULT_SPEED = 1; // days/sec
 const DEFAULT_ECC = 1;    // 1x = real eccentricity
 const ECC_MAX = 4;       // max eccentricity multiplier
 

@@ -7,7 +7,7 @@ import { getLang } from './i18n.js';
 const AU = 40;                      // 1 AU in scene units
 const KM_PER_U = 149597870.7 / AU;  // km per scene unit
 const SUN_RADIUS = 8;               // fixed sun size
-const MAX_SCALE = 2000;             // max planet size multiplier
+const MAX_SCALE = 1999;             // max planet size multiplier
 
 // ── Real planetary data (JPL HORIZONS, epoch J2000) ────────────────────
 // radius: km | orbitA: AU | e: eccentricity | incl: ° |

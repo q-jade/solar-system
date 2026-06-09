@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-06-09
+
+### Added
+- 全行星卫星系统 — 为 6 颗行星添加 17 颗卫星（真实轨道参数）
+  - 火星：火卫一 Phobos、火卫二 Deimos
+  - 木星：木卫一~四 Io/Europa/Ganymede/Callisto
+  - 土星：泰坦 Titan、瑞亚 Rhea、忒堤斯 Tethys、恩克拉多斯 Enceladus
+  - 天王星：泰坦尼亚~米兰达 Titania~Miranda（5 颗）
+  - 海王星：特里同 Triton、涅瑞伊得 Nereid
+- 卫星标签逐帧追踪 — 随卫星运动实时更新位置
+- 卫星轨道继承行星轴倾角（土星环与卫星共面）
+
+### Changed
+- 默认星体缩放 1200x → 700x
+- 默认时间流速 20 天/秒 → 1 天/秒
+- MAX_SCALE 3000 → 1999
+
+### Fixed
+- 题库 5 项修正（数据更新 + 事实纠错 + 去重）
+
 ## [1.1.0] - 2026-06-03
 
 ### Added

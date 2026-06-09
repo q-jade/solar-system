@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-06-09
+
+### Added
+- Multi-moon system — 17 satellites orbiting 6 planets (real orbital elements)
+  - Mars: Phobos, Deimos
+  - Jupiter: Io, Europa, Ganymede, Callisto
+  - Saturn: Titan, Rhea, Tethys, Enceladus
+  - Uranus: Titania, Oberon, Umbriel, Ariel, Miranda
+  - Neptune: Triton, Nereid
+- Moon labels track position each frame via worldToLocal
+- Moon orbits inherit parent's axial tilt (Saturn's rings and moons co-planar)
+
+### Changed
+- Default scale: 1200x → 700x
+- Default speed: 20 days/sec → 1 day/sec
+- MAX_SCALE: 3000 → 1999
+
+### Fixed
+- 5 quiz corrections (data updates + factual fixes + dedup)
+
 ## [1.1.0] - 2026-06-03
 
 ### Added

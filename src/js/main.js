@@ -14,7 +14,7 @@ import { sfx } from './sfx.js';
 import { ambientMusic } from './ambientMusic.js';
 import { t, setLang, getLang, onLangChange, getLocale } from './i18n.js';
 
-(async () => {
+export async function boot(hooks = {}) {
 // ── Simulated date tracking ────────────────────
 const J2000 = new Date(Date.UTC(2000, 0, 1, 12, 0, 0));
 const DAY_MS = 86400000;
@@ -102,6 +102,10 @@ window.__achievement = ach;
 // 自动启动背景音乐
 ambientMusic.start();
 
+const ctx = { sys, scene, camera, renderer, labelRenderer, controls, quest, ach,
+              setFocus, updateFocus, getFocusedId };
+if (hooks.afterInit) await hooks.afterInit(ctx);
+
 // ── Clickable body meshes ─────────────────────────
 const clickables = [
     { mesh: sys.sunMesh, bodyId: 'sun' },
@@ -115,6 +119,8 @@ const clickables = [
         moon: true,
     })),
 ];
+
+if (hooks.registerClickables) hooks.registerClickables(clickables, ctx);
 
 // ── Raycaster click detection ────────────────────────
 const raycaster = new THREE.Raycaster();
@@ -414,6 +420,8 @@ function animate() {
         ach.evaluate();
     }
 
+    if (hooks.onFrame) hooks.onFrame(dt, ctx);
+
     updateFocus(sys.planets, dt);
     controls.update();
     renderer.render(scene, camera);
@@ -460,4 +468,9 @@ function toggleShowcase() {
     }
 }
 
-})();
+if (hooks.afterBoot) hooks.afterBoot(ctx);
+}
+
+if (typeof __SKIP_AUTO_BOOT__ === 'undefined' || !__SKIP_AUTO_BOOT__) {
+    boot();
+}

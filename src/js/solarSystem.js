@@ -258,6 +258,7 @@ export function initSolarSystem(textures) {
     labelRenderer.domElement.style.top = '0';
     labelRenderer.domElement.style.left = '0';
     labelRenderer.domElement.style.pointerEvents = 'none';
+    labelRenderer.domElement.style.zIndex = '1';
     document.getElementById('solar-system-container').appendChild(labelRenderer.domElement);
 
     // ── Reference ecliptic plane disc (visual aid for inclination) ──

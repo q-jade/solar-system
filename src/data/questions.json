@@ -969,24 +969,24 @@
     "id": "q043",
     "level": "intermediate",
     "type": "choice",
-    "question": "土星的自转周期约为多少小时？",
+    "question": "土星的自转周期是太阳系中最复杂的之一。根据卡西尼号的最新测量，土星内部固体的实际自转周期约为？",
     "options": [
-      "10 小时",
-      "10.7 小时",
-      "24 小时",
-      "48 小时"
+      "10.0 小时",
+      "10.5 小时",
+      "11.5 小时",
+      "24.0 小时"
     ],
     "answer": 1,
-    "explanation": "土星自转周期约 10 小时 33 分。",
+    "explanation": "土星是气态巨行星，无固体表面，不同部分转速不同。卡西尼号通过环面地震学测量（2019）确认内部固体核心自转周期约 10.55 小时（10h33m）。传统无线电测量为 10.65h，磁场测量为 10.78h，可见土星自转至今仍有争议。",
     "relatedBody": "saturn",
-    "questionEn": "What is Saturn's rotation period in hours?",
+    "questionEn": "Saturn's rotation is the most complex in the solar system. What is its interior's actual rotation period, as measured by Cassini?",
     "optionsEn": [
-      "10 hours",
-      "10.7 hours",
-      "24 hours",
-      "48 hours"
+      "10.0 hours",
+      "10.5 hours",
+      "11.5 hours",
+      "24.0 hours"
     ],
-    "explanationEn": "Saturn rotates in about 10 hours 33 minutes."
+    "explanationEn": "Saturn has no solid surface — different latitudes rotate at different rates. Cassini's ring seismology (2019) measured the interior at ~10.55 hours (10h33m). Traditional radio: 10.65h, magnetic: 10.78h — Saturn's rotation is still debated."
   },
   {
     "id": "q044",
@@ -1562,5 +1562,143 @@
       "Causes volcanoes"
     ],
     "explanationEn": "The solar wind interacts with Earth's magnetosphere to create auroral displays."
+  },
+  {
+    "id": "q069",
+    "level": "intermediate",
+    "type": "choice",
+    "question": "木卫二（欧罗巴）最引人注目的特征是什么？",
+    "options": [
+      "浓厚的二氧化碳大气",
+      "冰壳下存在液态水海洋",
+      "有大量活火山",
+      "有光环系统"
+    ],
+    "answer": 1,
+    "explanation": "木卫二（欧罗巴）的冰壳下存在巨大的液态水海洋，被认为是太阳系中最有可能存在地外生命的天体之一。",
+    "relatedBody": "jupiter",
+    "questionEn": "What is the most notable feature of Europa?",
+    "optionsEn": [
+      "Thick carbon dioxide atmosphere",
+      "Liquid water ocean beneath an icy crust",
+      "Numerous active volcanoes",
+      "A ring system"
+    ],
+    "explanationEn": "Europa has a vast liquid water ocean beneath its icy crust, making it one of the most promising candidates for extraterrestrial life in the solar system."
+  },
+  {
+    "id": "q070",
+    "level": "intermediate",
+    "type": "choice",
+    "question": "土卫六（泰坦）拥有太阳系中什么独特特征？",
+    "options": [
+      "最活跃的火山",
+      "浓厚大气层和液态碳氢化合物湖泊",
+      "最亮的表面",
+      "最长的轨道周期"
+    ],
+    "answer": 1,
+    "explanation": "土卫六（泰坦）是太阳系中唯一拥有浓厚大气层的卫星，表面存在液态甲烷和乙烷组成的湖泊与海洋。",
+    "relatedBody": "saturn",
+    "questionEn": "What unique feature does Titan have in the solar system?",
+    "optionsEn": [
+      "Most active volcanoes",
+      "Thick atmosphere and liquid hydrocarbon lakes",
+      "Brightest surface",
+      "Longest orbital period"
+    ],
+    "explanationEn": "Titan is the only moon in the solar system with a thick atmosphere and has lakes and seas of liquid methane and ethane on its surface."
+  },
+  {
+    "id": "q071",
+    "level": "intermediate",
+    "type": "choice",
+    "question": "土卫二（恩克拉多斯）的南极地区有什么独特现象？",
+    "options": [
+      "巨大的陨石坑",
+      "冰喷泉（羽流）喷射到太空中",
+      "液态水海洋裸露在表面",
+      "持续喷发的火山"
+    ],
+    "answer": 1,
+    "explanation": "土卫二（恩克拉多斯）的南极地区存在巨大的冰喷泉（羽流），将水冰颗粒喷射到太空中，证明其冰壳下有液态水。",
+    "relatedBody": "saturn",
+    "questionEn": "What unique phenomenon occurs at Enceladus' south pole?",
+    "optionsEn": [
+      "Giant impact craters",
+      "Ice plumes (cryovolcanoes) spraying into space",
+      "Exposed liquid water ocean on the surface",
+      "Continuously erupting volcanoes"
+    ],
+    "explanationEn": "Enceladus has massive ice plumes (cryovolcanic jets) at its south pole, spraying water ice into space — evidence of a subsurface liquid water ocean."
+  },
+  {
+    "id": "q072",
+    "level": "advanced",
+    "type": "choice",
+    "question": "海卫一（特里同）的轨道有什么独特之处？",
+    "options": [
+      "轨道倾角为零",
+      "是逆行轨道（公转方向与母星自转相反）",
+      "轨道偏心率接近 1",
+      "轨道完全在行星内部"
+    ],
+    "answer": 1,
+    "explanation": "海卫一（特里同）是太阳系中唯一拥有逆行轨道的规则大卫星，公转方向与海王星自转方向相反，可能是被捕获的柯伊伯带天体。",
+    "relatedBody": "neptune",
+    "questionEn": "What is unique about Triton's orbit?",
+    "optionsEn": [
+      "Zero orbital inclination",
+      "It is a retrograde orbit (opposite to Neptune's rotation)",
+      "Orbital eccentricity near 1",
+      "Orbit lies entirely inside the planet"
+    ],
+    "explanationEn": "Triton is the only large regular moon in the solar system with a retrograde orbit — it orbits opposite to Neptune's rotation, suggesting it was a captured Kuiper Belt object."
+  },
+  {
+    "id": "q073",
+    "level": "intermediate",
+    "type": "choice",
+    "question": "太阳系中火山活动最活跃的天体是什么？",
+    "options": [
+      "地球",
+      "木卫一（伊奥）",
+      "金星",
+      "土卫二（恩克拉多斯）"
+    ],
+    "answer": 1,
+    "explanation": "木卫一（伊奥）是太阳系中火山活动最活跃的天体，有超过 400 座活火山，由木星和邻近卫星的潮汐加热驱动。",
+    "relatedBody": "jupiter",
+    "questionEn": "Which body in the solar system has the most active volcanism?",
+    "optionsEn": [
+      "Earth",
+      "Io",
+      "Venus",
+      "Enceladus"
+    ],
+    "explanationEn": "Io is the most volcanically active body in the solar system, with over 400 active volcanoes, powered by tidal heating from Jupiter and neighboring moons."
+  },
+  {
+    "id": "q074",
+    "level": "advanced",
+    "type": "choice",
+    "question": "火星的火卫一（福波斯）最终会怎样？",
+    "options": [
+      "逃离火星引力",
+      "轨道衰减最终撞入火星",
+      "分裂成新的火星环",
+      "被火星捕获为永久卫星"
+    ],
+    "answer": 1,
+    "explanation": "火卫一（福波斯）的轨道正在缓慢衰减，约 5000 万年后将坠入火星大气层或撞上火星表面。",
+    "relatedBody": "mars",
+    "questionEn": "What will eventually happen to Phobos, Mars' moon?",
+    "optionsEn": [
+      "Escape Mars' gravity",
+      "Orbital decay will cause it to crash into Mars",
+      "Break apart into a new Martian ring",
+      "Be captured permanently by Mars"
+    ],
+    "explanationEn": "Phobos' orbit is slowly decaying. In about 50 million years, it will either crash into Mars' atmosphere or impact the surface."
   }
 ]

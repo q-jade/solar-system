@@ -18,6 +18,9 @@ const DEFAULT_DATA = {
         lastVisit: 0,
         playTimeMs: 0,
     },
+    guide: {
+        firstGuideDone: false,
+    },
 };
 
 function load() {
@@ -55,6 +58,10 @@ function ensure() {
     }
     if (!data.stats) {
         data.stats = { totalVisits: 0, lastVisit: 0, playTimeMs: 0 };
+        changed = true;
+    }
+    if (!data.guide) {
+        data.guide = { firstGuideDone: false };
         changed = true;
     }
     if (data.quizSession.bestStreak === undefined) {
@@ -144,6 +151,17 @@ export function calcLevel(xp) {
 }
 
 /** XP needed to reach the next level */
+export function isFirstGuideDone() {
+    const data = ensure();
+    return data.guide ? data.guide.firstGuideDone : false;
+}
+
+export function markGuideDone() {
+    const data = ensure();
+    if (data.guide) data.guide.firstGuideDone = true;
+    save(data);
+}
+
 export function xpToNextLevel(xp) {
     const lv = calcLevel(xp);
     const currentThreshold = 100 * (lv - 1) * (lv - 1);

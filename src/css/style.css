@@ -1054,6 +1054,71 @@ input[type="range"]::-moz-range-thumb {
 /* #stats-btn positioning is now handled by #top-buttons flexbox */
 
 /* ── Stats panel ─────────────────────────── */
+/* ── Guide overlay (first-time tutorial) ────────── */
+#guide-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(5, 5, 25, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+#guide-card {
+  background: rgba(15, 20, 45, 0.95);
+  border: 1px solid rgba(100, 150, 255, 0.2);
+  border-radius: 16px;
+  padding: 32px 40px;
+  max-width: 440px;
+  width: 90%;
+  color: #dde;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+#guide-card h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #cdf;
+}
+#guide-card p {
+  margin: 0 0 20px;
+  font-size: 13px;
+  color: #aab;
+  line-height: 1.5;
+}
+#guide-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+}
+#guide-card li {
+  padding: 8px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border-bottom: 1px solid rgba(100, 150, 255, 0.08);
+}
+#guide-card li:last-child {
+  border-bottom: none;
+}
+#guide-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, #3a6bd5, #5b8def);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+#guide-btn:hover {
+  opacity: 0.85;
+}
+
 #stats-overlay, #help-overlay {
   position: fixed;
   inset: 0;

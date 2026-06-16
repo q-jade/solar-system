@@ -196,6 +196,19 @@
     "xp": " XP",
     "km": "km"
   },
+  "guide": {
+    "title": "👋 Welcome to 3D Solar System",
+    "desc": "An interactive solar system built from real NASA orbital data.",
+    "steps": [
+      "🖱️ Drag to rotate the view",
+      "🔍 Scroll to zoom in/out",
+      "👆 Right-click a planet to focus",
+      "🖱️ Left-click a body to open info card",
+      "🖱️ Double-click empty space to reset view",
+      "📖 Complete quests to earn achievements"
+    ],
+    "btn": "Let's Go"
+  },
   "cometQuest": {
     "clickComet": "Click comet to observe",
     "clicked": "Observed"

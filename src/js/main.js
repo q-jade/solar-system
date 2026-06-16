@@ -6,7 +6,7 @@ import { initControls } from './controls.js';
 import { getPlanet } from './knowledge.js';
 import { selectBody } from './infocard.js';
 import { startQuiz } from './quizEngine.js';
-import { markExplored, getStats, resetData, addXp } from './storage.js';
+import { markExplored, getStats, resetData, addXp, isFirstGuideDone, markGuideDone } from './storage.js';
 import { createQuestEngine } from './questEngine.js';
 import { createAchievement } from './achievement.js';
 import { loadTextures, setOnProgress } from './textureLoader.js';
@@ -88,6 +88,23 @@ setTimeout(() => loadingEL.style.display = 'none', 500);
 const sys = initSolarSystem(textures);
 const { scene, camera, renderer, labelRenderer } = sys;
 const { orbit: controls, setFocus, updateFocus, getFocusedId } = initControls(sys, camera, renderer);
+
+// ── First-time guide ─────────────────────────────
+(function showGuide() {
+    if (isFirstGuideDone()) return;
+    const overlay = document.getElementById('guide-overlay');
+    if (!overlay) return;
+    overlay.style.display = '';
+    document.getElementById('guide-title').textContent = t('guide.title');
+    document.getElementById('guide-desc').textContent = t('guide.desc');
+    const list = document.getElementById('guide-steps');
+    list.innerHTML = getLocale().guide.steps.map(s => `<li>${s}</li>`).join('');
+    document.getElementById('guide-btn').textContent = t('guide.btn');
+    document.getElementById('guide-btn').addEventListener('click', () => {
+        overlay.style.display = 'none';
+        markGuideDone();
+    }, { once: true });
+})();
 
 // ── Phase 2: Quest & Achievement engine ────────
 const quest = createQuestEngine();

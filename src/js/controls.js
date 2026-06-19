@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { ambientMusic } from './ambientMusic.js';
 import { t, onLangChange, getLang } from './i18n.js';
 
-const DEFAULT_SCALE = 700;
+const DEFAULT_SCALE = 1200;
 const MIN_SPEED = 1 / 24;  // 1 hour/sec
 const DEFAULT_SPEED = 1; // days/sec
 const DEFAULT_ECC = 1;    // 1x = real eccentricity
@@ -293,7 +293,7 @@ export function initControls(sys, camera, renderer) {
             music: $('#music-toggle').checked,
             collapsed: $('#controls-panel').classList.contains('ctrl-collapsed'),
         };
-        try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) {}
+        try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) { }
     }
 
     function loadSettings() {

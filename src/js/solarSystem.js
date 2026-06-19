@@ -69,7 +69,7 @@ const PLANET_DATA = [
 const AXIAL_TILTS = {
     earth: 23.44, mars: 25.19, jupiter: 3.13,
     saturn: 26.73, uranus: 97.77, neptune: 28.32,
-    venus: 177.4,  mercury: 0.034,
+    venus: 177.4, mercury: 0.034,
 };
 
 const MOON_DATA = [
@@ -285,10 +285,10 @@ export function initSolarSystem(textures) {
     // Approx spectral type distribution: 76% red/orange, 12% yellow, 8% white, 4% blue
     const starTypes = [
         { weight: 0.04, r: 0.75, g: 0.85, b: 1.0, sizeBase: 0.6, sizeRange: 0.3 }, // O/B hot blue
-        { weight: 0.08, r: 0.9,  g: 0.95, b: 1.0, sizeBase: 0.5, sizeRange: 0.3 }, // A/F white-blue
-        { weight: 0.12, r: 1.0,  g: 1.0,  b: 0.8, sizeBase: 0.4, sizeRange: 0.3 }, // G yellow
-        { weight: 0.40, r: 1.0,  g: 0.85, b: 0.6, sizeBase: 0.35, sizeRange: 0.25 }, // K orange
-        { weight: 0.36, r: 1.0,  g: 0.7,  b: 0.5, sizeBase: 0.3, sizeRange: 0.2 }, // M red
+        { weight: 0.08, r: 0.9, g: 0.95, b: 1.0, sizeBase: 0.5, sizeRange: 0.3 }, // A/F white-blue
+        { weight: 0.12, r: 1.0, g: 1.0, b: 0.8, sizeBase: 0.4, sizeRange: 0.3 }, // G yellow
+        { weight: 0.40, r: 1.0, g: 0.85, b: 0.6, sizeBase: 0.35, sizeRange: 0.25 }, // K orange
+        { weight: 0.36, r: 1.0, g: 0.7, b: 0.5, sizeBase: 0.3, sizeRange: 0.2 }, // M red
     ];
     for (let i = 0; i < bgStarCount; i++) {
         const r = 10000 + Math.random() * 3000;
@@ -569,9 +569,9 @@ export function initSolarSystem(textures) {
         // ── Atmospheric glow (planet-specific colors) ──
         let atmoMesh = null;
         const ATMO_CONFIG = {
-            earth:  { color: [0.3, 0.6, 1.0], scale: 1.025, power: 3.0, intensity: 0.55 },
-            venus:  { color: [0.9, 0.7, 0.3], scale: 1.02,  power: 4.0, intensity: 0.25 },
-            mars:   { color: [0.8, 0.3, 0.2], scale: 1.015, power: 4.0, intensity: 0.2 },
+            earth: { color: [0.3, 0.6, 1.0], scale: 1.025, power: 3.0, intensity: 0.55 },
+            venus: { color: [0.9, 0.7, 0.3], scale: 1.02, power: 4.0, intensity: 0.25 },
+            mars: { color: [0.8, 0.3, 0.2], scale: 1.015, power: 4.0, intensity: 0.2 },
         };
         const ac = ATMO_CONFIG[bodyId];
         if (ac) {
@@ -1195,7 +1195,7 @@ export function initSolarSystem(textures) {
             const y2 = -z1 * si;
             const z2 = z1 * ci;
             // 3) Rotate by Ω around Y (orient ascending node)
-            pos[i * 3]     = x2 * cO + z2 * sO;
+            pos[i * 3] = x2 * cO + z2 * sO;
             pos[i * 3 + 1] = y2;
             pos[i * 3 + 2] = -x2 * sO + z2 * cO;
         }

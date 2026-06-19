@@ -12,7 +12,7 @@ let quizTitleMode = 'title';
 
 // ── HTML template (函数式，每次打开时取当前语言) ───────────────────
 function buildQuizHTML() {
-  return `
+    return `
   <div class="qz-overlay" id="qz-overlay"></div>
   <div class="qz-card" id="qz-card">
     <div class="qz-header">

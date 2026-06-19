@@ -18,17 +18,17 @@ const TEXTURE_LIST = {
 
     // Planets (2k resolution for good quality / reasonable size)
     mercury: { url: `${CDN_BASE}/2k_mercury.jpg`, type: 'jpeg' },
-    venus:   { url: `${CDN_BASE}/2k_venus_surface.jpg`, type: 'jpeg' },
-    earth:   { url: `${CDN_BASE}/2k_earth_daymap.jpg`, type: 'jpeg' },
+    venus: { url: `${CDN_BASE}/2k_venus_surface.jpg`, type: 'jpeg' },
+    earth: { url: `${CDN_BASE}/2k_earth_daymap.jpg`, type: 'jpeg' },
     earthClouds: { url: `${CDN_BASE}/2k_earth_clouds.jpg`, type: 'jpeg' },
-    earthNight:  { url: `${CDN_BASE}/2k_earth_nightmap.jpg`, type: 'jpeg' },
-    mars:    { url: `${CDN_BASE}/2k_mars.jpg`, type: 'jpeg' },
+    earthNight: { url: `${CDN_BASE}/2k_earth_nightmap.jpg`, type: 'jpeg' },
+    mars: { url: `${CDN_BASE}/2k_mars.jpg`, type: 'jpeg' },
     jupiter: { url: `${CDN_BASE}/2k_jupiter.jpg`, type: 'jpeg' },
-    saturn:  { url: `${CDN_BASE}/2k_saturn.jpg`, type: 'jpeg' },
+    saturn: { url: `${CDN_BASE}/2k_saturn.jpg`, type: 'jpeg' },
     saturnRing: { url: `${CDN_BASE}/2k_saturn_ring_alpha.png`, type: 'png' },
-    uranus:  { url: `${CDN_BASE}/2k_uranus.jpg`, type: 'jpeg' },
+    uranus: { url: `${CDN_BASE}/2k_uranus.jpg`, type: 'jpeg' },
     neptune: { url: `${CDN_BASE}/2k_neptune.jpg`, type: 'jpeg' },
-    moon:    { url: `${CDN_BASE}/2k_moon.jpg`, type: 'jpeg' },
+    moon: { url: `${CDN_BASE}/2k_moon.jpg`, type: 'jpeg' },
 
 };
 // Note: milky way texture not available on this CDN; skipped.
@@ -116,7 +116,7 @@ export function loadTextures() {
                 const delta = (b - mid) * scale;
                 const newB = mid + delta;
                 const adj = newB / (b || 1);
-                d[i]     = Math.max(0, Math.min(255, Math.round(d[i] * adj)));
+                d[i] = Math.max(0, Math.min(255, Math.round(d[i] * adj)));
                 d[i + 1] = Math.max(0, Math.min(255, Math.round(d[i + 1] * adj)));
                 d[i + 2] = Math.max(0, Math.min(255, Math.round(d[i + 2] * adj)));
             }

@@ -191,8 +191,8 @@ function compareHTML(bodyA, bodyB) {
       <select class="ic-cmp-select" id="ic-cmp-select">
         <option value="">${t('infoCard.cmpSelectOther')}</option>
         ${getAllPlanets().filter(b => b.id !== bodyA.id).map(b =>
-            `<option value="${b.id}" ${b.id === bodyB.id ? 'selected' : ''}>${b.symbol} ${localName(b)}</option>`
-        ).join('')}
+        `<option value="${b.id}" ${b.id === bodyB.id ? 'selected' : ''}>${b.symbol} ${localName(b)}</option>`
+    ).join('')}
       </select>
     `;
 }

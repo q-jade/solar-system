@@ -17,6 +17,7 @@
   transform: translateX(120%);
   transition: transform 0.3s ease-out;
 }
+
 .qt-panel.visible {
   transform: translateX(0);
 }
@@ -42,8 +43,9 @@
   padding: 2px 6px;
   border-radius: 4px;
 }
+
 .qt-panel-close:hover {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
   color: #dde;
 }
 
@@ -63,7 +65,7 @@
   font-size: 12px;
   color: #667;
   padding: 10px 8px 4px;
-  border-bottom: 1px solid rgba(100,150,255,0.06);
+  border-bottom: 1px solid rgba(100, 150, 255, 0.06);
   margin-bottom: 4px;
 }
 
@@ -71,8 +73,8 @@
   padding: 10px 12px;
   margin-bottom: 6px;
   border-radius: 8px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(100,150,255,0.06);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(100, 150, 255, 0.06);
 }
 
 .qt-item.qt-completed {
@@ -117,7 +119,7 @@
 .qt-progress-bar {
   width: 100%;
   height: 4px;
-  background: rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.06);
   border-radius: 2px;
   overflow: hidden;
 }
@@ -155,6 +157,7 @@
   transform: translateX(120%);
   transition: transform 0.3s ease-out;
 }
+
 .ach-panel.visible {
   transform: translateX(0);
 }
@@ -180,8 +183,9 @@
   padding: 2px 6px;
   border-radius: 4px;
 }
+
 .ach-panel-close:hover {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
   color: #dde;
 }
 
@@ -204,7 +208,7 @@
   padding: 10px 12px;
   margin-bottom: 6px;
   border-radius: 8px;
-  border: 1px solid rgba(100,150,255,0.06);
+  border: 1px solid rgba(100, 150, 255, 0.06);
 }
 
 .ach-card-unlocked {
@@ -213,7 +217,7 @@
 }
 
 .ach-card-locked {
-  background: rgba(255,255,255,0.02);
+  background: rgba(255, 255, 255, 0.02);
   opacity: 0.6;
 }
 
@@ -253,96 +257,108 @@
 
 /* ── Sort panel (drag & drop) ─────────────────── */
 #sort-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .sort-card {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(100,150,255,0.12);
-    border-radius: 8px;
-    cursor: grab;
-    transition: border-color 0.2s, background 0.2s, transform 0.15s;
-    user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(100, 150, 255, 0.12);
+  border-radius: 8px;
+  cursor: grab;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  user-select: none;
 }
+
 .sort-card[draggable="true"]:hover {
-    border-color: rgba(100,150,255,0.3);
-    background: rgba(255,255,255,0.07);
+  border-color: rgba(100, 150, 255, 0.3);
+  background: rgba(255, 255, 255, 0.07);
 }
+
 .sort-card.sort-dragging {
-    opacity: 0.4;
-    transform: scale(0.96);
+  opacity: 0.4;
+  transform: scale(0.96);
 }
+
 .sort-card.sort-drag-over {
-    border-color: rgba(100,200,255,0.5);
-    background: rgba(100,150,255,0.1);
-    transform: translateY(4px);
+  border-color: rgba(100, 200, 255, 0.5);
+  background: rgba(100, 150, 255, 0.1);
+  transform: translateY(4px);
 }
+
 .sort-card.sort-correct {
-    border-color: rgba(74,222,128,0.4);
-    background: rgba(74,222,128,0.12);
+  border-color: rgba(74, 222, 128, 0.4);
+  background: rgba(74, 222, 128, 0.12);
 }
+
 .sort-card.sort-correct .sort-name {
-    color: #6aec98;
+  color: #6aec98;
 }
+
 .sort-card.sort-wrong {
-    border-color: rgba(255,80,80,0.5);
-    background: rgba(255,80,80,0.15);
+  border-color: rgba(255, 80, 80, 0.5);
+  background: rgba(255, 80, 80, 0.15);
 }
+
 .sort-card.sort-wrong .sort-name {
-    color: #ff7a7a;
+  color: #ff7a7a;
 }
 
 .sort-handle {
-    color: #556;
-    font-size: 14px;
-    flex-shrink: 0;
+  color: #556;
+  font-size: 14px;
+  flex-shrink: 0;
 }
+
 .sort-color {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
+
 .sort-name {
-    flex: 0 0 auto;
-    font-size: 14px;
-    font-weight: 500;
-    color: #c8d0e8;
-    min-width: 48px;
+  flex: 0 0 auto;
+  font-size: 14px;
+  font-weight: 500;
+  color: #c8d0e8;
+  min-width: 48px;
 }
+
 .sort-bar-track {
-    flex: 1;
-    height: 6px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 3px;
-    overflow: hidden;
-    margin: 0 6px;
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 0 6px;
 }
+
 .sort-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #4a8eff, #6ab0ff);
-    border-radius: 3px;
-    transition: width 0.2s;
-    opacity: 0.5;
+  height: 100%;
+  background: linear-gradient(90deg, #4a8eff, #6ab0ff);
+  border-radius: 3px;
+  transition: width 0.2s;
+  opacity: 0.5;
 }
+
 .sort-rank {
-    width: 22px;
-    height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: rgba(100,150,255,0.1);
-    color: #8ab;
-    font-size: 11px;
-    font-weight: 600;
-    flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(100, 150, 255, 0.1);
+  color: #8ab;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
 }
 
 /* ── Quest/Achievement buttons in main UI ────── */

@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-06-19
+
+### Added
+- 首次使用引导 — 操作提示浮层，首次打开后永不再弹（6 条操作说明，双语）
+- 行星点击高亮反馈 — Sprite 光晕脉冲，1 秒膨胀淡出
+- 卫星相关题目 6 题（q069~q074）
+
+### Changed
+- 默认星体缩放：700x → 1200x
+- 默认时间流速：1 天/秒（保持不变）
+
+### Fixed
+- CSS2DRenderer 标签遮挡 quiz/help/stats 面板（zIndex 修复）
+- 题库 3 项修正（q047 磁场题、q056 磁层强度、q043 自转周期）
+- 全面代码格式化（CSS/JS 空格规范化）
+
 ## [1.2.0] - 2026-06-09
 
 ### Added

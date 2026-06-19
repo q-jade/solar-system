@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-06-19
+
+### Added
+- First-time guide — tutorial overlay, auto-hides after first visit (6 steps, bilingual)
+- Click highlight — Sprite glow pulse, 1s fade animation
+- 6 new satellite quiz questions (q069~q074)
+
+### Changed
+- Default scale: 700x → 1200x
+- Default speed: 1 day/sec (unchanged)
+
+### Fixed
+- CSS2DRenderer labels no longer overlap quiz/help/stats panels (zIndex fix)
+- 3 quiz corrections (q047 magnetic field, q056 magnetosphere, q043 rotation)
+- Full code formatting (CSS/JS whitespace normalization)
+
 ## [1.2.0] - 2026-06-09
 
 ### Added

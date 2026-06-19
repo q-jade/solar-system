@@ -204,6 +204,50 @@ export async function boot(hooks = {}) {
                         targetId = m.data.parent;
                     }
                 }
+
+                // Highlight: glowing pulse around clicked body (billboard sprite)
+                const canvas = document.createElement('canvas');
+                canvas.width = 128;
+                canvas.height = 128;
+                const ctx = canvas.getContext('2d');
+                const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+                grad.addColorStop(0, 'rgba(255, 220, 130, 1)');
+                grad.addColorStop(0.3, 'rgba(255, 200, 100, 0.6)');
+                grad.addColorStop(1, 'rgba(255, 200, 100, 0)');
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(64, 64, 64, 0, Math.PI * 2);
+                ctx.fill();
+                const tex = new THREE.CanvasTexture(canvas);
+                const spriteMat = new THREE.SpriteMaterial({
+                    map: tex,
+                    transparent: true,
+                    depthWrite: false,
+                    blending: THREE.AdditiveBlending,
+                });
+                const sprite = new THREE.Sprite(spriteMat);
+                const rawRadius = hitMesh.geometry.parameters.radius || 1;
+                const scale = rawRadius * 5;
+                sprite.scale.setScalar(scale);
+                hitMesh.add(sprite);
+                sprite.position.set(0, 0, 0);
+                const startTime = performance.now();
+                function fadeSprite() {
+                    const elapsed = (performance.now() - startTime) / 1000;
+                    if (elapsed >= 1.0) {
+                        hitMesh.remove(sprite);
+                        sprite.material.dispose();
+                        sprite.material.map.dispose();
+                        return;
+                    }
+                    const t = elapsed / 1.0;
+                    const s = 1 + t * 1.5;
+                    sprite.scale.setScalar(scale * s);
+                    sprite.material.opacity = (1 - t);
+                    requestAnimationFrame(fadeSprite);
+                }
+                fadeSprite();
+
                 selectBody(targetId);
                 sfx.focus();
                 const wasExplored = markExplored(targetId);

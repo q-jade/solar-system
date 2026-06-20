@@ -243,7 +243,7 @@
       "mean": -110
     },
     "atmosphere": "89.8% 氢气、10.2% 氦气，微量甲烷、氨",
-    "moons": 95,
+    "moons": 101,
     "moonNames": [
       "木卫一（伊奥）",
       "木卫二（欧罗巴）",
@@ -252,24 +252,24 @@
     ],
     "color": 14534553,
     "funFact": "木星的质量是其他所有行星总和的2.5倍，大红斑风暴已持续至少400年",
-    "detail": "木星是太阳系中体积和质量最大的行星，直径约 139,820 km，是地球的 11 倍。其质量是其他所有行星总和的 2.5 倍。\n\n木星最著名的特征是大红斑——一个比地球还大的巨型反气旋风暴，自 17 世纪起被持续观测至今，至少已存在 400 年。木星的大气层主要由氢（89.8%）和氦（10.2%）组成，呈现独特的彩色条纹。\n\n木星拥有至少 95 颗已知卫星，其中四颗伽利略卫星最为著名。木卫三（盖尼米得）直径约 5268 km，比水星还大，是太阳系最大的卫星。木卫二（欧罗巴）冰层下可能存在液态水海洋，是潜在的地外生命栖息地。木星的自转周期仅约 9.9 小时，是太阳系中自转最快的行星。",
+    "detail": "木星是太阳系中体积和质量最大的行星，直径约 139,820 km，是地球的 11 倍。其质量是其他所有行星总和的 2.5 倍。\n\n木星最著名的特征是大红斑——一个比地球还大的巨型反气旋风暴，自 17 世纪起被持续观测至今，至少已存在 400 年。木星的大气层主要由氢（89.8%）和氦（10.2%）组成，呈现独特的彩色条纹。\n\n木星拥有至少 101 颗已知卫星，其中四颗伽利略卫星最为著名。木卫三（盖尼米得）直径约 5268 km，比水星还大，是太阳系最大的卫星。木卫二（欧罗巴）冰层下可能存在液态水海洋，是潜在的地外生命栖息地。木星的自转周期仅约 9.9 小时，是太阳系中自转最快的行星。",
     "source": "NASA / JPL Horizons",
     "highlights": [
       "太阳系最大行星",
       "大红斑风暴",
       "质量是其他行星总和 2.5 倍",
-      "95 颗卫星"
+      "101 颗卫星"
     ],
     "nameEn": "Jupiter",
     "highlightsEn": [
       "Largest Planet",
       "Great Red Spot Storm",
       "Mass 2.5× All Other Planets Combined",
-      "95 Moons"
+      "101 Moons"
     ],
     "atmosphereEn": "89.8% hydrogen, 10.2% helium, trace methane and ammonia",
     "funFactEn": "Jupiter's mass is 2.5 times that of all other planets combined, and its Great Red Spot has raged for at least 400 years",
-    "detailEn": "Jupiter is the largest planet in the solar system, with a diameter of 139,820 km — 11 times Earth. Its mass is 2.5 times that of all other planets combined.\n\nJupiter's most famous feature is the Great Red Spot — a giant anti-cyclonic storm larger than Earth, continuously observed since the 17th century (at least 400 years). Its atmosphere is mainly hydrogen (89.8%) and helium (10.2%), creating distinctive colored bands.\n\nJupiter has at least 95 known moons, with the four Galilean moons being the most famous. Ganymede, with a diameter of 5,268 km, is larger than Mercury and is the largest moon in the solar system. Europa likely has a subsurface liquid water ocean, a potential habitat for extraterrestrial life. Jupiter rotates every ~9.9 hours — the fastest rotation of any planet.",
+    "detailEn": "Jupiter is the largest planet in the solar system, with a diameter of 139,820 km — 11 times Earth. Its mass is 2.5 times that of all other planets combined.\n\nJupiter's most famous feature is the Great Red Spot — a giant anti-cyclonic storm larger than Earth, continuously observed since the 17th century (at least 400 years). Its atmosphere is mainly hydrogen (89.8%) and helium (10.2%), creating distinctive colored bands.\n\nJupiter has at least 101 known moons, with the four Galilean moons being the most famous. Ganymede, with a diameter of 5,268 km, is larger than Mercury and is the largest moon in the solar system. Europa likely has a subsurface liquid water ocean, a potential habitat for extraterrestrial life. Jupiter rotates every ~9.9 hours — the fastest rotation of any planet.",
     "moonNamesEn": [
       "Io",
       "Europa",
@@ -296,7 +296,7 @@
       "mean": -140
     },
     "atmosphere": "96.3% 氢气、3.25% 氦气，微量甲烷、氨",
-    "moons": 146,
+    "moons": 274,
     "moonNames": [
       "土卫六（提坦）",
       "土卫五（瑞亚）",
@@ -305,24 +305,24 @@
     ],
     "color": 15650235,
     "funFact": "土星的密度（0.69 g/cm³）比水还低，理论上如果有一个巨大的水池，土星可以漂浮在水面上",
-    "detail": "土星以其壮观的环系统闻名于世。土星环主要由冰粒和岩石碎片组成，宽度约 28 万公里但厚度仅 10~100 米——如同一张巨大的唱片。\n\n土星的密度仅 0.69 g/cm³，比水还低——理论上如果有一个足够大的水池，土星可以漂浮在水面上。土星的主要成分是氢（96.3%）和氦（3.25%），与木星类似但体积稍小。\n\n土星拥有至少 146 颗已知卫星，是太阳系中卫星最多的行星。其最大卫星土卫六（泰坦）是太阳系中唯一拥有浓厚大气层的卫星（98% 氮气），表面有液态甲烷湖泊和河流。土卫二（恩克拉多斯）的冰壳下有喷射水汽的间歇泉，可能存在宜居环境。",
+    "detail": "土星以其壮观的环系统闻名于世。土星环主要由冰粒和岩石碎片组成，宽度约 28 万公里但厚度仅 10~100 米——如同一张巨大的唱片。\n\n土星的密度仅 0.69 g/cm³，比水还低——理论上如果有一个足够大的水池，土星可以漂浮在水面上。土星的主要成分是氢（96.3%）和氦（3.25%），与木星类似但体积稍小。\n\n土星拥有至少 274 颗已知卫星，是太阳系中卫星最多的行星。其最大卫星土卫六（泰坦）是太阳系中唯一拥有浓厚大气层的卫星（98% 氮气），表面有液态甲烷湖泊和河流。土卫二（恩克拉多斯）的冰壳下有喷射水汽的间歇泉，可能存在宜居环境。",
     "source": "NASA / JPL Horizons",
     "highlights": [
       "壮观的环系统",
       "密度比水低",
-      "146 颗卫星",
+      "274 颗卫星",
       "泰坦有浓厚大气"
     ],
     "nameEn": "Saturn",
     "highlightsEn": [
       "Spectacular Ring System",
       "Less Dense Than Water",
-      "146 Moons",
+      "274 Moons",
       "Titan's Thick Atmosphere"
     ],
     "atmosphereEn": "96.3% hydrogen, 3.25% helium, trace methane and ammonia",
     "funFactEn": "Saturn has a density of only 0.69 g/cm³ — lower than water. If you had a big enough pool, Saturn could float",
-    "detailEn": "Saturn is famous for its spectacular ring system. The rings are made of ice particles and rocky debris, spanning about 280,000 km but only 10~100 meters thick — like a giant vinyl record.\n\nSaturn's density is only 0.69 g/cm³ — lower than water. In theory, if you had a large enough pool, Saturn could float. It's composed mainly of hydrogen (96.3%) and helium (3.25%), similar to Jupiter but smaller.\n\nSaturn has at least 146 known moons — the most of any planet. Its largest moon Titan has a thick nitrogen atmosphere (98% N₂), the only moon in the solar system with a substantial atmosphere, with liquid methane lakes and rivers on its surface. Enceladus has geysers of water vapor erupting through its icy crust, suggesting a potentially habitable subsurface ocean.",
+    "detailEn": "Saturn is famous for its spectacular ring system. The rings are made of ice particles and rocky debris, spanning about 280,000 km but only 10~100 meters thick — like a giant vinyl record.\n\nSaturn's density is only 0.69 g/cm³ — lower than water. In theory, if you had a large enough pool, Saturn could float. It's composed mainly of hydrogen (96.3%) and helium (3.25%), similar to Jupiter but smaller.\n\nSaturn has at least 274 known moons — the most of any planet. Its largest moon Titan has a thick nitrogen atmosphere (98% N₂), the only moon in the solar system with a substantial atmosphere, with liquid methane lakes and rivers on its surface. Enceladus has geysers of water vapor erupting through its icy crust, suggesting a potentially habitable subsurface ocean.",
     "moonNamesEn": [
       "Titan",
       "Rhea",

@@ -290,6 +290,7 @@ export function initControls(sys, camera, renderer) {
             distance: $('#distance-toggle').checked,
             size: $('#size-toggle').checked,
             ecliptic: $('#ecliptic-toggle').checked,
+            sunReal: $('#sunreal-toggle').checked,
             music: $('#music-toggle').checked,
             collapsed: $('#controls-panel').classList.contains('ctrl-collapsed'),
         };
@@ -309,6 +310,7 @@ export function initControls(sys, camera, renderer) {
             if (typeof s.distance === 'boolean') $('#distance-toggle').checked = s.distance;
             if (typeof s.size === 'boolean') $('#size-toggle').checked = s.size;
             if (typeof s.ecliptic === 'boolean') $('#ecliptic-toggle').checked = s.ecliptic;
+            if (typeof s.sunReal === 'boolean') $('#sunreal-toggle').checked = s.sunReal;
             if (typeof s.music === 'boolean') $('#music-toggle').checked = s.music;
             if (s.collapsed) $('#controls-panel').classList.add('ctrl-collapsed');
             return true;
@@ -332,6 +334,7 @@ export function initControls(sys, camera, renderer) {
         sizeToggle.dispatchEvent(new Event('change'));
         eclipticToggle.dispatchEvent(new Event('change'));
         musicToggle.dispatchEvent(new Event('change'));
+        sunRealToggle.dispatchEvent(new Event('change'));
         // Smoothly fly back to sun if focused, otherwise snap
         if (focusedBody) {
             flyBack();
@@ -393,6 +396,14 @@ export function initControls(sys, camera, renderer) {
     const eclipticToggle = $('#ecliptic-toggle');
     eclipticToggle.addEventListener('change', () => {
         sys.eclipticDisc.visible = eclipticToggle.checked;
+        saveSettings();
+    });
+
+    const sunRealToggle = $('#sunreal-toggle');
+    sunRealToggle.addEventListener('change', () => {
+        if (typeof sys.setSunRealScale === 'function') {
+            sys.setSunRealScale(sunRealToggle.checked);
+        }
         saveSettings();
     });
 

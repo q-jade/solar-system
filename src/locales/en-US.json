@@ -32,7 +32,8 @@
     "toggleDist": "Distance",
     "toggleSize": "Radius",
     "toggleEcliptic": "Ecliptic",
-    "toggleMusic": "🎵 Music"
+    "toggleMusic": "🎵 Music",
+    "toggleSunReal": "Real Sun"
   },
   "infoCard": {
     "overview": "Overview",

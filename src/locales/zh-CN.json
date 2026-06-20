@@ -32,7 +32,8 @@
     "toggleDist": "距离",
     "toggleSize": "半径",
     "toggleEcliptic": "黄道面",
-    "toggleMusic": "🎵 音乐"
+    "toggleMusic": "🎵 音乐",
+    "toggleSunReal": "真实太阳"
   },
   "infoCard": {
     "overview": "概览",

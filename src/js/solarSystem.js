@@ -377,8 +377,10 @@ export function initSolarSystem(textures) {
         : new THREE.MeshBasicMaterial({ color: 0xffcc44 });
     const sunMesh = new THREE.Mesh(sunGeo, sunMat);
     // Group wraps mesh so tilt applies before self-rotation
-    const sun = new THREE.Group();
-    sun.add(sunMesh);
+    const sun = new THREE.Group();          // pulse group (kept for animation)
+    const sunScaleGroup = new THREE.Group(); // real-scale toggle group
+    sun.add(sunScaleGroup);
+    sunScaleGroup.add(sunMesh);
     sun.rotation.x = 7.25 * Math.PI / 180; // axial tilt relative to ecliptic
     scene.add(sun);
 
@@ -1232,6 +1234,15 @@ export function initSolarSystem(textures) {
         }
     }
 
+    // ── Sun real-size toggle ──────────────────────────
+    const SUN_REAL_RADIUS = 696340 / KM_PER_U;  // ≈ 0.186
+
+    function setSunRealScale(enabled) {
+        const s = enabled ? SUN_REAL_RADIUS / SUN_RADIUS : 1;
+        sunScaleGroup.scale.setScalar(s);
+        sunGlow.scale.set(SUN_RADIUS * 4 * s, SUN_RADIUS * 4 * s, 1);
+    }
+
     // Initialise at 1x speed
     setSpeed(1);
     setLabelsVisible(true);
@@ -1240,6 +1251,7 @@ export function initSolarSystem(textures) {
         scene, camera, renderer, labelRenderer,
         planets, moons, comets, sun, sunMesh, asteroidBelt, eclipticDisc,
         setScale, setSpeed, setLabelsVisible, setLabelLanguage, setEccentricityMultiplier,
+        setSunRealScale,
         update: updateOrbits,
         SUN_RADIUS, MAX_SCALE,
         get currentSpeedMul() { return currentSpeedMul; },

@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] - 2026-07-14
+
+### Added
+- 真实太阳大小开关 — 不跟随缩放，显示太阳在场景中的真实空间尺度（托勒密视角）
+
+### Fixed
+- 八大行星轨道 mean anomaly 修正 — 替换为 JPL HORIZONS J2000 历元数据
+- 彗星轨道数据修正 — 哈雷彗星、海尔-波普彗星改用 JPL HORIZONS 精确轨道根数
+- 卫星初始位置修正 — 使用 `data.m0` 替代随机平均近点角，统一精度
+- 木星卫星数 95 → 101（更新至最新观测数据）
+- 土星卫星数 146 → 274（更新至最新观测数据）
+- 行星 info card 卫星数与真实数据同步核验
+
 ## [1.3.0] - 2026-06-19
 
 ### Added

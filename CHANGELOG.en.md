@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] - 2026-07-14
+
+### Added
+- Realistic Sun Size toggle — shows the Sun at its true spatial scale, unaffected by body scaling (Ptolemaic perspective)
+
+### Fixed
+- 8 planet orbital mean anomalies corrected — replaced with JPL HORIZONS J2000 epoch data
+- Comet orbital data corrected — 1P/Halley and C/1995 O1 (Hale-Bopp) updated to JPL HORIZONS precise elements
+- Moon initial positions corrected — use `data.m0` instead of random mean anomaly for consistent accuracy
+- Jupiter moon count: 95 → 101 (updated to latest observations)
+- Saturn moon count: 146 → 274 (updated to latest observations)
+- Planet info card moon counts verified and synchronized with real data
+
 ## [1.3.0] - 2026-06-19
 
 ### Added

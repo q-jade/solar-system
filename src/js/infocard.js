@@ -81,11 +81,14 @@ function getTexturePath(bodyId) {
 }
 
 // ── Compare row helper ─────────────────────────────────────────────────
-function compareRow(label, valA, valB, unit) {
+function compareRow(label, valA, valB, rawA, rawB) {
+    const ra = rawA !== undefined ? rawA : valA;
+    const rb = rawB !== undefined ? rawB : valB;
+    const vs = ra === rb ? '=' : (ra > rb ? '>' : '<');
     return `<tr>
       <td class="ic-cmp-label">${label}</td>
       <td class="ic-cmp-valA">${valA}</td>
-      <td class="ic-cmp-vs">${valA === valB ? '=' : (valA > valB ? '>' : '<')}</td>
+      <td class="ic-cmp-vs">${vs}</td>
       <td class="ic-cmp-valB">${valB}</td>
     </tr>`;
 }
@@ -179,14 +182,14 @@ function compareHTML(bodyA, bodyB) {
         </div>
       </div>
       <table class="ic-cmp-table">
-        ${compareRow(t('infoCard.cmpRadius'), fmtRadius(bodyA.radius), fmtRadius(bodyB.radius))}
-        ${compareRow(t('infoCard.cmpMass'), fmtMass(bodyA.mass), fmtMass(bodyB.mass))}
-        ${compareRow(t('infoCard.cmpDensity'), bodyA.density + ' g/cm³', bodyB.density + ' g/cm³')}
-        ${compareRow(t('infoCard.cmpOrbit'), fmtAU(bodyA.orbitA), fmtAU(bodyB.orbitA))}
-        ${compareRow(t('infoCard.cmpPeriod'), fmtDays(bodyA.period), fmtDays(bodyB.period))}
-        ${compareRow(t('infoCard.cmpRotPeriod'), fmtDays(bodyA.rotPeriod), fmtDays(bodyB.rotPeriod))}
-        ${compareRow(t('infoCard.cmpTemp'), fmtTemp(bodyA.surfaceTemp), fmtTemp(bodyB.surfaceTemp))}
-        ${compareRow(t('infoCard.cmpMoons'), fmtMoons(bodyA.moons), fmtMoons(bodyB.moons))}
+        ${compareRow(t('infoCard.cmpRadius'), fmtRadius(bodyA.radius), fmtRadius(bodyB.radius), bodyA.radius, bodyB.radius)}
+        ${compareRow(t('infoCard.cmpMass'), fmtMass(bodyA.mass), fmtMass(bodyB.mass), bodyA.mass, bodyB.mass)}
+        ${compareRow(t('infoCard.cmpDensity'), bodyA.density + ' g/cm³', bodyB.density + ' g/cm³', bodyA.density, bodyB.density)}
+        ${compareRow(t('infoCard.cmpOrbit'), fmtAU(bodyA.orbitA), fmtAU(bodyB.orbitA), bodyA.orbitA, bodyB.orbitA)}
+        ${compareRow(t('infoCard.cmpPeriod'), fmtDays(bodyA.period), fmtDays(bodyB.period), bodyA.period, bodyB.period)}
+        ${compareRow(t('infoCard.cmpRotPeriod'), fmtDays(bodyA.rotPeriod), fmtDays(bodyB.rotPeriod), bodyA.rotPeriod, bodyB.rotPeriod)}
+        ${compareRow(t('infoCard.cmpTemp'), fmtTemp(bodyA.surfaceTemp), fmtTemp(bodyB.surfaceTemp), bodyA.surfaceTemp.mean, bodyB.surfaceTemp.mean)}
+        ${compareRow(t('infoCard.cmpMoons'), fmtMoons(bodyA.moons), fmtMoons(bodyB.moons), bodyA.moons, bodyB.moons)}
       </table>
       <select class="ic-cmp-select" id="ic-cmp-select">
         <option value="">${t('infoCard.cmpSelectOther')}</option>

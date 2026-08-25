@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.2] - 2026-08-25
+
+### Fixed
+- 信息卡比较面板跨量级数据比较错误 — 改用原始数值（而非格式化后的字符串）做 >/< 判断，避免“地球密度 5.51 > 木星密度 1.33”这类量级误判
+
 ## [1.3.1] - 2026-07-14
 
 ### Added

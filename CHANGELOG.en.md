@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.2] - 2026-08-25
+
+### Fixed
+- Info card compare panel cross-scale comparison bug — comparisons now use raw numeric values instead of formatted strings, fixing wrong >/< verdicts across different magnitudes
+
 ## [1.3.1] - 2026-07-14
 
 ### Added
